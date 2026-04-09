@@ -231,8 +231,17 @@
     }
     .project-links {
       font-size: 0.88rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 1rem;
     }
-    .project-links a { margin-right: 1rem; }
+    .project-links a { margin-right: 0; }
+    .project-repo-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      user-select: none;
+    }
     footer {
       margin-top: 2.75rem;
       padding-top: 1.5rem;
@@ -275,7 +284,7 @@
         Previously at <strong>Ericsson</strong>, I helped migrate the Software Provisioning Tool to <strong>Django</strong> and Python 3.8, improved deployment automation and Jenkins integration, and contributed to internal tools such as the Deployment Integration Tool and Booking Pool. I also introduced <strong>Selenium</strong> and <strong>Locust</strong> in the CI portal and was recognized as a Key Contributor for VMware licensing optimization work.
       </p>
       <p>
-        I also build <strong>System Design Emulator</strong> — a browser canvas for architectures, Rust/WASM simulation, chaos, and rough AWS costs — as a passion project alongside my day job.
+        I also build <strong>System Design Emulator</strong> (<a href="https://system-design-emulator-ten.vercel.app/" target="_blank" rel="noopener noreferrer">live app</a>) — a browser canvas for architectures, Rust/WASM simulation, chaos, and rough AWS costs — as a passion project alongside my day job.
       </p>
     </section>
 
@@ -361,7 +370,7 @@
 
   <script>
     (function () {
-      var fallback = {"featured":[{"id":"luggagebot","title":"LuggageBot","subtitle":"ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.","href":"https://github.com/IllusionistBoi/LuggageBot","hrefLabel":"Repository","repo":"IllusionistBoi/LuggageBot","tags":["Python","ROS","CV"]},{"id":"robotics-legostorm","title":"Robotics LEGOSTORM","subtitle":"LEGO EV3, ROBOTC, ROS — sensors, navigation, HRI practice.","href":"https://github.com/IllusionistBoi/Robotics_LEGOSTORM","hrefLabel":"Repository","repo":"IllusionistBoi/Robotics_LEGOSTORM","tags":["ROS","C","Robotics"]},{"id":"ros-guide","title":"ROS beginner guide","subtitle":"TurtleBot3-oriented ROS1 Noetic learning notes.","href":"https://github.com/IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","hrefLabel":"Repository","repo":"IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","tags":["ROS","Python"]},{"id":"pixel-pals","title":"Pixel Pals","subtitle":"Console game with Pygame.","href":"https://github.com/IllusionistBoi/Pixel-Pals","hrefLabel":"Repository","repo":"IllusionistBoi/Pixel-Pals","tags":["Python","Pygame"]},{"id":"dsa","title":"DSA & algorithms","subtitle":"Structures and practice repos.","href":"https://github.com/IllusionistBoi/Data-Structure-","hrefLabel":"Data structures","repo":"IllusionistBoi/Data-Structure-","tags":["Java","Algorithms"]}]};
+      var fallback = {"featured":[{"id":"sysdesign","title":"System Design Emulator","subtitle":"Canvas for distributed architectures — Flutter Web, Rust/WASM simulation, chaos, AWS cost hints.","href":"https://system-design-emulator-ten.vercel.app/","hrefLabel":"Open app","docsHref":"https://system-design-emulator-ten.vercel.app/docs","docsLabel":"Docs","repoPrivate":true,"tags":["Flutter","Rust","WASM"]},{"id":"luggagebot","title":"LuggageBot","subtitle":"ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.","href":"https://github.com/IllusionistBoi/LuggageBot","hrefLabel":"Repository","repo":"IllusionistBoi/LuggageBot","tags":["Python","ROS","CV"]},{"id":"robotics-legostorm","title":"Robotics LEGOSTORM","subtitle":"LEGO EV3, ROBOTC, ROS — sensors, navigation, HRI practice.","href":"https://github.com/IllusionistBoi/Robotics_LEGOSTORM","hrefLabel":"Repository","repo":"IllusionistBoi/Robotics_LEGOSTORM","tags":["ROS","C","Robotics"]},{"id":"ros-guide","title":"ROS beginner guide","subtitle":"TurtleBot3-oriented ROS1 Noetic learning notes.","href":"https://github.com/IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","hrefLabel":"Repository","repo":"IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","tags":["ROS","Python"]},{"id":"pixel-pals","title":"Pixel Pals","subtitle":"Console game with Pygame.","href":"https://github.com/IllusionistBoi/Pixel-Pals","hrefLabel":"Repository","repo":"IllusionistBoi/Pixel-Pals","tags":["Python","Pygame"]},{"id":"dsa","title":"DSA & algorithms","subtitle":"Structures and practice repos.","href":"https://github.com/IllusionistBoi/Data-Structure-","hrefLabel":"Data structures","repo":"IllusionistBoi/Data-Structure-","tags":["Java","Algorithms"]}]};
 
       function esc(s) {
         if (s == null) return "";
@@ -379,8 +388,13 @@
             return "<span>" + esc(t) + "</span>";
           }).join("");
           var links = '<a href="' + esc(p.href) + '">' + esc(p.hrefLabel || "Open") + "</a>";
+          if (p.docsHref) {
+            links += '<a href="' + esc(p.docsHref) + '">' + esc(p.docsLabel || "Docs") + "</a>";
+          }
           if (p.repo) {
             links += '<a href="https://github.com/' + esc(p.repo) + '" target="_blank" rel="noopener noreferrer">GitHub</a>';
+          } else if (p.repoPrivate) {
+            links += '<span class="project-repo-note">Private</span>';
           }
           return (
             '<article class="project">' +
