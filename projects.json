@@ -1,15 +1,6 @@
 {
   "featured": [
     {
-      "id": "sysdesign",
-      "title": "System Design Emulator",
-      "subtitle": "Canvas for distributed architectures — Flutter Web, Rust/WASM simulation, chaos, AWS cost hints.",
-      "href": "https://sysdesign.vercel.app/",
-      "hrefLabel": "Open app",
-      "repo": null,
-      "tags": ["Flutter", "Rust", "WASM"]
-    },
-    {
       "id": "luggagebot",
       "title": "LuggageBot",
       "subtitle": "ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.",
