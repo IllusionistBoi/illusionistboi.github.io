@@ -56,9 +56,10 @@
       padding: clamp(2.25rem, 7vw, 3.5rem) 1.35rem 3.5rem;
     }
     .hero {
-      display: flex;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
       gap: 1.25rem;
-      align-items: flex-start;
+      align-items: start;
       margin-bottom: 2rem;
     }
     .avatar {
@@ -66,26 +67,40 @@
       height: 72px;
       border-radius: 50%;
       border: 1px solid var(--border);
-      flex-shrink: 0;
     }
-    h1 {
+    .hero-text {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero-text h1 {
       font-family: Fraunces, Georgia, serif;
       font-weight: 500;
       font-size: clamp(1.65rem, 4vw, 2.05rem);
       letter-spacing: -0.02em;
       margin: 0 0 0.4rem;
       line-height: 1.2;
+      padding: 0;
+      align-self: stretch;
     }
     .headline {
       color: var(--body);
       font-size: 0.98rem;
       margin: 0 0 0.35rem;
-      max-width: 36ch;
+      padding: 0;
+      max-width: 42rem;
+      text-align: start;
+      width: 100%;
+      /* Align with Fraunces name: sans-serif body sits slightly right in the same box */
+      margin-inline-start: -0.12em;
     }
     .location {
       color: var(--muted);
       font-size: 0.9rem;
       margin: 0;
+      padding: 0;
+      margin-inline-start: -0.12em;
     }
     section {
       margin-top: 2.35rem;
@@ -203,7 +218,7 @@
   <div class="wrap">
     <header class="hero">
       <img class="avatar" src="https://avatars.githubusercontent.com/u/43854524?v=4" width="72" height="72" alt="">
-      <div>
+      <div class="hero-text">
         <h1>Ronit Dahiya</h1>
         <p class="headline">Infrastructure Engineering Senior Advisor @ Evernorth (Cigna Group) · BSc CS (Data Science), UCD</p>
         <p class="location">South Dublin, Ireland</p>
@@ -296,7 +311,6 @@
 
     <section aria-labelledby="projects-heading">
       <h2 id="projects-heading">Projects</h2>
-      <p style="color:var(--body);font-size:0.92rem;margin:0 0 1rem;">Selected public work; add more anytime via <code style="font-size:0.85em;color:var(--muted);">projects.json</code> in this repo.</p>
       <div id="projects-root" class="project-grid"></div>
       <noscript>
         <p style="color:var(--muted);font-size:0.9rem;">Enable JavaScript to load project cards, or visit <a href="https://github.com/IllusionistBoi">GitHub</a>.</p>
