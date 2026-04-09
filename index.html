@@ -3,81 +3,195 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ronit Dahiya</title>
-  <meta name="description" content="Ronit Dahiya — builder of System Design Emulator (SysDesign), Flutter Web, Rust/WASM.">
+  <title>Ronit Dahiya — Infrastructure & software engineering</title>
+  <meta name="description" content="Ronit Dahiya — Infrastructure Engineering Senior Advisor at Evernorth. CloudBolt, automation, full-stack. Side projects: System Design Emulator, ROS, and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0c0d10;
-      --surface: #14161c;
-      --text: #e8eaef;
-      --muted: #8b919c;
-      --accent: #7c9cff;
-      --border: rgba(255, 255, 255, 0.08);
+      --bg: #12141a;
+      --bg-elevated: #181b24;
+      --text: #e6e8ee;
+      --body: #a9b0bf;
+      --muted: #7d8494;
+      --accent: #6b8fd4;
+      --accent-hover: #8aa6e0;
+      --border: rgba(255, 255, 255, 0.07);
+      --radius: 14px;
+      --hero-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(107, 143, 212, 0.14), transparent 55%);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "DM Sans", system-ui, sans-serif;
       font-optical-sizing: auto;
+      font-size: 17px;
       background: var(--bg);
+      background-image: var(--hero-glow);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
     .wrap {
-      max-width: 40rem;
+      max-width: 42rem;
       margin: 0 auto;
-      padding: clamp(2.5rem, 8vw, 4rem) 1.5rem 4rem;
+      padding: clamp(2.25rem, 7vw, 3.5rem) 1.35rem 3.5rem;
+    }
+    .hero {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
     }
     h1 {
       font-family: Fraunces, Georgia, serif;
       font-weight: 500;
-      font-size: clamp(1.85rem, 4vw, 2.25rem);
+      font-size: clamp(1.65rem, 4vw, 2.05rem);
       letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+      line-height: 1.2;
+    }
+    .headline {
+      color: var(--body);
+      font-size: 0.98rem;
       margin: 0 0 0.35rem;
+      max-width: 36ch;
     }
-    .tag {
+    .location {
       color: var(--muted);
-      font-size: 0.95rem;
-      margin: 0 0 1.75rem;
+      font-size: 0.9rem;
+      margin: 0;
     }
-    p {
-      margin: 0 0 1rem;
-      color: #c4c8d4;
+    section {
+      margin-top: 2.35rem;
     }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1.35rem;
-      margin-top: 1.75rem;
-    }
-    .card h2 {
-      font-size: 0.72rem;
+    h2 {
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       color: var(--muted);
       font-weight: 600;
-      margin: 0 0 0.85rem;
+      margin: 0 0 0.9rem;
     }
-    ul {
+    .prose p {
+      margin: 0 0 1rem;
+      color: var(--body);
+      max-width: 52ch;
+    }
+    .prose p:last-child { margin-bottom: 0; }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .card:last-child { margin-bottom: 0; }
+    .card-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0 0 0.2rem;
+    }
+    .card-meta {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin: 0 0 0.55rem;
+    }
+    .card ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--body);
+      font-size: 0.92rem;
+    }
+    .card li { margin-bottom: 0.35rem; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .chip {
+      font-size: 0.78rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--body);
+    }
+    .project-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .project {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+      transition: border-color 0.15s ease;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .project:hover { border-color: rgba(107, 143, 212, 0.35); }
+    }
+    .project h3 {
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin: 0 0 0.35rem;
+    }
+    .project p {
+      font-size: 0.92rem;
+      color: var(--body);
+      margin: 0 0 0.65rem;
+      line-height: 1.5;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.65rem;
+    }
+    .project-tags span {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .project-links {
+      font-size: 0.88rem;
+    }
+    .project-links a { margin-right: 1rem; }
+    .connect-list {
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    li + li { margin-top: 0.65rem; }
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
-    .muted { color: var(--muted); font-size: 0.88rem; }
+    .connect-list li { margin-bottom: 0.5rem; }
+    .connect-list li:last-child { margin-bottom: 0; }
     footer {
-      margin-top: 3rem;
+      margin-top: 2.75rem;
       padding-top: 1.5rem;
       border-top: 1px solid var(--border);
       font-size: 0.85rem;
@@ -87,20 +201,166 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Ronit Dahiya</h1>
-    <p class="tag">Software · system design · browser-native tools</p>
-    <p>I build <strong>System Design Emulator</strong> (<a href="https://sysdesign.vercel.app/">SysDesign</a>) — a canvas for sketching architectures, simulating traffic with a Rust/WASM engine, and exploring chaos and rough AWS costs. The app runs in the browser with Flutter Web.</p>
+    <header class="hero">
+      <img class="avatar" src="https://avatars.githubusercontent.com/u/43854524?v=4" width="72" height="72" alt="">
+      <div>
+        <h1>Ronit Dahiya</h1>
+        <p class="headline">Infrastructure Engineering Senior Advisor @ Evernorth (Cigna Group) · BSc CS (Data Science), UCD</p>
+        <p class="location">South Dublin, Ireland</p>
+      </div>
+    </header>
 
-    <div class="card">
-      <h2>Links</h2>
-      <ul>
-        <li><a href="https://sysdesign.vercel.app/">SysDesign</a> <span class="muted">— try the emulator</span></li>
-        <li><a href="https://github.com/IllusionistBoi">GitHub</a> <span class="muted">— @IllusionistBoi</span></li>
-        <li><a href="https://sysdesign.vercel.app/docs">Documentation</a> <span class="muted">— how it works</span></li>
+    <section class="prose" aria-labelledby="about-heading">
+      <h2 id="about-heading">About</h2>
+      <p>
+        I work on <strong>automation, infrastructure, and full-stack delivery</strong>. At <strong>Evernorth Health Services</strong>, I focus on automating infrastructure provisioning and lifecycle management using
+        <a href="https://www.cloudbolt.io/" target="_blank" rel="noopener noreferrer">CloudBolt</a>
+        — a hybrid cloud management and provisioning platform — together with internal <strong>Unity</strong> tooling used inside the organization.
+      </p>
+      <p>
+        Previously at <strong>Ericsson</strong>, I helped migrate the Software Provisioning Tool to <strong>Django</strong> and Python 3.8, improved deployment automation and Jenkins integration, and contributed to internal tools such as the Deployment Integration Tool and Booking Pool. I also introduced <strong>Selenium</strong> and <strong>Locust</strong> in the CI portal and was recognized as a Key Contributor for VMware licensing optimization work.
+      </p>
+      <p>
+        I also build <strong>System Design Emulator</strong> (<a href="https://sysdesign.vercel.app/">SysDesign</a>) — a browser canvas for architectures, Rust/WASM simulation, chaos, and rough AWS costs — as a passion project alongside my day job.
+      </p>
+    </section>
+
+    <section aria-labelledby="exp-heading">
+      <h2 id="exp-heading">Experience</h2>
+      <div class="card">
+        <div class="card-title">Infrastructure Engineering Senior Advisor</div>
+        <div class="card-meta">Evernorth Health Services · Jul 2025 – Present · Galway area</div>
+        <ul>
+          <li>Infrastructure automation, provisioning, and lifecycle with CloudBolt and internal Unity tooling.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Software Engineer</div>
+        <div class="card-meta">Ericsson · Jul 2023 – Jul 2025 · Athlone</div>
+        <ul>
+          <li>SPP migration to Django / Python 3.8; vApps, deployment automation, Jenkins plugins.</li>
+          <li>DIT and Booking Pool enhancements; VMware cost-reduction initiative; Key Contributor.</li>
+          <li>Selenium and Locust in CI for quality and performance feedback.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Graduate Software Developer</div>
+        <div class="card-meta">Ericsson · Jul 2022 – Jul 2023 · Athlone</div>
+        <ul>
+          <li>Graduate program: Python, Java, Docker, Kubernetes, microservices, CI tools.</li>
+          <li>Transfers from Stratus (AngularJS, Express, Node, MongoDB) to Tools team.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Technology Lead</div>
+        <div class="card-meta">Google Developer Student Clubs (UCD) · Sep 2021 – May 2022 · Dublin</div>
+        <ul>
+          <li>Led student chapter; Android, GCP, ML workshops; strong membership growth.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Software Engineer Intern</div>
+        <div class="card-meta">Ericsson · Mar 2021 – Aug 2021 · Athlone</div>
+        <ul>
+          <li>Internal tools; search and UX improvements; Java 11, APIs, full-stack maintenance.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="edu-heading">
+      <h2 id="edu-heading">Education &amp; credentials</h2>
+      <div class="card">
+        <div class="card-title">University College Dublin</div>
+        <div class="card-meta">BSc (Hons), Computer Science with Data Science · Sep 2018 – May 2022</div>
+        <p style="margin:0.5rem 0 0;font-size:0.92rem;color:var(--body);">UCD Scholarship.</p>
+      </div>
+      <p style="margin-top:0.85rem;color:var(--body);font-size:0.92rem;">
+        Certifications: Fundamentals of Digital Marketing; Java (Advance); BCSS Cloud Fundamental (2024); C Programming; Python Advance bootcamp.
+      </p>
+    </section>
+
+    <section aria-labelledby="skills-heading">
+      <h2 id="skills-heading">Skills</h2>
+      <div class="chips">
+        <span class="chip">Business process improvement</span>
+        <span class="chip">Django REST Framework</span>
+        <span class="chip">React</span>
+        <span class="chip">Python</span>
+        <span class="chip">Java</span>
+        <span class="chip">Docker</span>
+        <span class="chip">OpenStack</span>
+        <span class="chip">DevOps / CI/CD</span>
+      </div>
+      <p style="margin-top:0.85rem;color:var(--muted);font-size:0.88rem;">Languages: English, Hindi.</p>
+    </section>
+
+    <section aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Projects</h2>
+      <p style="color:var(--body);font-size:0.92rem;margin:0 0 1rem;">Selected public work; add more anytime via <code style="font-size:0.85em;color:var(--muted);">projects.json</code> in this repo.</p>
+      <div id="projects-root" class="project-grid"></div>
+      <noscript>
+        <p style="color:var(--muted);font-size:0.9rem;">Enable JavaScript to load project cards, or visit <a href="https://github.com/IllusionistBoi">GitHub</a>.</p>
+      </noscript>
+    </section>
+
+    <section aria-labelledby="connect-heading">
+      <h2 id="connect-heading">Connect</h2>
+      <ul class="connect-list">
+        <li><a href="mailto:ronitdahiya5120@gmail.com">ronitdahiya5120@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://sysdesign.vercel.app/">System Design Emulator</a> · <a href="https://sysdesign.vercel.app/docs">Docs</a></li>
       </ul>
-    </div>
+    </section>
 
     <footer>© 2026 Ronit Dahiya</footer>
   </div>
+
+  <script>
+    (function () {
+      var fallback = {"featured":[{"id":"sysdesign","title":"System Design Emulator","subtitle":"Canvas for distributed architectures — Flutter Web, Rust/WASM simulation, chaos, AWS cost hints.","href":"https://sysdesign.vercel.app/","hrefLabel":"Open app","repo":null,"tags":["Flutter","Rust","WASM"]},{"id":"luggagebot","title":"LuggageBot","subtitle":"ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.","href":"https://github.com/IllusionistBoi/LuggageBot","hrefLabel":"Repository","repo":"IllusionistBoi/LuggageBot","tags":["Python","ROS","CV"]},{"id":"robotics-legostorm","title":"Robotics LEGOSTORM","subtitle":"LEGO EV3, ROBOTC, ROS — sensors, navigation, HRI practice.","href":"https://github.com/IllusionistBoi/Robotics_LEGOSTORM","hrefLabel":"Repository","repo":"IllusionistBoi/Robotics_LEGOSTORM","tags":["ROS","C","Robotics"]},{"id":"ros-guide","title":"ROS beginner guide","subtitle":"TurtleBot3-oriented ROS1 Noetic learning notes.","href":"https://github.com/IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","hrefLabel":"Repository","repo":"IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","tags":["ROS","Python"]},{"id":"pixel-pals","title":"Pixel Pals","subtitle":"Console game with Pygame.","href":"https://github.com/IllusionistBoi/Pixel-Pals","hrefLabel":"Repository","repo":"IllusionistBoi/Pixel-Pals","tags":["Python","Pygame"]},{"id":"dsa","title":"DSA & algorithms","subtitle":"Structures and practice repos.","href":"https://github.com/IllusionistBoi/Data-Structure-","hrefLabel":"Data structures","repo":"IllusionistBoi/Data-Structure-","tags":["Java","Algorithms"]}]};
+
+      function esc(s) {
+        if (s == null) return "";
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function render(data) {
+        var root = document.getElementById("projects-root");
+        if (!root || !data || !data.featured) return;
+        var html = data.featured.map(function (p) {
+          var tags = (p.tags || []).map(function (t) {
+            return "<span>" + esc(t) + "</span>";
+          }).join("");
+          var links = '<a href="' + esc(p.href) + '">' + esc(p.hrefLabel || "Open") + "</a>";
+          if (p.repo) {
+            links += '<a href="https://github.com/' + esc(p.repo) + '" target="_blank" rel="noopener noreferrer">GitHub</a>';
+          }
+          return (
+            '<article class="project">' +
+            "<h3>" + esc(p.title) + "</h3>" +
+            "<p>" + esc(p.subtitle) + "</p>" +
+            (tags ? '<div class="project-tags">' + tags + "</div>" : "") +
+            '<div class="project-links">' + links + "</div>" +
+            "</article>"
+          );
+        }).join("");
+        root.innerHTML = html;
+      }
+
+      fetch("projects.json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("bad status");
+          return r.json();
+        })
+        .then(render)
+        .catch(function () {
+          render(fallback);
+        });
+    })();
+  </script>
 </body>
 </html>

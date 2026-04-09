@@ -1,0 +1,58 @@
+{
+  "featured": [
+    {
+      "id": "sysdesign",
+      "title": "System Design Emulator",
+      "subtitle": "Canvas for distributed architectures — Flutter Web, Rust/WASM simulation, chaos, AWS cost hints.",
+      "href": "https://sysdesign.vercel.app/",
+      "hrefLabel": "Open app",
+      "repo": null,
+      "tags": ["Flutter", "Rust", "WASM"]
+    },
+    {
+      "id": "luggagebot",
+      "title": "LuggageBot",
+      "subtitle": "ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.",
+      "href": "https://github.com/IllusionistBoi/LuggageBot",
+      "hrefLabel": "Repository",
+      "repo": "IllusionistBoi/LuggageBot",
+      "tags": ["Python", "ROS", "CV"]
+    },
+    {
+      "id": "robotics-legostorm",
+      "title": "Robotics LEGOSTORM",
+      "subtitle": "LEGO EV3, ROBOTC, ROS — sensors, navigation, human–robot interaction practice.",
+      "href": "https://github.com/IllusionistBoi/Robotics_LEGOSTORM",
+      "hrefLabel": "Repository",
+      "repo": "IllusionistBoi/Robotics_LEGOSTORM",
+      "tags": ["ROS", "C", "Robotics"]
+    },
+    {
+      "id": "ros-guide",
+      "title": "ROS beginner guide",
+      "subtitle": "TurtleBot3-oriented ROS1 Noetic learning notes and exercises.",
+      "href": "https://github.com/IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot",
+      "hrefLabel": "Repository",
+      "repo": "IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot",
+      "tags": ["ROS", "Python"]
+    },
+    {
+      "id": "pixel-pals",
+      "title": "Pixel Pals",
+      "subtitle": "Console game with Pygame — obstacles, coins, and power-ups.",
+      "href": "https://github.com/IllusionistBoi/Pixel-Pals",
+      "hrefLabel": "Repository",
+      "repo": "IllusionistBoi/Pixel-Pals",
+      "tags": ["Python", "Pygame"]
+    },
+    {
+      "id": "dsa",
+      "title": "DSA & algorithms",
+      "subtitle": "Foundations — structures, university algorithms, practice tracks.",
+      "href": "https://github.com/IllusionistBoi/Data-Structure-",
+      "hrefLabel": "Data structures",
+      "repo": "IllusionistBoi/Data-Structure-",
+      "tags": ["Java", "Algorithms"]
+    }
+  ]
+}
