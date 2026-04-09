@@ -50,6 +50,41 @@
       outline-offset: 3px;
       border-radius: 4px;
     }
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      margin-inline-start: -0.12em;
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.65rem;
+      height: 2.65rem;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--body);
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .social-link:hover {
+      color: var(--text);
+      border-color: rgba(107, 143, 212, 0.4);
+      background: rgba(107, 143, 212, 0.1);
+      text-decoration: none;
+    }
+    .social-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .social-link svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      flex-shrink: 0;
+    }
     .wrap {
       max-width: 42rem;
       margin: 0 auto;
@@ -198,13 +233,6 @@
       font-size: 0.88rem;
     }
     .project-links a { margin-right: 1rem; }
-    .connect-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .connect-list li { margin-bottom: 0.5rem; }
-    .connect-list li:last-child { margin-bottom: 0; }
     footer {
       margin-top: 2.75rem;
       padding-top: 1.5rem;
@@ -222,6 +250,23 @@
         <h1>Ronit Dahiya</h1>
         <p class="headline">Infrastructure Engineering Senior Advisor @ Evernorth (Cigna Group) · BSc CS (Data Science), UCD</p>
         <p class="location">South Dublin, Ireland</p>
+        <nav class="social-row" aria-label="Links and contact">
+          <a class="social-link" href="mailto:ronitdahiya5120@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69A1.69 1.69 0 005.2 6.88c0 .93.76 1.69 1.69 1.69zm1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+          </a>
+          <a class="social-link" href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a class="social-link" href="https://sysdesign.vercel.app/" aria-label="System Design Emulator">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
+          </a>
+          <a class="social-link" href="https://sysdesign.vercel.app/docs" aria-label="System Design Emulator documentation">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+          </a>
+        </nav>
       </div>
     </header>
 
@@ -315,16 +360,6 @@
       <noscript>
         <p style="color:var(--muted);font-size:0.9rem;">Enable JavaScript to load project cards, or visit <a href="https://github.com/IllusionistBoi">GitHub</a>.</p>
       </noscript>
-    </section>
-
-    <section aria-labelledby="connect-heading">
-      <h2 id="connect-heading">Connect</h2>
-      <ul class="connect-list">
-        <li><a href="mailto:ronitdahiya5120@gmail.com">ronitdahiya5120@gmail.com</a></li>
-        <li><a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        <li><a href="https://sysdesign.vercel.app/">System Design Emulator</a> · <a href="https://sysdesign.vercel.app/docs">Docs</a></li>
-      </ul>
     </section>
 
     <footer>© 2026 Ronit Dahiya</footer>
