@@ -3,7 +3,9 @@
    <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="theme-color" content="#0e0e0e" />
       <title>Ronit Dahiya</title>
+      <link rel="icon" href="/favicon.ico" />
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@400;500&display=swap" rel="stylesheet">
       <style>
          :root {
@@ -15,7 +17,8 @@
             --subtle: rgba(255,255,255,0.4);
             --line: rgba(255,255,255,0.08);
             --accent: #ff7a1a;
-            --accent-soft: rgba(255,122,26,0.18);
+            --accent-soft: rgba(255,122,26,0.22);
+            --accent-mid: rgba(255,122,26,0.48);
             --max: 1120px;
             --t-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
             --t-base: 240ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,7 +58,7 @@
          /* HERO */
          .hero {
             position: relative;
-            height: 100vh;
+            min-height: 100svh;
             display: flex;
             align-items: flex-end;
             padding: var(--s-6) var(--s-3);
@@ -180,6 +183,10 @@
             color: var(--accent);
          }
 
+         .highlight {
+            color: var(--accent);
+         }
+
          .hero p {
             margin-top: 0;
             transform: translateY(-2px);
@@ -207,7 +214,35 @@
             margin: 0 auto;
          }
 
-         section { margin-bottom: 5.5rem; }
+         section {
+            margin-bottom: 5.5rem;
+            position: relative;
+            isolation: isolate;
+         }
+
+         section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+               600px circle at 20% 20%,
+               rgba(255,122,26,0.032),
+               transparent 60%
+            );
+            opacity: 0;
+            transition: opacity var(--t-base);
+            pointer-events: none;
+            z-index: 0;
+         }
+
+         section.in-view::after {
+            opacity: 1;
+         }
+
+         section > * {
+            position: relative;
+            z-index: 1;
+         }
 
          /* SPLIT SYSTEM */
          .split {
@@ -227,6 +262,12 @@
             line-height: 1.05;
             position: relative;
             padding-left: 12px;
+            transition: color var(--t-base), opacity var(--t-base);
+         }
+
+         .split.split-right-hover .split-left h1 {
+            color: color-mix(in srgb, var(--text) 88%, var(--accent));
+            opacity: 0.9;
          }
 
          .split-left h1::before {
@@ -236,10 +277,34 @@
             top: 8px;
             height: 60%;
             width: 2px;
-            background: var(--accent-soft);
+            background: linear-gradient(
+               to bottom,
+               transparent,
+               var(--accent),
+               transparent
+            );
+            opacity: 0.72;
+         }
+
+         #projects .split-left h1 {
+            color: color-mix(in srgb, var(--text) 82%, var(--accent));
          }
 
          .split-right { max-width: 500px; }
+
+         .split-right::after {
+            content: "";
+            display: block;
+            margin-top: var(--s-4);
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(
+               to right,
+               var(--accent-mid),
+               transparent
+            );
+            opacity: 0.52;
+         }
 
          .split-right p {
             margin: 0 0 var(--s-3);
@@ -267,8 +332,8 @@
             top: 6px;
             width: 1px;
             height: 100%;
-            background: linear-gradient(to bottom, transparent, var(--accent-soft), transparent);
-            opacity: 0.4;
+            background: linear-gradient(to bottom, transparent, var(--accent-mid), transparent);
+            opacity: 0.48;
          }
 
          .timeline-item h3 {
@@ -291,11 +356,20 @@
          }
 
          /* PROJECTS */
-         .project {
+         button.project {
             margin-bottom: var(--s-5);
             margin-left: 8px;
+            padding: 0;
+            border: none;
+            background: none;
+            font: inherit;
+            color: inherit;
+            text-align: left;
+            width: 100%;
+            display: block;
             cursor: pointer;
-            transition: transform var(--t-fast);
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 180ms cubic-bezier(0.4, 0, 0.2, 1);
          }
 
          .project:focus-visible {
@@ -303,17 +377,19 @@
             outline-offset: 3px;
          }
 
-         .project:hover { transform: translateX(4px); }
-
          .project:hover {
-            border-left: 1px solid var(--accent-soft);
-            padding-left: 7px;
+            transform: translateX(4px);
+            box-shadow: -6px 0 16px -7px rgba(255,122,26,0.52);
+         }
+
+         .project:active {
+            transform: translateX(2px);
          }
 
          .project h3 {
             margin: 0 0 var(--s-1);
             font-weight: 500;
-            transition: color var(--t-fast);
+            transition: color 180ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
             position: relative;
          }
 
@@ -331,7 +407,6 @@
 
          .project:hover h3 {
             color: var(--accent);
-            text-shadow: 0 0 8px rgba(255,122,26,0.25);
          }
 
          .project small {
@@ -358,7 +433,7 @@
          }
 
          .project.open .project-details {
-            max-height: 1000px;
+            max-height: var(--content-height, 2000px);
             opacity: 1;
             margin-top: var(--s-2);
          }
@@ -483,11 +558,29 @@
             opacity: 0.25;
             pointer-events: none;
          }
+
+         @media (prefers-reduced-motion: reduce) {
+            * {
+               animation: none !important;
+               transition: none !important;
+            }
+
+            .hero-name-main span {
+               opacity: 1 !important;
+               transform: none !important;
+               filter: none !important;
+            }
+
+            .fade {
+               opacity: 1 !important;
+               transform: none !important;
+            }
+         }
       </style>
    </head>
    <body>
       <header class="hero">
-         <video id="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+         <video id="hero-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="./hero.jpg">
             <source src="./backgroundHero.mp4" type="video/mp4">
          </video>
          <div class="hero-content">
@@ -495,7 +588,7 @@
                <span>Ronit</span>
                <span>Dahiya</span>
             </h1>
-            <p>Software engineer working on distributed systems and infrastructure. I build software where failure modes, scale, and reliability are first-class concerns.</p>
+            <p>Software engineer building backend systems that behave predictably under load, failure, and scale. I care less about whether systems work, and more about how they fail.</p>
          </div>
          <div class="scroll-indicator" aria-hidden="true"></div>
       </header>
@@ -505,8 +598,8 @@
                <h1>Context</h1>
             </div>
             <div class="split-right">
-               <p>I build software systems where design decisions show up as latency, failures, and operational cost.</p>
-               <p>My focus is reducing complexity — not by hiding it, but by structuring it so it behaves predictably.</p>
+               <p>I build backend systems where design decisions surface as latency, <span class="highlight">failure modes</span>, and cost.</p>
+               <p>My focus is reducing complexity — not by hiding it, but by structuring systems so their behavior remains predictable in production.</p>
             </div>
          </section>
         <section class="split fade" data-speed="1.2">
@@ -516,18 +609,18 @@
             <div class="split-right">
                <div class="timeline-item">
                   <h3>Infrastructure Engineering Senior Advisor</h3>
-                  <div class="timeline-meta">Evernorth · 2025 — Present · Software & Infrastructure</div>
-                  <p class="timeline-desc">Designing and building backend systems with a focus on reliability, observability, and failure handling in distributed services under production load.</p>
+                  <div class="timeline-meta">Evernorth · 2025 — Present</div>
+                  <p class="timeline-desc">Building backend systems with a focus on failure behavior, observability, and correctness under production load.</p>
                </div>
                <div class="timeline-item">
                   <h3>Software Engineer</h3>
-                  <div class="timeline-meta">Ericsson · 2023 — 2025 · Software & Infrastructure</div>
-                  <p class="timeline-desc">Built backend services and internal tooling for telecom workflows, improving resilience under high-throughput operational traffic.</p>
+                  <div class="timeline-meta">Ericsson · 2023 — 2025</div>
+                  <p class="timeline-desc">Built backend systems and internal tools for telecom workflows, improving behavior under high-throughput production traffic.</p>
                </div>
                <div class="timeline-item">
                   <h3>Graduate Software Developer</h3>
-                  <div class="timeline-meta">Ericsson · 2022 — 2023 · Software & Infrastructure</div>
-                  <p class="timeline-desc">Implemented production software features while strengthening monitoring, debugging workflows, and deployment reliability across multi-service environments.</p>
+                  <div class="timeline-meta">Ericsson · 2022 — 2023</div>
+                  <p class="timeline-desc">Shipped backend systems in production while strengthening monitoring, debugging workflows, and deployment reliability across multi-service environments.</p>
                </div>
             </div>
          </section>
@@ -536,7 +629,7 @@
                <h1>Principles</h1>
             </div>
             <div class="split-right">
-               <p>Systems should fail predictably, not silently.</p>
+               <p>Systems should fail <span class="highlight">predictably</span> in production, not silently.</p>
                <p>Hidden complexity is worse than visible complexity.</p>
                <p>Good software makes operational behavior explicit.</p>
             </div>
@@ -546,28 +639,28 @@
                <h1>What I Focus On</h1>
             </div>
             <div class="split-right">
-               <p>Distributed systems reliability.</p>
-               <p>Observability and failure modeling.</p>
-               <p>Backend architecture under load.</p>
+               <p>Designing backend systems that behave predictably under load.</p>
+               <p>Modeling failure modes and making them observable.</p>
+               <p>Reducing complexity by making system behavior explicit.</p>
             </div>
          </section>
         <section id="projects" class="split fade" data-speed="1.15">
             <div class="split-left">
-               <h1>Selected Systems</h1>
+               <h1>Selected Work</h1>
             </div>
             <div class="split-right">
-               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-emulator">
+               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-emulator">
                   <h3>System Design Emulator</h3>
                   <small>Simulation · Architecture</small> 
                   <div class="project-details" id="project-details-emulator">
-                     <p>Designed and built an interactive platform for simulating distributed systems in real time — making architectural tradeoffs executable.</p>
+                     <p>Designed and built an interactive platform for simulating backend architectures in real time — making architectural tradeoffs executable.</p>
                      <p><strong>Stack:</strong> Flutter Web, Rust, WebAssembly</p>
                      <p><strong>Impact:</strong> Reduced architecture iteration loops by ~35% in prototype reviews, enabling real-time tradeoff simulation across latency and cost.</p>
                      <p><strong>Technical hook:</strong> Built around an event-driven simulation engine with async state propagation across service graphs.</p>
                      <p class="project-thinking">Tradeoff: prioritized event-driven updates over polling to reduce latency spikes under load.</p>
                   </div>
-               </div>
-               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-luggagebot">
+               </button>
+               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-luggagebot">
                   <h3>LuggageBot</h3>
                   <small>Robotics · Computer Vision</small> 
                   <div class="project-details" id="project-details-luggagebot">
@@ -577,8 +670,8 @@
                      <p><strong>Technical hook:</strong> Optimized a real-time vision pipeline to reduce frame-to-control latency and stabilize tracking under noisy motion.</p>
                      <p class="project-thinking">Tradeoff: prioritized deterministic control loops over aggressive path optimization to keep behavior stable in noisy conditions.</p>
                   </div>
-               </div>
-               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-poker">
+               </button>
+               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-poker">
                   <h3>Poker Planning</h3>
                   <small>Collaboration · Real-time UX</small>
                   <div class="project-details" id="project-details-poker">
@@ -589,7 +682,7 @@
                      <p><strong>Interaction layer:</strong> Integrated Rive animations to provide responsive visual feedback during user actions (validation, voting, session flow).</p>
                      <p class="project-thinking">Tradeoff: prioritized responsiveness and simplicity over deep session features to keep live interactions smooth and distraction-free.</p>
                   </div>
-               </div>
+               </button>
             </div>
          </section>
          <footer class="fade footer-ambient">
@@ -629,120 +722,6 @@
             </div>
          </footer>
       </main>
-      <script>
-         const heroVideo = document.getElementById('hero-video');
-         const heroName = document.querySelector('.hero-name-main');
-         if (heroVideo) {
-            heroVideo.muted = true;
-            heroVideo.playsInline = true;
-            heroVideo.play().catch(() => {
-               heroVideo.setAttribute('controls', 'controls');
-            });
-         }
-
-         document.querySelectorAll('.project').forEach((el) => {
-            el.addEventListener('click', () => toggleProject(el));
-            el.addEventListener('keydown', (e) => {
-               if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  toggleProject(el);
-               }
-            });
-         });
-
-         const fadeElements = document.querySelectorAll('.fade');
-         let ticking = false;
-
-         function updateScrollMotion() {
-            const vh = window.innerHeight;
-            const start = vh * 0.85;
-            const end = vh * 0.2;
-
-            fadeElements.forEach(el => {
-               const rect = el.getBoundingClientRect();
-               const progress = (start - rect.top) / (start - end);
-               const t = Math.max(0, Math.min(1, progress));
-               const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-               const speed = Number(el.dataset.speed) || 1;
-
-               el.style.opacity = eased;
-               el.style.transform = `translateY(${(1 - eased) * 24 * speed}px) scale(${0.98 + eased * 0.02})`;
-            });
-
-            if (heroName) {
-               const rect = heroName.getBoundingClientRect();
-               const progress = Math.min(Math.max((vh - rect.top) / vh, 0), 1);
-               const shift = progress * 60;
-               document.documentElement.style.setProperty('--hero-gradient-shift', `${shift}%`);
-            }
-            ticking = false;
-         }
-
-         updateScrollMotion();
-         window.addEventListener('scroll', () => {
-            if (!ticking) {
-               requestAnimationFrame(() => {
-                  updateScrollMotion();
-               });
-               ticking = true;
-            }
-         }, { passive: true });
-         window.addEventListener('resize', updateScrollMotion);
-
-         function toggleProject(el) {
-            document.querySelectorAll('.project').forEach(project => {
-               if (project !== el) project.classList.remove('open');
-            });
-            el.classList.toggle('open');
-            document.querySelectorAll('.project').forEach((project) => {
-               project.setAttribute('aria-expanded', project.classList.contains('open') ? 'true' : 'false');
-            });
-            updateScrollMotion();
-         }
-
-         // AMBIENT HILLS
-         const canvas = document.getElementById('hills');
-         if (canvas) {
-            const ctx = canvas.getContext('2d');
-            let canvasCssW = window.innerWidth;
-            const canvasCssH = 200;
-            let t = 0;
-            let mouseX = 0;
-
-            window.addEventListener('mousemove', (e) => {
-               mouseX = e.clientX * 0.002;
-            }, { passive: true });
-
-            function resize() {
-               const dpr = window.devicePixelRatio || 1;
-               canvasCssW = window.innerWidth;
-               canvas.width = canvasCssW * dpr;
-               canvas.height = canvasCssH * dpr;
-               canvas.style.width = `${canvasCssW}px`;
-               canvas.style.height = `${canvasCssH}px`;
-               ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            }
-
-            function draw() {
-               ctx.clearRect(0, 0, canvasCssW, canvasCssH);
-               ctx.beginPath();
-               for (let x = 0; x < canvasCssW; x++) {
-                  const y = canvasCssH - 40
-                     + Math.sin(x * 0.01 + t + mouseX) * 20
-                     + Math.sin(x * 0.02 + t * 0.5) * 10;
-                  ctx.lineTo(x, y);
-               }
-               ctx.strokeStyle = 'rgba(255,122,26,0.15)';
-               ctx.lineWidth = 1;
-               ctx.stroke();
-               t += 0.004;
-               requestAnimationFrame(draw);
-            }
-
-            window.addEventListener('resize', resize);
-            resize();
-            draw();
-         }
-      </script>
+      <script defer src="./site.js"></script>
    </body>
 </html>
