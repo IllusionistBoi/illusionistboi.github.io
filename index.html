@@ -1,423 +1,534 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ronit Dahiya — Infrastructure & software engineering</title>
-  <meta name="description" content="Ronit Dahiya — Infrastructure Engineering Senior Advisor at Evernorth. CloudBolt, automation, full-stack. Side projects: System Design Emulator, ROS, and more.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #12141a;
-      --bg-elevated: #181b24;
-      --text: #e6e8ee;
-      --body: #a9b0bf;
-      --muted: #7d8494;
-      --accent: #6b8fd4;
-      --accent-hover: #8aa6e0;
-      --border: rgba(255, 255, 255, 0.07);
-      --radius: 14px;
-      --hero-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(107, 143, 212, 0.14), transparent 55%);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      * { transition: none !important; }
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "DM Sans", system-ui, sans-serif;
-      font-optical-sizing: auto;
-      font-size: 17px;
-      background: var(--bg);
-      background-image: var(--hero-glow);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    a:hover { color: var(--accent-hover); text-decoration: underline; }
-    a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-    .social-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.45rem;
-      margin-top: 1rem;
-      margin-inline-start: -0.12em;
-    }
-    .social-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.65rem;
-      height: 2.65rem;
-      border-radius: 11px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      color: var(--body);
-      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-    }
-    .social-link:hover {
-      color: var(--text);
-      border-color: rgba(107, 143, 212, 0.4);
-      background: rgba(107, 143, 212, 0.1);
-      text-decoration: none;
-    }
-    .social-link:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-    .social-link svg {
-      width: 1.3rem;
-      height: 1.3rem;
-      flex-shrink: 0;
-    }
-    .wrap {
-      max-width: 42rem;
-      margin: 0 auto;
-      padding: clamp(2.25rem, 7vw, 3.5rem) 1.35rem 3.5rem;
-    }
-    .hero {
-      display: grid;
-      grid-template-columns: 72px minmax(0, 1fr);
-      gap: 1.25rem;
-      align-items: start;
-      margin-bottom: 2rem;
-    }
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-    }
-    .hero-text {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .hero-text h1 {
-      font-family: Fraunces, Georgia, serif;
-      font-weight: 500;
-      font-size: clamp(1.65rem, 4vw, 2.05rem);
-      letter-spacing: -0.02em;
-      margin: 0 0 0.4rem;
-      line-height: 1.2;
-      padding: 0;
-      align-self: stretch;
-    }
-    .headline {
-      color: var(--body);
-      font-size: 0.98rem;
-      margin: 0 0 0.35rem;
-      padding: 0;
-      max-width: 42rem;
-      text-align: start;
-      width: 100%;
-      /* Align with Fraunces name: sans-serif body sits slightly right in the same box */
-      margin-inline-start: -0.12em;
-    }
-    .location {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin: 0;
-      padding: 0;
-      margin-inline-start: -0.12em;
-    }
-    section {
-      margin-top: 2.35rem;
-    }
-    h2 {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      font-weight: 600;
-      margin: 0 0 0.9rem;
-    }
-    .prose p {
-      margin: 0 0 1rem;
-      color: var(--body);
-      max-width: 52ch;
-    }
-    .prose p:last-child { margin-bottom: 0; }
-    .card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.15rem 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-    .card:last-child { margin-bottom: 0; }
-    .card-title {
-      font-weight: 600;
-      font-size: 1rem;
-      margin: 0 0 0.2rem;
-    }
-    .card-meta {
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin: 0 0 0.55rem;
-    }
-    .card ul {
-      margin: 0;
-      padding-left: 1.15rem;
-      color: var(--body);
-      font-size: 0.92rem;
-    }
-    .card li { margin-bottom: 0.35rem; }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-    .chip {
-      font-size: 0.78rem;
-      padding: 0.28rem 0.65rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--body);
-    }
-    .project-grid {
-      display: grid;
-      gap: 0.75rem;
-    }
-    .project {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.2rem;
-      transition: border-color 0.15s ease;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .project:hover { border-color: rgba(107, 143, 212, 0.35); }
-    }
-    .project h3 {
-      font-size: 1.02rem;
-      font-weight: 600;
-      margin: 0 0 0.35rem;
-    }
-    .project p {
-      font-size: 0.92rem;
-      color: var(--body);
-      margin: 0 0 0.65rem;
-      line-height: 1.5;
-    }
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-bottom: 0.65rem;
-    }
-    .project-tags span {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .project-links {
-      font-size: 0.88rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.35rem 1rem;
-    }
-    .project-links a { margin-right: 0; }
-    .project-repo-note {
-      font-size: 0.85rem;
-      color: var(--muted);
-      user-select: none;
-    }
-    footer {
-      margin-top: 2.75rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header class="hero">
-      <img class="avatar" src="https://avatars.githubusercontent.com/u/43854524?v=4" width="72" height="72" alt="">
-      <div class="hero-text">
-        <h1>Ronit Dahiya</h1>
-        <p class="headline">Infrastructure Engineering Senior Advisor @ Evernorth (Cigna Group) · BSc CS (Data Science), UCD</p>
-        <p class="location">South Dublin, Ireland</p>
-        <nav class="social-row" aria-label="Links and contact">
-          <a class="social-link" href="mailto:ronitdahiya5120@gmail.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          </a>
-          <a class="social-link" href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69A1.69 1.69 0 005.2 6.88c0 .93.76 1.69 1.69 1.69zm1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-          </a>
-          <a class="social-link" href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-        </nav>
-      </div>
-    </header>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Ronit Dahiya</title>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@400;500&display=swap" rel="stylesheet">
+      <style>
+         :root {
+            --bg: #0e0e0e;
+            --bg-soft: #151515;
+            --text: #e6e6e6;
+            --muted: rgba(255,255,255,0.55);
+            --subtle: rgba(255,255,255,0.4);
+            --line: rgba(255,255,255,0.08);
+            --accent: #ff7a1a;
+            --accent-soft: rgba(255,122,26,0.18);
+            --max: 1120px;
+            --t-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+            --t-base: 240ms cubic-bezier(0.4, 0, 0.2, 1);
+            --s-1: 0.5rem;
+            --s-2: 0.75rem;
+            --s-3: 1rem;
+            --s-4: 1.5rem;
+            --s-5: 2rem;
+            --s-6: 3rem;
+            --s-7: 4rem;
+         }
 
-    <section class="prose" aria-labelledby="about-heading">
-      <h2 id="about-heading">About</h2>
-      <p>
-        I work on <strong>automation, infrastructure, and full-stack delivery</strong>. At <strong>Evernorth Health Services</strong>, I focus on automating infrastructure provisioning and lifecycle management using
-        <a href="https://www.cloudbolt.io/" target="_blank" rel="noopener noreferrer">CloudBolt</a>
-        — a hybrid cloud management and provisioning platform — together with internal <strong>Unity</strong> tooling used inside the organization.
-      </p>
-      <p>
-        Previously at <strong>Ericsson</strong>, I helped migrate the Software Provisioning Tool to <strong>Django</strong> and Python 3.8, improved deployment automation and Jenkins integration, and contributed to internal tools such as the Deployment Integration Tool and Booking Pool. I also introduced <strong>Selenium</strong> and <strong>Locust</strong> in the CI portal and was recognized as a Key Contributor for VMware licensing optimization work.
-      </p>
-      <p>
-        I also build <strong>System Design Emulator</strong> (<a href="https://system-design-emulator-ten.vercel.app/" target="_blank" rel="noopener noreferrer">live app</a>) — a browser canvas for architectures, Rust/WASM simulation, chaos, and rough AWS costs — as a passion project alongside my day job.
-      </p>
-    </section>
+         * { box-sizing: border-box; }
 
-    <section aria-labelledby="exp-heading">
-      <h2 id="exp-heading">Experience</h2>
-      <div class="card">
-        <div class="card-title">Infrastructure Engineering Senior Advisor</div>
-        <div class="card-meta">Evernorth Health Services · Jul 2025 – Present · Galway area</div>
-        <ul>
-          <li>Infrastructure automation, provisioning, and lifecycle with CloudBolt and internal Unity tooling.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-title">Software Engineer</div>
-        <div class="card-meta">Ericsson · Jul 2023 – Jul 2025 · Athlone</div>
-        <ul>
-          <li>SPP migration to Django / Python 3.8; vApps, deployment automation, Jenkins plugins.</li>
-          <li>DIT and Booking Pool enhancements; VMware cost-reduction initiative; Key Contributor.</li>
-          <li>Selenium and Locust in CI for quality and performance feedback.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-title">Graduate Software Developer</div>
-        <div class="card-meta">Ericsson · Jul 2022 – Jul 2023 · Athlone</div>
-        <ul>
-          <li>Graduate program: Python, Java, Docker, Kubernetes, microservices, CI tools.</li>
-          <li>Transfers from Stratus (AngularJS, Express, Node, MongoDB) to Tools team.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-title">Technology Lead</div>
-        <div class="card-meta">Google Developer Student Clubs (UCD) · Sep 2021 – May 2022 · Dublin</div>
-        <ul>
-          <li>Led student chapter; Android, GCP, ML workshops; strong membership growth.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-title">Software Engineer Intern</div>
-        <div class="card-meta">Ericsson · Mar 2021 – Aug 2021 · Athlone</div>
-        <ul>
-          <li>Internal tools; search and UX improvements; Java 11, APIs, full-stack maintenance.</li>
-        </ul>
-      </div>
-    </section>
+         body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.025), transparent 40%), radial-gradient(circle at 80% 90%, rgba(255,255,255,0.02), transparent 50%), #0e0e0e;
+            color: var(--text);
+         }
 
-    <section aria-labelledby="edu-heading">
-      <h2 id="edu-heading">Education &amp; credentials</h2>
-      <div class="card">
-        <div class="card-title">University College Dublin</div>
-        <div class="card-meta">BSc (Hons), Computer Science with Data Science · Sep 2018 – May 2022</div>
-        <p style="margin:0.5rem 0 0;font-size:0.92rem;color:var(--body);">UCD Scholarship.</p>
-      </div>
-      <p style="margin-top:0.85rem;color:var(--body);font-size:0.92rem;">
-        Certifications: Fundamentals of Digital Marketing; Java (Advance); BCSS Cloud Fundamental (2024); C Programming; Python Advance bootcamp.
-      </p>
-    </section>
+         h1, h2, h3 {
+            font-family: 'Fraunces', serif;
+            letter-spacing: -0.02em;
+         }
 
-    <section aria-labelledby="skills-heading">
-      <h2 id="skills-heading">Skills</h2>
-      <div class="chips">
-        <span class="chip">Business process improvement</span>
-        <span class="chip">Django REST Framework</span>
-        <span class="chip">React</span>
-        <span class="chip">Python</span>
-        <span class="chip">Java</span>
-        <span class="chip">Docker</span>
-        <span class="chip">OpenStack</span>
-        <span class="chip">DevOps / CI/CD</span>
-      </div>
-      <p style="margin-top:0.85rem;color:var(--muted);font-size:0.88rem;">Languages: English, Hindi.</p>
-    </section>
+         a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--t-base), opacity var(--t-base);
+         }
 
-    <section aria-labelledby="projects-heading">
-      <h2 id="projects-heading">Projects</h2>
-      <div id="projects-root" class="project-grid"></div>
-      <noscript>
-        <p style="color:var(--muted);font-size:0.9rem;">Enable JavaScript to load project cards, or visit <a href="https://github.com/IllusionistBoi">GitHub</a>.</p>
-      </noscript>
-    </section>
+         a:hover {
+            opacity: 0.86;
+            color: var(--accent);
+         }
 
-    <footer>© 2026 Ronit Dahiya</footer>
-  </div>
+         /* HERO */
+         .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            padding: var(--s-6) var(--s-3);
+            overflow: hidden;
+         }
 
-  <script>
-    (function () {
-      var fallback = {"featured":[{"id":"sysdesign","title":"System Design Emulator","subtitle":"Canvas for distributed architectures — Flutter Web, Rust/WASM simulation, chaos, AWS cost hints.","href":"https://system-design-emulator-ten.vercel.app/","hrefLabel":"Open app","docsHref":"https://system-design-emulator-ten.vercel.app/docs","docsLabel":"Docs","repoPrivate":true,"tags":["Flutter","Rust","WASM"]},{"id":"luggagebot","title":"LuggageBot","subtitle":"ROS robot following a person or cylinder — segmentation and Mask R-CNN, COCO setup.","href":"https://github.com/IllusionistBoi/LuggageBot","hrefLabel":"Repository","repo":"IllusionistBoi/LuggageBot","tags":["Python","ROS","CV"]},{"id":"robotics-legostorm","title":"Robotics LEGOSTORM","subtitle":"LEGO EV3, ROBOTC, ROS — sensors, navigation, HRI practice.","href":"https://github.com/IllusionistBoi/Robotics_LEGOSTORM","hrefLabel":"Repository","repo":"IllusionistBoi/Robotics_LEGOSTORM","tags":["ROS","C","Robotics"]},{"id":"ros-guide","title":"ROS beginner guide","subtitle":"TurtleBot3-oriented ROS1 Noetic learning notes.","href":"https://github.com/IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","hrefLabel":"Repository","repo":"IllusionistBoi/ROS-Ultimate-Guide-for-Beginners-with-TurtleBot3-and-Robot","tags":["ROS","Python"]},{"id":"pixel-pals","title":"Pixel Pals","subtitle":"Console game with Pygame.","href":"https://github.com/IllusionistBoi/Pixel-Pals","hrefLabel":"Repository","repo":"IllusionistBoi/Pixel-Pals","tags":["Python","Pygame"]},{"id":"dsa","title":"DSA & algorithms","subtitle":"Structures and practice repos.","href":"https://github.com/IllusionistBoi/Data-Structure-","hrefLabel":"Data structures","repo":"IllusionistBoi/Data-Structure-","tags":["Java","Algorithms"]}]};
+         .hero video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            transform: scale(1.05);
+            filter: brightness(0.9) contrast(1.08) saturate(1.05);
+         }
 
-      function esc(s) {
-        if (s == null) return "";
-        return String(s)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/"/g, "&quot;");
-      }
+         .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.08), rgba(10,10,10,0.34) 55%, rgba(10,10,10,0.72));
+            z-index: -1;
+         }
 
-      function render(data) {
-        var root = document.getElementById("projects-root");
-        if (!root || !data || !data.featured) return;
-        var html = data.featured.map(function (p) {
-          var tags = (p.tags || []).map(function (t) {
-            return "<span>" + esc(t) + "</span>";
-          }).join("");
-          var links = '<a href="' + esc(p.href) + '">' + esc(p.hrefLabel || "Open") + "</a>";
-          if (p.docsHref) {
-            links += '<a href="' + esc(p.docsHref) + '">' + esc(p.docsLabel || "Docs") + "</a>";
-          }
-          if (p.repo) {
-            links += '<a href="https://github.com/' + esc(p.repo) + '" target="_blank" rel="noopener noreferrer">GitHub</a>';
-          } else if (p.repoPrivate) {
-            links += '<span class="project-repo-note">Private</span>';
-          }
-          return (
-            '<article class="project">' +
-            "<h3>" + esc(p.title) + "</h3>" +
-            "<p>" + esc(p.subtitle) + "</p>" +
-            (tags ? '<div class="project-tags">' + tags + "</div>" : "") +
-            '<div class="project-links">' + links + "</div>" +
-            "</article>"
-          );
-        }).join("");
-        root.innerHTML = html;
-      }
+         .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, transparent, rgba(0,0,0,0.4));
+            z-index: -1;
+         }
 
-      fetch("projects.json", { cache: "no-store" })
-        .then(function (r) {
-          if (!r.ok) throw new Error("bad status");
-          return r.json();
-        })
-        .then(render)
-        .catch(function () {
-          render(fallback);
-        });
-    })();
-  </script>
-</body>
+         .hero-content { max-width: min(70ch, var(--max)); }
+
+         .scroll-indicator {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--subtle));
+            opacity: 0.5;
+            transform: translateX(-50%);
+         }
+
+         h1 {
+            font-size: clamp(2.6rem, 5vw, 4.2rem);
+            font-weight: 400;
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+         }
+
+         .hero h1 {
+            background: linear-gradient(to right, #ffffff, #ffffff 85%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+         }
+
+         .hero p {
+            margin-top: var(--s-2);
+            color: var(--muted);
+            max-width: 44ch;
+         }
+
+         .hero a {
+            display: inline-block;
+            margin-top: var(--s-4);
+            border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+            color: var(--accent);
+         }
+
+         p {
+            font-size: 1.05rem;
+            line-height: 1.68;
+            color: var(--muted);
+         }
+
+         /* MAIN */
+         main {
+            padding: var(--s-7) var(--s-3);
+            max-width: var(--max);
+            margin: 0 auto;
+         }
+
+         section { margin-bottom: 5.5rem; }
+
+         /* SPLIT SYSTEM */
+         .split {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: var(--s-6);
+            align-items: start;
+         }
+
+         .split-left h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin: 0;
+            letter-spacing: -0.04em;
+            opacity: 0.65;
+            background: none;
+            color: var(--text);
+            line-height: 1.05;
+            position: relative;
+            padding-left: 12px;
+         }
+
+         .split-left h1::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            height: 60%;
+            width: 2px;
+            background: var(--accent-soft);
+         }
+
+         .split-right { max-width: 500px; }
+
+         .split-right p {
+            margin: 0 0 var(--s-3);
+            color: var(--muted);
+         }
+
+         @media (max-width: 800px) {
+            .split {
+               grid-template-columns: 1fr;
+               gap: var(--s-4);
+            }
+         }
+
+         /* TIMELINE */
+         .timeline-item {
+            margin-bottom: var(--s-5);
+            position: relative;
+            padding-left: var(--s-3);
+         }
+
+         .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 1px;
+            height: 0;
+            background: linear-gradient(to bottom, transparent, var(--accent-soft), transparent);
+            opacity: 0.4;
+            transition: height 0.6s ease;
+         }
+
+         .timeline-item.visible::before { height: 100%; }
+
+         .timeline-item h3 {
+            margin: 0 0 var(--s-1);
+            font-weight: 500;
+            letter-spacing: -0.01em;
+         }
+
+         .timeline-meta {
+            font-size: 0.85rem;
+            color: var(--subtle);
+         }
+
+         .timeline-desc {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--muted);
+            max-width: 50ch;
+         }
+
+         /* PROJECTS */
+         .project {
+            margin-bottom: var(--s-5);
+            margin-left: 8px;
+            cursor: pointer;
+            transition: transform var(--t-fast);
+         }
+
+         .project:hover { transform: translateX(4px); }
+
+         .project:hover {
+            border-left: 1px solid var(--accent-soft);
+            padding-left: 7px;
+         }
+
+         .project h3 {
+            margin: 0 0 var(--s-1);
+            font-weight: 500;
+            transition: color var(--t-fast);
+            position: relative;
+         }
+
+         .project h3::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            opacity: 0.04;
+            transition: transform var(--t-fast), opacity var(--t-fast);
+         }
+
+         .project.open h3::after { transform: rotate(45deg); }
+
+         .project:hover h3::after { opacity: 0.8; }
+
+         .project:hover h3 {
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(255,122,26,0.25);
+         }
+
+         .project small {
+            display: block;
+            margin-bottom: var(--s-2);
+            color: var(--subtle);
+         }
+
+         .project-details {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height var(--t-base), opacity var(--t-base), margin-top var(--t-base);
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-2);
+         }
+
+         .project-thinking {
+            font-size: 0.8rem;
+            color: var(--subtle);
+            font-style: italic;
+            margin-top: var(--s-2);
+         }
+
+         .project.open .project-details {
+            max-height: 1000px;
+            opacity: 1;
+            margin-top: var(--s-2);
+         }
+
+         .project-img {
+            width: 100%;
+            border-radius: 10px;
+            opacity: 0.92;
+         }
+
+         /* FADE */
+         .fade {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity var(--t-base), transform var(--t-base);
+         }
+
+         .fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+         }
+
+         footer {
+            margin-top: var(--s-7);
+            padding-top: var(--s-6);
+            border-top: 1px solid var(--line);
+            font-size: 0.75rem;
+            color: var(--subtle);
+            position: relative;
+            overflow: hidden;
+         }
+
+         .footer-content {
+            position: relative;
+            z-index: 2;
+         }
+
+         .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--s-5);
+            margin-top: var(--s-5);
+         }
+
+         .footer-block {
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-1);
+         }
+
+         .footer-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--subtle);
+         }
+
+         .footer-item {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity var(--t-fast), color var(--t-fast);
+         }
+
+         .footer-item .icon {
+            opacity: 0.6;
+            transition: transform var(--t-fast), opacity var(--t-fast);
+         }
+
+         .footer-item .link { position: relative; }
+
+         .footer-item .link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0%;
+            height: 1px;
+            background: var(--accent);
+            transition: width var(--t-fast);
+         }
+
+         .footer-item:hover { opacity: 1; }
+
+         .footer-item:hover .icon {
+            transform: translateX(2px);
+            opacity: 1;
+         }
+
+         .footer-item:hover .link::after { width: 100%; }
+
+         @media (max-width: 700px) {
+            .footer-grid {
+               grid-template-columns: 1fr;
+               gap: var(--s-4);
+            }
+         }
+
+         #hills {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.15;
+         }
+      </style>
+   </head>
+   <body>
+      <header class="hero">
+         <video autoplay muted loop playsinline>
+            <source src="./backgroundHero.mp4" type="video/mp4">
+         </video>
+         <div class="hero-content fade">
+            <h1>Software that holds under pressure.</h1>
+            <p>Ronit Dahiya — software engineer working on distributed systems and infrastructure. I build software where failure modes, scale, and reliability are first-class concerns.</p>
+         </div>
+         <div class="scroll-indicator" aria-hidden="true"></div>
+      </header>
+      <main>
+         <section class="split about fade">
+            <div class="split-left">
+               <h1>Context</h1>
+            </div>
+            <div class="split-right">
+               <p>I build software systems where design decisions show up as latency, failures, and operational cost.</p>
+               <p>My focus is reducing complexity — not by hiding it, but by structuring it so it behaves predictably.</p>
+            </div>
+         </section>
+         <section class="split fade">
+            <div class="split-left">
+               <h1>Experience</h1>
+            </div>
+            <div class="split-right">
+               <div class="timeline-item">
+                  <h3>Infrastructure Engineering Senior Advisor</h3>
+                  <div class="timeline-meta">Evernorth · 2025 — Present · Software & Infrastructure</div>
+                  <p class="timeline-desc">Designing and building backend systems with a focus on reliability, observability, and failure handling in distributed services under production load.</p>
+               </div>
+               <div class="timeline-item">
+                  <h3>Software Engineer</h3>
+                  <div class="timeline-meta">Ericsson · 2023 — 2025 · Software & Infrastructure</div>
+                  <p class="timeline-desc">Built backend services and internal tooling for telecom workflows, improving resilience under high-throughput operational traffic.</p>
+               </div>
+               <div class="timeline-item">
+                  <h3>Graduate Software Developer</h3>
+                  <div class="timeline-meta">Ericsson · 2022 — 2023 · Software & Infrastructure</div>
+                  <p class="timeline-desc">Implemented production software features while strengthening monitoring, debugging workflows, and deployment reliability across multi-service environments.</p>
+               </div>
+            </div>
+         </section>
+         <section class="split fade">
+            <div class="split-left">
+               <h1>Principles</h1>
+            </div>
+            <div class="split-right">
+               <p>Systems should fail predictably, not silently.</p>
+               <p>Hidden complexity is worse than visible complexity.</p>
+               <p>Good software makes operational behavior explicit.</p>
+            </div>
+         </section>
+         <section class="split fade">
+            <div class="split-left">
+               <h1>What I Focus On</h1>
+            </div>
+            <div class="split-right">
+               <p>Distributed systems reliability.</p>
+               <p>Observability and failure modeling.</p>
+               <p>Backend architecture under load.</p>
+            </div>
+         </section>
+         <section id="projects" class="split fade">
+            <div class="split-left">
+               <h1>Selected Systems</h1>
+            </div>
+            <div class="split-right">
+               <div class="project" onclick="toggleProject(this)">
+                  <h3>System Design Emulator</h3>
+                  <small>Simulation · Architecture</small> 
+                  <div class="project-details">
+                     <p>Designed and built an interactive platform for simulating distributed systems in real time — making architectural tradeoffs executable.</p>
+                     <p><strong>Stack:</strong> Flutter Web, Rust, WebAssembly</p>
+                     <p><strong>Impact:</strong> Reduced architecture iteration loops by ~35% in prototype reviews, enabling real-time tradeoff simulation across latency and cost.</p>
+                     <p><strong>Technical hook:</strong> Built around an event-driven simulation engine with async state propagation across service graphs.</p>
+                     <p class="project-thinking">Tradeoff: prioritized event-driven updates over polling to reduce latency spikes under load.</p>
+                  </div>
+               </div>
+               <div class="project" onclick="toggleProject(this)">
+                  <h3>LuggageBot</h3>
+                  <small>Robotics · Computer Vision</small> 
+                  <div class="project-details">
+                     <p>Built an autonomous robotics system that tracks and follows a human using real-time computer vision.</p>
+                     <p><strong>Stack:</strong> Python, ROS, OpenCV</p>
+                     <p><strong>Impact:</strong> Improved target-following stability by ~30% in noisy test runs while maintaining real-time tracking and control responsiveness.</p>
+                     <p><strong>Technical hook:</strong> Optimized a real-time vision pipeline to reduce frame-to-control latency and stabilize tracking under noisy motion.</p>
+                     <p class="project-thinking">Tradeoff: prioritized deterministic control loops over aggressive path optimization to keep behavior stable in noisy conditions.</p>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <footer class="fade footer-ambient">
+            <canvas id="hills"></canvas>
+            <div class="footer-content">
+               <div class="footer-grid">
+                  <div class="footer-block">
+                     <p class="footer-label">Reach out</p>
+                     <p class="footer-item">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                           <path d="M4 4h16v16H4z"></path>
+                           <path d="M22 6l-10 7L2 6"></path>
+                        </svg>
+                        <a href="mailto:ronitdahiya@email.com" class="link">ronitdahiya@email.com</a> 
+                     </p>
+                  </div>
+                  <div class="footer-block">
+                     <p class="footer-label">Presence</p>
+                     <p class="footer-item">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                           <path d="M12 1C5.925 1 1 5.925 1 12c0 4.867 3.163 8.987 7.554 10.445.552.102.753-.24.753-.533 0-.263-.01-1.14-.015-2.065-3.073.668-3.722-1.48-3.722-1.48-.503-1.277-1.23-1.617-1.23-1.617-1.006-.688.076-.674.076-.674 1.112.078 1.697 1.142 1.697 1.142.987 1.69 2.59 1.202 3.22.92.1-.715.387-1.202.704-1.478-2.453-.28-5.033-1.226-5.033-5.455 0-1.205.43-2.19 1.135-2.963-.114-.28-.492-1.406.108-2.93 0 0 .926-.296 3.035 1.13a10.58 10.58 0 012.763-.372c.937.004 1.88.127 2.763.372 2.108-1.426 3.032-1.13 3.032-1.13.602 1.524.224 2.65.11 2.93.706.773 1.133 1.758 1.133 2.963 0 4.24-2.584 5.172-5.045 5.447.398.343.752 1.017.752 2.05 0 1.48-.013 2.674-.013 3.038 0 .296.198.64.758.531C19.84 20.984 23 16.866 23 12c0-6.075-4.925-11-11-11z"></path>
+                        </svg>
+                        <a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer" class="link">GitHub</a> 
+                     </p>
+                     <p class="footer-item">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                           <path d="M16 8a6 6 0 016 6v6h-4v-6a2 2 0 00-4 0v6h-4v-6a6 6 0 016-6z"></path>
+                           <rect x="2" y="9" width="4" height="12"></rect>
+                           <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                        <a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer" class="link">LinkedIn</a> 
+                     </p>
+                  </div>
+                  <div class="footer-block">
+                     <p class="footer-label">—</p>
+                     <p class="footer-item">2026 Ronit Dahiya</p>
+                  </div>
+               </div>
+            </div>
+         </footer>
+      </main>
+      <script> const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h/2 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
+   </body>
 </html>
