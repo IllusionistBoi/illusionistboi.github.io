@@ -88,7 +88,24 @@
             z-index: -1;
          }
 
-         .hero-content { max-width: min(70ch, var(--max)); }
+         .hero-content { max-width: 720px; }
+
+         .hero-name-main {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.8rem, 5vw, 3.8rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            font-weight: 400;
+            margin: 0;
+            margin-bottom: 0.7em;
+            color: rgba(255,255,255,0.92);
+            background: linear-gradient(to right, #ffffff 85%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+         }
+
+         .hero-content h1 { margin-top: 0.4em; }
 
          .scroll-indicator {
             position: absolute;
@@ -108,17 +125,15 @@
             letter-spacing: -0.025em;
          }
 
-         .hero h1 {
-            background: linear-gradient(to right, #ffffff, #ffffff 85%, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+         .accent {
+            background: none;
+            color: var(--accent);
          }
 
          .hero p {
-            margin-top: var(--s-2);
-            color: var(--muted);
-            max-width: 44ch;
+            margin-top: 2.2rem;
+            color: rgba(255,255,255,0.5);
+            max-width: 46ch;
          }
 
          .hero a {
@@ -392,9 +407,13 @@
 
          #hills {
             position: absolute;
-            inset: 0;
-            z-index: 1;
-            opacity: 0.15;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 0;
+            opacity: 0.25;
+            pointer-events: none;
          }
       </style>
    </head>
@@ -404,8 +423,8 @@
             <source src="./backgroundHero.mp4" type="video/mp4">
          </video>
          <div class="hero-content fade">
-            <h1>Software that holds under pressure.</h1>
-            <p>Ronit Dahiya — software engineer working on distributed systems and infrastructure. I build software where failure modes, scale, and reliability are first-class concerns.</p>
+            <h1 class="hero-name-main">Ronit Dahiya</h1>
+            <p>Software engineer working on distributed systems and infrastructure. I build software where failure modes, scale, and reliability are first-class concerns.</p>
          </div>
          <div class="scroll-indicator" aria-hidden="true"></div>
       </header>
@@ -529,6 +548,6 @@
             </div>
          </footer>
       </main>
-      <script> const heroVideo = document.getElementById('hero-video'); if (heroVideo) { heroVideo.play().catch(() => { heroVideo.setAttribute('controls', 'controls'); }); } const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h/2 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
+      <script> const heroVideo = document.getElementById('hero-video'); if (heroVideo) { heroVideo.play().catch(() => { heroVideo.setAttribute('controls', 'controls'); }); } const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h - 60 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
    </body>
 </html>
