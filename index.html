@@ -7,6 +7,7 @@
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@400;500&display=swap" rel="stylesheet">
       <style>
          :root {
+            --hero-gradient-shift: 0%;
             --bg: #0e0e0e;
             --bg-soft: #151515;
             --text: #e6e6e6;
@@ -68,7 +69,7 @@
             height: 100%;
             object-fit: cover;
             z-index: -2;
-            transform: scale(1.05);
+            transform: scale(1.02);
             filter: brightness(0.9) contrast(1.08) saturate(1.05);
          }
 
@@ -93,26 +94,34 @@
          .hero-name-main {
             font-family: 'Fraunces', serif;
             font-size: clamp(2.8rem, 5vw, 3.8rem);
-            line-height: 1.05;
+            line-height: 1.2;
             letter-spacing: -0.02em;
             font-weight: 400;
-            margin: 0;
-            margin-bottom: 0.7em;
-            color: rgba(255,255,255,0.94);
+            margin: 0 0 0.25em 0;
+            padding-bottom: 0.1em;
+            -webkit-font-smoothing: antialiased;
             display: inline-block;
-            overflow: hidden;
+            overflow: visible;
+            white-space: nowrap;
          }
 
          .hero-name-main span {
             display: inline-block;
-            transform: translateY(110%);
+            transform: translateY(80%);
             opacity: 0;
-            background: linear-gradient(110deg, #ffffff 45%, rgba(255,255,255,0.92) 60%, #ffe2c7 75%, #ff7a1a 100%);
+            background: linear-gradient(110deg, #ffffff 45%, #ffd9b3 60%, #ff7a1a 85%);
+            background-size: 200% 100%;
+            background-position: var(--hero-gradient-shift, 0%) 50%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 0 0 20px rgba(255,122,26,0.12);
+            backface-visibility: hidden;
             will-change: transform, opacity;
+         }
+
+         .hero-name-main span:nth-child(2) {
+            background-image: linear-gradient(110deg, #ffffff 30%, #ffc48a 55%, #ff7a1a 90%);
          }
 
          .hero-name-main.reveal span {
@@ -121,6 +130,7 @@
 
          .hero-name-main.reveal span:nth-child(1) {
             animation-delay: 0.1s;
+            
          }
 
          .hero-name-main.reveal span:nth-child(2) {
@@ -133,7 +143,7 @@
 
          @keyframes revealUp {
             0% {
-               transform: translateY(110%);
+               transform: translateY(80%);
                opacity: 0;
                filter: blur(4px);
             }
@@ -171,8 +181,9 @@
          }
 
          .hero p {
-            margin-top: 2.2rem;
-            color: rgba(255,255,255,0.5);
+            margin-top: 0;
+            transform: translateY(-2px);
+            color: rgba(255,255,255,0.55);
             max-width: 46ch;
          }
 
@@ -287,6 +298,11 @@
             transition: transform var(--t-fast);
          }
 
+         .project:focus-visible {
+            outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+            outline-offset: 3px;
+         }
+
          .project:hover { transform: translateX(4px); }
 
          .project:hover {
@@ -362,7 +378,7 @@
 
          footer {
             margin-top: var(--s-7);
-            padding-top: var(--s-6);
+            padding-top: var(--s-5);
             border-top: 1px solid var(--line);
             font-size: 0.75rem;
             color: var(--subtle);
@@ -377,9 +393,29 @@
 
          .footer-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: var(--s-5);
             margin-top: var(--s-5);
+         }
+
+         .footer-note {
+            margin: var(--s-5) 0 var(--s-2);
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(105deg, #fff0e0 0%, #ffc48a 42%, var(--accent) 95%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+         }
+
+         .footer-meta {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--subtle);
+            opacity: 0.6;
          }
 
          .footer-block {
@@ -520,10 +556,10 @@
                <h1>Selected Systems</h1>
             </div>
             <div class="split-right">
-               <div class="project" onclick="toggleProject(this)">
+               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-emulator">
                   <h3>System Design Emulator</h3>
                   <small>Simulation · Architecture</small> 
-                  <div class="project-details">
+                  <div class="project-details" id="project-details-emulator">
                      <p>Designed and built an interactive platform for simulating distributed systems in real time — making architectural tradeoffs executable.</p>
                      <p><strong>Stack:</strong> Flutter Web, Rust, WebAssembly</p>
                      <p><strong>Impact:</strong> Reduced architecture iteration loops by ~35% in prototype reviews, enabling real-time tradeoff simulation across latency and cost.</p>
@@ -531,15 +567,27 @@
                      <p class="project-thinking">Tradeoff: prioritized event-driven updates over polling to reduce latency spikes under load.</p>
                   </div>
                </div>
-               <div class="project" onclick="toggleProject(this)">
+               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-luggagebot">
                   <h3>LuggageBot</h3>
                   <small>Robotics · Computer Vision</small> 
-                  <div class="project-details">
+                  <div class="project-details" id="project-details-luggagebot">
                      <p>Built an autonomous robotics system that tracks and follows a human using real-time computer vision.</p>
                      <p><strong>Stack:</strong> Python, ROS, OpenCV</p>
                      <p><strong>Impact:</strong> Improved target-following stability by ~30% in noisy test runs while maintaining real-time tracking and control responsiveness.</p>
                      <p><strong>Technical hook:</strong> Optimized a real-time vision pipeline to reduce frame-to-control latency and stabilize tracking under noisy motion.</p>
                      <p class="project-thinking">Tradeoff: prioritized deterministic control loops over aggressive path optimization to keep behavior stable in noisy conditions.</p>
+                  </div>
+               </div>
+               <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-poker">
+                  <h3>Poker Planning</h3>
+                  <small>Collaboration · Real-time UX</small>
+                  <div class="project-details" id="project-details-poker">
+                     <p>Built a planning poker tool that makes estimation sessions less painful and slightly more fun.</p>
+                     <p><strong>Stack:</strong> React, Django, WebSockets, Rive</p>
+                     <p><strong>Impact:</strong> Enabled instant session creation with synchronized voting and reveal, reducing coordination overhead in team estimation.</p>
+                     <p><strong>Technical hook:</strong> Implemented real-time vote synchronization with coordinated reveal logic to ensure consistency across participants.</p>
+                     <p><strong>Interaction layer:</strong> Integrated Rive animations to provide responsive visual feedback during user actions (validation, voting, session flow).</p>
+                     <p class="project-thinking">Tradeoff: prioritized responsiveness and simplicity over deep session features to keep live interactions smooth and distraction-free.</p>
                   </div>
                </div>
             </div>
@@ -575,21 +623,32 @@
                         <a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer" class="link">LinkedIn</a> 
                      </p>
                   </div>
-                  <div class="footer-block">
-                     <p class="footer-label">—</p>
-                     <p class="footer-item">2026 Ronit Dahiya</p>
-                  </div>
                </div>
+               <p class="footer-note">Occasionally touches grass.</p>
+               <p class="footer-meta">© 2026 Ronit Dahiya</p>
             </div>
          </footer>
       </main>
       <script>
          const heroVideo = document.getElementById('hero-video');
+         const heroName = document.querySelector('.hero-name-main');
          if (heroVideo) {
+            heroVideo.muted = true;
+            heroVideo.playsInline = true;
             heroVideo.play().catch(() => {
                heroVideo.setAttribute('controls', 'controls');
             });
          }
+
+         document.querySelectorAll('.project').forEach((el) => {
+            el.addEventListener('click', () => toggleProject(el));
+            el.addEventListener('keydown', (e) => {
+               if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleProject(el);
+               }
+            });
+         });
 
          const fadeElements = document.querySelectorAll('.fade');
          let ticking = false;
@@ -609,6 +668,13 @@
                el.style.opacity = eased;
                el.style.transform = `translateY(${(1 - eased) * 24 * speed}px) scale(${0.98 + eased * 0.02})`;
             });
+
+            if (heroName) {
+               const rect = heroName.getBoundingClientRect();
+               const progress = Math.min(Math.max((vh - rect.top) / vh, 0), 1);
+               const shift = progress * 60;
+               document.documentElement.style.setProperty('--hero-gradient-shift', `${shift}%`);
+            }
             ticking = false;
          }
 
@@ -628,6 +694,9 @@
                if (project !== el) project.classList.remove('open');
             });
             el.classList.toggle('open');
+            document.querySelectorAll('.project').forEach((project) => {
+               project.setAttribute('aria-expanded', project.classList.contains('open') ? 'true' : 'false');
+            });
             updateScrollMotion();
          }
 
@@ -635,23 +704,35 @@
          const canvas = document.getElementById('hills');
          if (canvas) {
             const ctx = canvas.getContext('2d');
-            let w;
-            let h;
+            let canvasCssW = window.innerWidth;
+            const canvasCssH = 200;
             let t = 0;
+            let mouseX = 0;
+
+            window.addEventListener('mousemove', (e) => {
+               mouseX = e.clientX * 0.002;
+            }, { passive: true });
 
             function resize() {
-               w = canvas.width = window.innerWidth;
-               h = canvas.height = 200;
+               const dpr = window.devicePixelRatio || 1;
+               canvasCssW = window.innerWidth;
+               canvas.width = canvasCssW * dpr;
+               canvas.height = canvasCssH * dpr;
+               canvas.style.width = `${canvasCssW}px`;
+               canvas.style.height = `${canvasCssH}px`;
+               ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
 
             function draw() {
-               ctx.clearRect(0, 0, w, h);
+               ctx.clearRect(0, 0, canvasCssW, canvasCssH);
                ctx.beginPath();
-               for (let x = 0; x < w; x++) {
-                  const y = h - 40 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t * 0.5) * 10;
+               for (let x = 0; x < canvasCssW; x++) {
+                  const y = canvasCssH - 40
+                     + Math.sin(x * 0.01 + t + mouseX) * 20
+                     + Math.sin(x * 0.02 + t * 0.5) * 10;
                   ctx.lineTo(x, y);
                }
-               ctx.strokeStyle = 'rgba(255,122,26,0.22)';
+               ctx.strokeStyle = 'rgba(255,122,26,0.15)';
                ctx.lineWidth = 1;
                ctx.stroke();
                t += 0.004;
