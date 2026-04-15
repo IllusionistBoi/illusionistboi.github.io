@@ -98,11 +98,51 @@
             font-weight: 400;
             margin: 0;
             margin-bottom: 0.7em;
-            color: rgba(255,255,255,0.92);
-            background: linear-gradient(to right, #ffffff 85%, var(--accent));
+            color: rgba(255,255,255,0.94);
+            display: inline-block;
+            overflow: hidden;
+         }
+
+         .hero-name-main span {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            background: linear-gradient(110deg, #ffffff 45%, rgba(255,255,255,0.92) 60%, #ffe2c7 75%, #ff7a1a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 20px rgba(255,122,26,0.12);
+            will-change: transform, opacity;
+         }
+
+         .hero-name-main.reveal span {
+            animation: revealUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+         }
+
+         .hero-name-main.reveal span:nth-child(1) {
+            animation-delay: 0.1s;
+         }
+
+         .hero-name-main.reveal span:nth-child(2) {
+            animation-delay: 0.25s;
+         }
+
+         .hero-name-main.reveal span:first-child {
+            margin-right: 0.2em;
+         }
+
+         @keyframes revealUp {
+            0% {
+               transform: translateY(110%);
+               opacity: 0;
+               filter: blur(4px);
+            }
+
+            to {
+               transform: translateY(0);
+               opacity: 1;
+               filter: blur(0);
+            }
          }
 
          .hero-content h1 { margin-top: 0.4em; }
@@ -209,19 +249,16 @@
             padding-left: var(--s-3);
          }
 
-         .timeline-item::before {
+        .timeline-item::before {
             content: "";
             position: absolute;
             left: 0;
             top: 6px;
             width: 1px;
-            height: 0;
+            height: 100%;
             background: linear-gradient(to bottom, transparent, var(--accent-soft), transparent);
             opacity: 0.4;
-            transition: height 0.6s ease;
          }
-
-         .timeline-item.visible::before { height: 100%; }
 
          .timeline-item h3 {
             margin: 0 0 var(--s-1);
@@ -319,13 +356,8 @@
          /* FADE */
          .fade {
             opacity: 0;
-            transform: translateY(12px);
-            transition: opacity var(--t-base), transform var(--t-base);
-         }
-
-         .fade.visible {
-            opacity: 1;
-            transform: translateY(0);
+            transform: translateY(24px) scale(0.98);
+            will-change: transform, opacity;
          }
 
          footer {
@@ -422,14 +454,17 @@
          <video id="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
             <source src="./backgroundHero.mp4" type="video/mp4">
          </video>
-         <div class="hero-content fade">
-            <h1 class="hero-name-main">Ronit Dahiya</h1>
+         <div class="hero-content">
+            <h1 class="hero-name-main reveal">
+               <span>Ronit</span>
+               <span>Dahiya</span>
+            </h1>
             <p>Software engineer working on distributed systems and infrastructure. I build software where failure modes, scale, and reliability are first-class concerns.</p>
          </div>
          <div class="scroll-indicator" aria-hidden="true"></div>
       </header>
       <main>
-         <section class="split about fade">
+        <section class="split about fade" data-speed="1.05">
             <div class="split-left">
                <h1>Context</h1>
             </div>
@@ -438,7 +473,7 @@
                <p>My focus is reducing complexity — not by hiding it, but by structuring it so it behaves predictably.</p>
             </div>
          </section>
-         <section class="split fade">
+        <section class="split fade" data-speed="1.2">
             <div class="split-left">
                <h1>Experience</h1>
             </div>
@@ -460,7 +495,7 @@
                </div>
             </div>
          </section>
-         <section class="split fade">
+        <section class="split fade" data-speed="0.95">
             <div class="split-left">
                <h1>Principles</h1>
             </div>
@@ -470,7 +505,7 @@
                <p>Good software makes operational behavior explicit.</p>
             </div>
          </section>
-         <section class="split fade">
+        <section class="split fade" data-speed="1.1">
             <div class="split-left">
                <h1>What I Focus On</h1>
             </div>
@@ -480,7 +515,7 @@
                <p>Backend architecture under load.</p>
             </div>
          </section>
-         <section id="projects" class="split fade">
+        <section id="projects" class="split fade" data-speed="1.15">
             <div class="split-left">
                <h1>Selected Systems</h1>
             </div>
@@ -548,6 +583,85 @@
             </div>
          </footer>
       </main>
-      <script> const heroVideo = document.getElementById('hero-video'); if (heroVideo) { heroVideo.play().catch(() => { heroVideo.setAttribute('controls', 'controls'); }); } const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h - 60 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
+      <script>
+         const heroVideo = document.getElementById('hero-video');
+         if (heroVideo) {
+            heroVideo.play().catch(() => {
+               heroVideo.setAttribute('controls', 'controls');
+            });
+         }
+
+         const fadeElements = document.querySelectorAll('.fade');
+         let ticking = false;
+
+         function updateScrollMotion() {
+            const vh = window.innerHeight;
+            const start = vh * 0.85;
+            const end = vh * 0.2;
+
+            fadeElements.forEach(el => {
+               const rect = el.getBoundingClientRect();
+               const progress = (start - rect.top) / (start - end);
+               const t = Math.max(0, Math.min(1, progress));
+               const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+               const speed = Number(el.dataset.speed) || 1;
+
+               el.style.opacity = eased;
+               el.style.transform = `translateY(${(1 - eased) * 24 * speed}px) scale(${0.98 + eased * 0.02})`;
+            });
+            ticking = false;
+         }
+
+         updateScrollMotion();
+         window.addEventListener('scroll', () => {
+            if (!ticking) {
+               requestAnimationFrame(() => {
+                  updateScrollMotion();
+               });
+               ticking = true;
+            }
+         }, { passive: true });
+         window.addEventListener('resize', updateScrollMotion);
+
+         function toggleProject(el) {
+            document.querySelectorAll('.project').forEach(project => {
+               if (project !== el) project.classList.remove('open');
+            });
+            el.classList.toggle('open');
+            updateScrollMotion();
+         }
+
+         // AMBIENT HILLS
+         const canvas = document.getElementById('hills');
+         if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let w;
+            let h;
+            let t = 0;
+
+            function resize() {
+               w = canvas.width = window.innerWidth;
+               h = canvas.height = 200;
+            }
+
+            function draw() {
+               ctx.clearRect(0, 0, w, h);
+               ctx.beginPath();
+               for (let x = 0; x < w; x++) {
+                  const y = h - 40 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t * 0.5) * 10;
+                  ctx.lineTo(x, y);
+               }
+               ctx.strokeStyle = 'rgba(255,122,26,0.22)';
+               ctx.lineWidth = 1;
+               ctx.stroke();
+               t += 0.004;
+               requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+         }
+      </script>
    </body>
 </html>
