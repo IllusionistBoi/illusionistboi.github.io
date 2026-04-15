@@ -400,7 +400,7 @@
    </head>
    <body>
       <header class="hero">
-         <video autoplay muted loop playsinline>
+         <video id="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
             <source src="./backgroundHero.mp4" type="video/mp4">
          </video>
          <div class="hero-content fade">
@@ -529,6 +529,6 @@
             </div>
          </footer>
       </main>
-      <script> const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h/2 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
+      <script> const heroVideo = document.getElementById('hero-video'); if (heroVideo) { heroVideo.play().catch(() => { heroVideo.setAttribute('controls', 'controls'); }); } const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.2 }); document.querySelectorAll('.fade, .timeline-item').forEach(el => observer.observe(el)); function toggleProject(el) { document.querySelectorAll('.project').forEach(p => { if (p !== el) p.classList.remove('open'); }); el.classList.toggle('open'); } // AMBIENT HILLS const canvas = document.getElementById('hills'); if (canvas) { const ctx = canvas.getContext('2d'); let w, h, t = 0; function resize() { w = canvas.width = window.innerWidth; h = canvas.height = 200; } function draw() { ctx.clearRect(0,0,w,h); ctx.beginPath(); for (let x = 0; x < w; x++) { const y = h/2 + Math.sin(x * 0.01 + t) * 20 + Math.sin(x * 0.02 + t*0.5) * 10; ctx.lineTo(x, y); } ctx.strokeStyle = 'rgba(255,122,26,0.22)'; ctx.lineWidth = 1; ctx.stroke(); t += 0.008; requestAnimationFrame(draw); } window.addEventListener('resize', resize); resize(); draw(); } </script> 
    </body>
 </html>
