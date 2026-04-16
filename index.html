@@ -289,6 +289,10 @@
             color: color-mix(in srgb, var(--text) 82%, var(--accent));
          }
 
+         #experience .split-left h1 {
+            color: color-mix(in srgb, var(--text) 82%, var(--accent));
+         }
+
          .split-right { max-width: 500px; }
 
          .split-right::after {
@@ -322,6 +326,12 @@
             margin-bottom: var(--s-5);
             position: relative;
             padding-left: var(--s-3);
+            transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 180ms cubic-bezier(0.4, 0, 0.2, 1);
+         }
+
+         .timeline-item:hover {
+            transform: translateX(4px);
+            box-shadow: -6px 0 16px -7px rgba(255,122,26,0.52);
          }
 
         .timeline-item::before {
@@ -339,6 +349,11 @@
             margin: 0 0 var(--s-1);
             font-weight: 500;
             letter-spacing: -0.01em;
+            transition: color 180ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+         }
+
+         .timeline-item:hover h3 {
+            color: var(--accent);
          }
 
          .timeline-meta {
@@ -601,7 +616,7 @@
                <p>My focus is reducing complexity — not by hiding it, but by structuring systems so their behavior remains predictable in production.</p>
             </div>
          </section>
-        <section class="split fade" data-speed="1.2">
+        <section id="experience" class="split fade" data-speed="1.2">
             <div class="split-left">
                <h1>Experience</h1>
             </div>
