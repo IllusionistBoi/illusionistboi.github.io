@@ -376,13 +376,14 @@
          }
 
          /* PROJECTS */
-         button.project {
+         .project-card {
             margin-bottom: var(--s-5);
+            padding-bottom: var(--s-2);
+         }
+
+         .project {
             margin-left: 8px;
             padding: 0;
-            border: none;
-            background: none;
-            font: inherit;
             color: inherit;
             text-align: left;
             width: 100%;
@@ -414,14 +415,12 @@
          }
 
          .project h3::after {
-            content: '+';
+            content: '↗';
             position: absolute;
             right: 0;
-            opacity: 0.04;
-            transition: transform var(--t-fast), opacity var(--t-fast);
+            opacity: 0.15;
+            transition: opacity var(--t-fast);
          }
-
-         .project.open h3::after { transform: rotate(45deg); }
 
          .project:hover h3::after { opacity: 0.8; }
 
@@ -450,6 +449,60 @@
             color: var(--subtle);
             font-style: italic;
             margin-top: var(--s-2);
+         }
+
+         .project-actions {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+            max-height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: max-height var(--t-fast), opacity var(--t-fast), transform var(--t-fast), margin-top var(--t-fast), padding-top var(--t-fast);
+         }
+
+         .project[aria-expanded="true"] + .project-actions {
+            max-height: 120px;
+            margin-top: var(--s-3);
+            padding-top: var(--s-2);
+            border-top: 1px solid var(--line);
+            visibility: visible;
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateY(0);
+         }
+
+         .project-actions a {
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            color: var(--accent);
+            display: inline-block;
+            padding-top: 2px;
+            border-bottom: 1px solid transparent;
+         }
+
+         .project-actions a:hover {
+            opacity: 1;
+            border-bottom: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+         }
+         .project-actions .private-note {
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.55;
+            color: var(--accent);
+            display: inline-block;
+            padding-top: 2px;
+            line-height: 1;
+            white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
+            border-bottom: 1px solid transparent;
          }
 
          .project.open .project-details {
@@ -670,40 +723,71 @@
                <h1>Selected Work</h1>
             </div>
             <div class="split-right">
-               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-emulator">
-                  <h3>System Design Emulator</h3>
-                  <small>Simulation · Architecture</small> 
-                  <div class="project-details" id="project-details-emulator">
-                     <p>Designed and built an interactive platform for simulating backend architectures in real time — making architectural tradeoffs executable.</p>
-                     <p><strong>Stack:</strong> Flutter Web, Rust, WebAssembly</p>
-                     <p><strong>Impact:</strong> Reduced architecture iteration loops by ~35% in prototype reviews, enabling real-time tradeoff simulation across latency and cost.</p>
-                     <p><strong>Technical hook:</strong> Built around an event-driven simulation engine with async state propagation across service graphs.</p>
-                     <p class="project-thinking">Tradeoff: prioritized event-driven updates over polling to reduce latency spikes under load.</p>
+               <div class="project-card">
+                  <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-emulator">
+                     <h3>System Design Emulator</h3>
+                     <small>Simulation · Architecture</small> 
+                     <div class="project-details" id="project-details-emulator">
+                        <p>Designed and built an interactive platform for simulating backend architectures in real time — making architectural tradeoffs executable.</p>
+                        <p><strong>Stack:</strong> Flutter Web, Rust, WebAssembly</p>
+                        <p><strong>Impact:</strong> Reduced architecture iteration loops by ~35% in prototype reviews, enabling real-time tradeoff simulation across latency and cost.</p>
+                        <p><strong>Technical hook:</strong> Built around an event-driven simulation engine with async state propagation across service graphs.</p>
+                        <p class="project-thinking">Tradeoff: prioritized event-driven updates over polling to reduce latency spikes under load.</p>
+                     </div>
                   </div>
-               </button>
-               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-luggagebot">
-                  <h3>LuggageBot</h3>
-                  <small>Robotics · Computer Vision</small> 
-                  <div class="project-details" id="project-details-luggagebot">
-                     <p>Built an autonomous robotics system that tracks and follows a human using real-time computer vision.</p>
-                     <p><strong>Stack:</strong> Python, ROS, OpenCV</p>
-                     <p><strong>Impact:</strong> Improved target-following stability by ~30% in noisy test runs while maintaining real-time tracking and control responsiveness.</p>
-                     <p><strong>Technical hook:</strong> Optimized a real-time vision pipeline to reduce frame-to-control latency and stabilize tracking under noisy motion.</p>
-                     <p class="project-thinking">Tradeoff: prioritized deterministic control loops over aggressive path optimization to keep behavior stable in noisy conditions.</p>
+                  <div class="project-actions">
+                     <span class="private-note" aria-label="Private repository">Private</span>
                   </div>
-               </button>
-               <button type="button" class="project" aria-expanded="false" aria-controls="project-details-poker">
-                  <h3>Poker Planning</h3>
-                  <small>Collaboration · Real-time UX</small>
-                  <div class="project-details" id="project-details-poker">
-                     <p>Built a planning poker tool that makes estimation sessions less painful and slightly more fun.</p>
-                     <p><strong>Stack:</strong> React, Django, WebSockets, Rive</p>
-                     <p><strong>Impact:</strong> Enabled instant session creation with synchronized voting and reveal, reducing coordination overhead in team estimation.</p>
-                     <p><strong>Technical hook:</strong> Implemented real-time vote synchronization with coordinated reveal logic to ensure consistency across participants.</p>
-                     <p><strong>Interaction layer:</strong> Integrated Rive animations to provide responsive visual feedback during user actions (validation, voting, session flow).</p>
-                     <p class="project-thinking">Tradeoff: prioritized responsiveness and simplicity over deep session features to keep live interactions smooth and distraction-free.</p>
+               </div>
+               <div class="project-card">
+                  <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-luggagebot">
+                     <h3>LuggageBot</h3>
+                     <small>Robotics · Computer Vision</small> 
+                     <div class="project-details" id="project-details-luggagebot">
+                        <p>Built an autonomous robotics system that tracks and follows a human using real-time computer vision.</p>
+                        <p><strong>Stack:</strong> Python, ROS, OpenCV</p>
+                        <p><strong>Impact:</strong> Improved target-following stability by ~30% in noisy test runs while maintaining real-time tracking and control responsiveness.</p>
+                        <p><strong>Technical hook:</strong> Optimized a real-time vision pipeline to reduce frame-to-control latency and stabilize tracking under noisy motion.</p>
+                        <p class="project-thinking">Tradeoff: prioritized deterministic control loops over aggressive path optimization to keep behavior stable in noisy conditions.</p>
+                     </div>
                   </div>
-               </button>
+                  <div class="project-actions">
+                     <a href="https://github.com/IllusionistBoi/LuggageBot" target="_blank" rel="noopener noreferrer">Inspect Implementation →</a>
+                  </div>
+               </div>
+               <div class="project-card">
+                  <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-poker">
+                     <h3>Poker Planning</h3>
+                     <small>Collaboration · Real-time UX</small>
+                     <div class="project-details" id="project-details-poker">
+                        <p>Built a planning poker tool that makes estimation sessions less painful and slightly more fun.</p>
+                        <p><strong>Stack:</strong> React, Django, WebSockets, Rive</p>
+                        <p><strong>Impact:</strong> Enabled instant session creation with synchronized voting and reveal, reducing coordination overhead in team estimation.</p>
+                        <p><strong>Technical hook:</strong> Implemented real-time vote synchronization with coordinated reveal logic to ensure consistency across participants.</p>
+                        <p><strong>Interaction layer:</strong> Integrated Rive animations to provide responsive visual feedback during user actions (validation, voting, session flow).</p>
+                        <p class="project-thinking">Tradeoff: prioritized responsiveness and simplicity over deep session features to keep live interactions smooth and distraction-free.</p>
+                     </div>
+                  </div>
+                  <div class="project-actions">
+                     <a href="https://github.com/IllusionistBoi/my-app" target="_blank" rel="noopener noreferrer">Inspect Implementation →</a>
+                  </div>
+               </div>
+               <div class="project-card">
+                  <div class="project" role="button" tabindex="0" aria-expanded="false" aria-controls="project-details-pixelpals">
+                     <h3>Pixel Pals</h3>
+                     <small>Systems · Algorithms · Game Simulation</small>
+                     <div class="project-details" id="project-details-pixelpals">
+                        <p>Built a console-based game where player and enemy behavior emerge from grid state and pathfinding logic.</p>
+                        <p><strong>Stack:</strong> C++, Console I/O</p>
+                        <p><strong>Impact:</strong> Implemented deterministic enemy pursuit using BFS, ensuring consistent behavior across runs while maintaining real-time responsiveness.</p>
+                        <p><strong>Technical hook:</strong> Modeled the game world as a 2D state grid and used breadth-first search to compute shortest paths for enemy movement.</p>
+                        <p class="project-thinking">Tradeoff: prioritized deterministic pathfinding over unpredictability to make system behavior easier to reason about and debug.</p>
+                     </div>
+                  </div>
+                  <div class="project-actions">
+                     <a href="https://github.com/IllusionistBoi/Pixel-Pals" target="_blank" rel="noopener noreferrer">Inspect Implementation →</a>
+                  </div>
+               </div>
             </div>
          </section>
          <footer class="fade footer-ambient">

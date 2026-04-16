@@ -23,7 +23,14 @@
    }
 
    document.querySelectorAll('.project').forEach((el) => {
-      el.addEventListener('click', () => toggleProject(el));
+      el.addEventListener('click', () => {
+         toggleProject(el);
+      });
+      el.addEventListener('keydown', (event) => {
+         if (event.key !== 'Enter' && event.key !== ' ') return;
+         event.preventDefault();
+         toggleProject(el);
+      });
    });
 
    document.querySelectorAll('.split').forEach((split) => {
