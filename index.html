@@ -3,16 +3,16 @@
 <head>
    <meta charset="utf-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <meta name="theme-color" content="#0a0a0b" />
+   <meta name="theme-color" content="#0d0b09" />
    <title>Ronit Dahiya | Full-Stack Developer &amp; Infrastructure Engineer</title>
    <meta name="description" content="Full-stack developer and Infrastructure Engineering Senior Advisor at Evernorth (Cigna). Building an enterprise AI chatbot with custom MCP tooling, private cloud automation, and tools that make hard things visible." />
 
    <link rel="canonical" href="https://illusionistboi.github.io/" />
    <meta property="og:type" content="website" />
    <meta property="og:title" content="Ronit Dahiya | Full-Stack Developer &amp; Infrastructure Engineer" />
-   <meta property="og:description" content="Building an enterprise AI chatbot with custom MCP tooling and the automation behind Cigna's private cloud. Every project on this page runs a live simulation of its core mechanic." />
+   <meta property="og:description" content="Building an enterprise AI chatbot with custom MCP tooling and the automation behind Cigna's private cloud. Projects shown with real demos, one running live on the page." />
    <meta property="og:url" content="https://illusionistboi.github.io/" />
-   <meta property="og:image" content="https://illusionistboi.github.io/hero.jpg" />
+   <meta property="og:image" content="https://illusionistboi.github.io/assets/syssimulator.png" />
    <meta name="twitter:card" content="summary_large_image" />
 
    <link rel="icon" href="./favicon.ico?v=8" sizes="any" />
@@ -20,6 +20,8 @@
    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png?v=8" />
    <link rel="manifest" href="./favicon/site.webmanifest?v=8" />
 
+   <link rel="preload" href="./fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin />
+   <link rel="preload" href="./fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="stylesheet" href="./styles.css" />
@@ -43,6 +45,10 @@
    </script>
 </head>
 <body>
+   <div class="atmosphere" aria-hidden="true"><i class="ember ember-a"></i><i class="ember ember-b"></i></div>
+   <div class="grain" aria-hidden="true"></div>
+   <div class="scroll-progress" aria-hidden="true"><i></i></div>
+
    <a class="skip-link" href="#work">Skip to content</a>
 
    <nav class="nav" id="nav" aria-label="Primary">
@@ -84,43 +90,51 @@
          </div>
       </section>
 
-      <section class="work" id="work">
+      <section class="work shell" id="work">
          <div class="section-head" data-reveal>
             <h2>Selected work</h2>
-            <p class="section-lede">Each card runs a live simulation of the project's core mechanic. No screenshots, just the real behavior.</p>
+            <p class="section-lede">Real product, real footage. The last one runs a live simulation right on this page.</p>
          </div>
 
-         <article class="project project-row" data-reveal>
-            <div class="project-demo panel">
-               <canvas data-demo="pipeline" aria-label="Animation of requests queuing up behind a slow service in a pipeline"></canvas>
-               <p class="demo-caption">Live: bursty traffic building backpressure in a service pipeline.</p>
+         <!-- Flagship: full-width -->
+         <article class="feature" data-reveal>
+            <div class="feature-media panel spotlight">
+               <div class="media-frame">
+                  <img src="./assets/syssimulator.png" alt="SysSimulator: a multi-agent supervisor architecture running under simulated load, with live RPS, p99 latency, and per-component metrics" width="1894" height="888" loading="lazy" onerror="this.closest('.feature-media').classList.add('media-missing')" />
+                  <p class="media-missing-note">assets/syssimulator.png pending</p>
+               </div>
+               <p class="demo-caption">A multi-agent supervisor blueprint under simulated load: live RPS, p99 latency, and tradeoffs per component.</p>
             </div>
-            <div class="project-body">
-               <h3>System Design Simulator</h3>
-               <p class="project-desc">System design would not click for me in college: the diagrams stayed static and the words stayed abstract. So I built a simulator where architectures actually run.</p>
-               <p class="project-impact">Live at syssimulator.com: put a design under load and watch queues grow, latency climb, and cost respond.</p>
-               <p class="project-hook">Event-driven simulation engine with async state propagation across service graphs, compiled to WebAssembly.</p>
-               <ul class="chips" role="list">
-                  <li>Rust</li><li>WebAssembly</li><li>Flutter Web</li>
-               </ul>
-               <p class="project-links">
-                  <a href="https://syssimulator.com/" target="_blank" rel="noopener noreferrer">syssimulator.com <span aria-hidden="true">&#8599;</span></a>
-                  <span class="private-note">private repo</span>
-               </p>
+            <div class="feature-info">
+               <div class="project-body">
+                  <h3>System Design Simulator</h3>
+                  <p class="project-desc">System design would not click for me in college: the diagrams stayed static and the words stayed abstract. So I built a simulator where architectures actually run.</p>
+                  <p class="project-impact">Live at syssimulator.com: put a design under load, inject chaos, and watch queues grow, latency climb, and cost respond.</p>
+                  <p class="project-hook">Event-driven simulation engine with async state propagation across service graphs, compiled to WebAssembly.</p>
+               </div>
+               <div class="project-body">
+                  <ul class="chips" role="list">
+                     <li>Rust</li><li>WebAssembly</li><li>Flutter Web</li>
+                  </ul>
+                  <p class="project-links">
+                     <a href="https://syssimulator.com/" target="_blank" rel="noopener noreferrer">syssimulator.com <span aria-hidden="true">&#8599;</span></a>
+                     <span class="private-note">private repo</span>
+                  </p>
+               </div>
             </div>
          </article>
 
-         <article class="project project-row project-row-flip" data-reveal>
-            <div class="project-demo panel">
-               <canvas data-demo="follower" aria-label="Animation of a robot smoothly following a moving target despite noisy sensor readings"></canvas>
-               <p class="demo-caption">Live: a control loop tracking a target through noisy sensor readings.</p>
+         <article class="project-row" data-reveal>
+            <div class="project-media panel spotlight">
+               <video src="./assets/luggagebot.mp4" autoplay muted loop playsinline preload="metadata" aria-label="LuggageBot following a target during a test run"></video>
+               <p class="demo-caption">The real bot, mid-follow.</p>
             </div>
             <div class="project-body">
                <h3>LuggageBot</h3>
-               <p class="project-desc">An autonomous robot that tracks and follows a person in real time using computer vision.</p>
-               <p class="project-impact">Deterministic control loops over clever path optimization: tracking stays stable even when the sensor input gets noisy.</p>
+               <p class="project-desc">A ROS robot that detects and follows a person (or a cylinder) in real time, using image segmentation with Mask R-CNN.</p>
+               <p class="project-impact">Built in the pre-GPT era: giving a robot eyes still meant wiring the vision pipeline yourself.</p>
                <ul class="chips" role="list">
-                  <li>Python</li><li>ROS</li><li>OpenCV</li>
+                  <li>Python</li><li>ROS</li><li>Mask R-CNN</li><li>OpenCV</li>
                </ul>
                <p class="project-links">
                   <a href="https://github.com/IllusionistBoi/LuggageBot" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
@@ -129,14 +143,14 @@
          </article>
 
          <div class="project-duo">
-            <article class="project project-card" data-reveal>
-               <div class="project-demo panel">
-                  <canvas data-demo="poker" aria-label="Animation of planning poker cards being revealed simultaneously"></canvas>
-                  <p class="demo-caption">Live: votes locking in, then revealing in sync.</p>
+            <article class="project-card" data-reveal>
+               <div class="project-media panel spotlight">
+                  <video src="./assets/pokerplanning.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Poker Planning app: a session with synchronized voting and card reveals"></video>
+                  <p class="demo-caption">Estimation with the team, teddy included.</p>
                </div>
                <div class="project-body">
                   <h3>Poker Planning</h3>
-                  <p class="project-desc">A real-time estimation tool for teams: instant sessions, synchronized voting, coordinated reveals, and Rive animations for tactile feedback.</p>
+                  <p class="project-desc">Mid-COVID, every free estimation tool locked the team out after two weeks. So I built ours: shared sessions, live votes, synchronized reveals, and a Rive teddy reacting to every move.</p>
                   <ul class="chips" role="list">
                      <li>React</li><li>Django</li><li>WebSockets</li><li>Rive</li>
                   </ul>
@@ -146,16 +160,16 @@
                </div>
             </article>
 
-            <article class="project project-card" data-reveal>
-               <div class="project-demo panel">
+            <article class="project-card" data-reveal>
+               <div class="project-media panel spotlight">
                   <canvas data-demo="bfs" aria-label="Animation of an enemy using breadth-first search to chase a player through a maze"></canvas>
                   <p class="demo-caption">Live: BFS recomputing the shortest path every move.</p>
                </div>
                <div class="project-body">
                   <h3>Pixel Pals</h3>
-                  <p class="project-desc">A console game where enemy behavior emerges from grid state and breadth-first search, deterministic by design so every chase is debuggable.</p>
+                  <p class="project-desc">A Pygame arcade game: guide your pal through obstacles, grab coins and power-ups, and stay ahead of enemies that hunt with breadth-first search.</p>
                   <ul class="chips" role="list">
-                     <li>C++</li><li>Pathfinding</li>
+                     <li>Python</li><li>Pygame</li><li>BFS</li>
                   </ul>
                   <p class="project-links">
                      <a href="https://github.com/IllusionistBoi/Pixel-Pals" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
@@ -165,99 +179,112 @@
          </div>
       </section>
 
-      <!-- Career rendered as a distributed trace: spans on a shared time axis -->
-      <section class="experience" id="experience">
+      <!-- Career rendered as a distributed trace: label gutter + shared time axis -->
+      <section class="experience shell" id="experience">
          <div class="section-head" data-reveal>
             <h2>Experience</h2>
             <p class="section-lede">Intern to senior advisor in four years, read like a trace.</p>
          </div>
-         <div class="trace panel" data-reveal>
-            <div class="trace-axis" aria-hidden="true">
-               <span style="--x: 0%">2021</span>
-               <span style="--x: 17.4%">2022</span>
-               <span style="--x: 34.8%">2023</span>
-               <span style="--x: 52.2%">2024</span>
-               <span style="--x: 69.6%">2025</span>
-               <span style="--x: 87%">2026</span>
+         <div class="trace panel spotlight" data-reveal>
+            <div class="trace-chart" aria-hidden="true">
+               <div class="trace-years">
+                  <span style="--x: 0%">2021</span>
+                  <span style="--x: 17.4%">2022</span>
+                  <span style="--x: 34.8%">2023</span>
+                  <span style="--x: 52.2%">2024</span>
+                  <span style="--x: 69.6%">2025</span>
+                  <span style="--x: 87%">2026</span>
+               </div>
+               <div class="trace-rows-chart">
+                  <div class="trace-gridlines">
+                     <i style="--x: 0%"></i><i style="--x: 17.4%"></i><i style="--x: 34.8%"></i><i style="--x: 52.2%"></i><i style="--x: 69.6%"></i><i style="--x: 87%"></i>
+                  </div>
+                  <div class="tr-row" data-trace="0">
+                     <span class="tr-label">evernorth / senior-advisor</span>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 78.3%; --to: 100%"></div></div>
+                  </div>
+                  <div class="tr-row" data-trace="1">
+                     <span class="tr-label">ericsson / software-engineer</span>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 43.5%; --to: 78.3%"></div></div>
+                  </div>
+                  <div class="tr-row" data-trace="2">
+                     <span class="tr-label">ericsson / graduate-developer</span>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 26.1%; --to: 43.5%"></div></div>
+                  </div>
+                  <div class="tr-row" data-trace="3">
+                     <span class="tr-label">gdsc-ucd / technology-lead</span>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 11.6%; --to: 23.2%"></div></div>
+                  </div>
+                  <div class="tr-row" data-trace="4">
+                     <span class="tr-label">ericsson / intern</span>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 3%; --to: 10.1%"></div></div>
+                  </div>
+               </div>
             </div>
-            <ol class="trace-rows" role="list">
-               <li class="trace-row">
-                  <div class="trace-span" style="--from: 78.3%; --to: 100%" data-live="true">
-                     <span class="trace-label">evernorth / senior-advisor</span>
-                  </div>
-                  <div class="trace-info">
-                     <h3>Infrastructure Engineering Senior Advisor <span class="trace-org">Evernorth (Cigna)</span></h3>
+
+            <ol class="trace-roles" role="list">
+               <li class="trace-role" data-trace="0">
+                  <div>
+                     <h3>Infrastructure Engineering Senior Advisor<span class="trace-org">Evernorth (Cigna)</span></h3>
                      <p class="trace-dates">Jul 2025 to present, Galway</p>
-                     <p class="trace-desc">End-to-end ownership on the UnITy AI chatbot for Cigna's private cloud: MCP integrations built on FastMCP, LLM token-cost optimization, SAST/SCA security remediation, and Playwright release automation across UnITy and CloudBolt.</p>
                   </div>
+                  <p class="trace-desc">End-to-end ownership on the UnITy AI chatbot for Cigna's private cloud: MCP integrations built on FastMCP, LLM token-cost optimization, SAST/SCA security remediation, and Playwright release automation across UnITy and CloudBolt.</p>
                </li>
-               <li class="trace-row">
-                  <div class="trace-span" style="--from: 43.5%; --to: 78.3%">
-                     <span class="trace-label">ericsson / software-engineer</span>
-                  </div>
-                  <div class="trace-info">
-                     <h3>Software Engineer <span class="trace-org">Ericsson</span></h3>
+               <li class="trace-role" data-trace="1">
+                  <div>
+                     <h3>Software Engineer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2023 to Jul 2025, Athlone</p>
-                     <p class="trace-desc">Migrated the Software Provisioning Tool from PHP to Django, automated vApp deployments and Jenkins workflows, and helped cut VMware licensing costs. Received a Key Contributor award.</p>
                   </div>
+                  <p class="trace-desc">Migrated the Software Provisioning Tool from PHP to Django, automated vApp deployments and Jenkins workflows, and helped cut VMware licensing costs. Received a Key Contributor award.</p>
                </li>
-               <li class="trace-row">
-                  <div class="trace-span trace-span-out" style="--from: 26.1%; --to: 43.5%">
-                     <span class="trace-label">ericsson / graduate-developer</span>
-                  </div>
-                  <div class="trace-info">
-                     <h3>Graduate Software Developer <span class="trace-org">Ericsson</span></h3>
+               <li class="trace-role" data-trace="2">
+                  <div>
+                     <h3>Graduate Software Developer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2022 to Jul 2023, Athlone</p>
-                     <p class="trace-desc">Backend development and CI tooling in Python, Java, Docker, and Kubernetes. Led tool transfers between teams and built internal tools on Node, AngularJS, and MongoDB.</p>
                   </div>
+                  <p class="trace-desc">Backend development and CI tooling in Python, Java, Docker, and Kubernetes. Led tool transfers between teams and built internal tools on Node, AngularJS, and MongoDB.</p>
                </li>
-               <li class="trace-row">
-                  <div class="trace-span trace-span-out" style="--from: 11.6%; --to: 23.2%">
-                     <span class="trace-label">gdsc-ucd / technology-lead</span>
-                  </div>
-                  <div class="trace-info">
-                     <h3>Technology Lead <span class="trace-org">Google Developer Student Clubs, UCD</span></h3>
+               <li class="trace-role" data-trace="3">
+                  <div>
+                     <h3>Technology Lead<span class="trace-org">Google Developer Student Clubs, UCD</span></h3>
                      <p class="trace-dates">Sep 2021 to May 2022, Dublin</p>
-                     <p class="trace-desc">Led UCD's student developer community: taught Android, Google Cloud, and machine learning, and grew active membership by 30% in the club's first year.</p>
                   </div>
+                  <p class="trace-desc">Led UCD's student developer community: taught Android, Google Cloud, and machine learning, and grew active membership by 30% in the club's first year.</p>
                </li>
-               <li class="trace-row">
-                  <div class="trace-span trace-span-out" style="--from: 3%; --to: 10.1%">
-                     <span class="trace-label">ericsson / intern</span>
-                  </div>
-                  <div class="trace-info">
-                     <h3>Software Engineer Intern <span class="trace-org">Ericsson</span></h3>
+               <li class="trace-role" data-trace="4">
+                  <div>
+                     <h3>Software Engineer Intern<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Mar 2021 to Aug 2021, Athlone</p>
-                     <p class="trace-desc">Built internal engineering tools with the Engineering Tools team, improved tool search to lift usage by 40%, and modernized Java services to Java 11.</p>
                   </div>
+                  <p class="trace-desc">Built internal engineering tools with the Engineering Tools team, improved tool search to lift usage by 40%, and modernized Java services to Java 11.</p>
                </li>
             </ol>
             <p class="trace-edu">BSc (Hons) Computer Science with Data Science, University College Dublin, 2018 to 2022</p>
          </div>
       </section>
 
-      <section class="toolbox" id="toolbox" aria-label="Toolbox">
+      <section class="toolbox shell" id="toolbox" aria-label="Toolbox">
          <h2 data-reveal>Toolbox</h2>
          <div class="toolbox-grid">
-            <div class="tool-group" data-reveal>
+            <div class="tool-group panel spotlight" data-reveal>
                <h3>Languages</h3>
                <ul class="chips" role="list">
                   <li>Python</li><li>Java</li><li>JavaScript</li><li>Rust</li><li>C++</li><li>SQL</li>
                </ul>
             </div>
-            <div class="tool-group" data-reveal>
+            <div class="tool-group panel spotlight" data-reveal>
                <h3>Frameworks</h3>
                <ul class="chips" role="list">
                   <li>Django</li><li>Node.js</li><li>React</li><li>AngularJS</li><li>Flutter</li>
                </ul>
             </div>
-            <div class="tool-group" data-reveal>
+            <div class="tool-group panel spotlight" data-reveal>
                <h3>Cloud &amp; platform</h3>
                <ul class="chips" role="list">
                   <li>Docker</li><li>Kubernetes</li><li>OpenStack</li><li>VMware</li><li>CloudBolt</li><li>Jenkins</li><li>CI/CD</li>
                </ul>
             </div>
-            <div class="tool-group" data-reveal>
+            <div class="tool-group panel spotlight" data-reveal>
                <h3>AI &amp; testing</h3>
                <ul class="chips" role="list">
                   <li>MCP</li><li>FastMCP</li><li>LLM cost optimization</li><li>Playwright</li><li>Selenium</li><li>Locust</li>
@@ -266,7 +293,7 @@
          </div>
       </section>
 
-      <section class="principles" id="principles" aria-label="Operating principles">
+      <section class="principles shell" id="principles" aria-label="How I work">
          <h2 data-reveal>How I work</h2>
          <ul class="principles-list" role="list">
             <li data-reveal><span class="hl">Automate</span> the boring parts.</li>

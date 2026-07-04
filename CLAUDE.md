@@ -92,6 +92,22 @@ drawn as a distributed-trace waterfall.
   chip; computed styles prove the page itself is correct. Committed locally; owner pushes
   to publish.
 
+- **2026-07-05** v2 "alive" pass from owner feedback: warm ember atmosphere (drifting glows +
+  grain) instead of flat black, Clash Display for all display type (self-hosted, Fontshare),
+  layout widened to 1440px, scroll animations now REVERSE on scroll-up (GSAP toggleActions),
+  scroll-progress hairline, scrollspy nav, pointer-tracking spotlight borders on all panels.
+  Experience redesigned as a proper trace chart (label gutter + shared axis + gridlines) with
+  hover linking between chart bars and role rows; pulsing "live" dot removed (owner: AI tell).
+  Projects now use real media: assets/luggagebot.mp4 + assets/pokerplanning.mp4 (converted via
+  ffmpeg from owner's gifs, 10.8MB to 226KB and 2.4MB to 283KB; source gifs gitignored),
+  SysSimulator expects assets/syssimulator.png (owner to provide; graceful "pending" fallback).
+  Pixel Pals copy corrected to Python/Pygame. LuggageBot copy: Mask R-CNN/segmentation,
+  pre-GPT flavor. Poker Planning: COVID origin story + Rive teddy. demos.js trimmed to hero
+  mesh + BFS. Fixed real bugs: IntersectionObserver handlers now read the LAST batched entry
+  (stale-first-entry bug), video autoplay race vs pause-observer.
+  NOTE: the preview panel tab reports visibility:hidden when occluded; rAF/IO/screenshots all
+  freeze then. Verify with the panel actually visible, or via owner-provided screenshots.
+
 ## TODO / ideas
 
 - [ ] Branded OG image (1200x630) instead of legacy hero.jpg

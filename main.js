@@ -5,6 +5,9 @@
    document.documentElement.classList.add('js');
 
    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   const HAS_GSAP = !!(window.gsap && window.ScrollTrigger);
+
+   if (HAS_GSAP) gsap.registerPlugin(ScrollTrigger);
 
    /* ---------------------------------------------------------- NAV */
    const nav = document.getElementById('nav');
@@ -12,54 +15,103 @@
       const sentinel = document.createElement('div');
       sentinel.style.cssText = 'position:absolute;top:0;left:0;height:48px;width:1px;pointer-events:none;';
       document.body.prepend(sentinel);
-      new IntersectionObserver(([entry]) => {
-         nav.classList.toggle('is-stuck', !entry.isIntersecting);
+      new IntersectionObserver((entries) => {
+         nav.classList.toggle('is-stuck', !entries[entries.length - 1].isIntersecting);
       }).observe(sentinel);
+
+      /* scrollspy: underline the section currently in view */
+      const links = new Map();
+      nav.querySelectorAll('.nav-links a[href^="#"]').forEach((a) => {
+         links.set(a.getAttribute('href').slice(1), a);
+      });
+      const spy = new IntersectionObserver((entries) => {
+         entries.forEach((entry) => {
+            const link = links.get(entry.target.id);
+            if (link) link.classList.toggle('active', entry.isIntersecting);
+         });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      links.forEach((_, id) => {
+         const target = document.getElementById(id);
+         if (target) spy.observe(target);
+      });
    }
 
-   /* ------------------------------------------------------ REVEALS */
-   const revealables = Array.from(document.querySelectorAll('[data-reveal]'));
-
-   /* stagger siblings that arrive together */
-   const groups = new Map();
-   revealables.forEach((el) => {
-      const parent = el.parentElement;
-      if (!groups.has(parent)) groups.set(parent, 0);
-      el.style.setProperty('--reveal-delay', `${groups.get(parent) * 0.09}s`);
-      groups.set(parent, groups.get(parent) + 1);
-   });
-
-   const revealIO = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-         if (entry.isIntersecting) {
-            entry.target.classList.add('is-in');
-            revealIO.unobserve(entry.target);
-         }
+   /* -------------------------------------------------- SCROLL PROGRESS */
+   const progress = document.querySelector('.scroll-progress i');
+   if (progress && HAS_GSAP && !REDUCED) {
+      gsap.to(progress, {
+         scaleX: 1,
+         ease: 'none',
+         scrollTrigger: { start: 0, end: 'max', scrub: 0.3 }
       });
-   }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+   }
 
-   revealables.forEach((el) => revealIO.observe(el));
+   /* ------------------------------------------------------ REVEALS
+      GSAP-driven and reversible: elements animate in on the way down
+      and back out when you scroll up past them. IO fallback keeps
+      content visible when GSAP is unavailable. */
+   if (HAS_GSAP && !REDUCED) {
+      const groups = new Map();
+      gsap.utils.toArray('[data-reveal]').forEach((el) => {
+         const parent = el.parentElement;
+         const idx = groups.get(parent) || 0;
+         groups.set(parent, idx + 1);
 
-   /* --------------------------------------------- TRACE SPAN DRAW  */
+         gsap.fromTo(el,
+            { y: 34, autoAlpha: 0 },
+            {
+               y: 0,
+               autoAlpha: 1,
+               duration: 0.9,
+               delay: idx * 0.08,
+               ease: 'power3.out',
+               scrollTrigger: {
+                  trigger: el,
+                  start: 'top 88%',
+                  toggleActions: 'play none none reverse'
+               }
+            }
+         );
+      });
+   }
+
+   /* --------------------------------------------- TRACE: bars + hover */
    const trace = document.querySelector('.trace');
-   if (trace && !REDUCED) {
-      const spans = trace.querySelectorAll('.trace-span');
-      spans.forEach((s) => s.style.setProperty('--span-grow', '0'));
-      new IntersectionObserver(([entry], io) => {
-         if (!entry.isIntersecting) return;
-         spans.forEach((s, i) => {
-            setTimeout(() => s.style.setProperty('--span-grow', '1'), 260 + i * 180);
+   if (trace) {
+      const bars = trace.querySelectorAll('.tr-bar');
+      if (HAS_GSAP && !REDUCED && bars.length) {
+         gsap.fromTo(bars,
+            { scaleX: 0 },
+            {
+               scaleX: 1,
+               duration: 1,
+               stagger: 0.12,
+               ease: 'power3.out',
+               scrollTrigger: {
+                  trigger: trace,
+                  start: 'top 75%',
+                  toggleActions: 'play none none reverse'
+               }
+            }
+         );
+      }
+
+      /* hovering a role row lights up its span in the chart (and back) */
+      const link = (fromSel) => {
+         trace.querySelectorAll(fromSel).forEach((el) => {
+            const idx = el.dataset.trace;
+            const peers = trace.querySelectorAll(`[data-trace="${idx}"]`);
+            el.addEventListener('pointerenter', () => peers.forEach((p) => p.classList.add('hot')));
+            el.addEventListener('pointerleave', () => peers.forEach((p) => p.classList.remove('hot')));
          });
-         io.disconnect();
-      }, { threshold: 0.35 }).observe(trace);
+      };
+      link('.trace-role');
+      link('.tr-row');
    }
 
    /* ------------------------------------- STATEMENT (pinned scrub) */
    const statement = document.querySelector('.statement');
-   if (statement && window.gsap && window.ScrollTrigger && !REDUCED) {
-      gsap.registerPlugin(ScrollTrigger);
-
-      /* split each part into word spans */
+   if (statement && HAS_GSAP && !REDUCED) {
       statement.querySelectorAll('.statement-part').forEach((part) => {
          const words = part.textContent.trim().split(/\s+/);
          part.textContent = '';
@@ -98,6 +150,35 @@
          );
       }
    }
+
+   /* ----------------------------------------------- SPOTLIGHT PANELS */
+   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.spotlight').forEach((panel) => {
+         panel.addEventListener('pointermove', (e) => {
+            const r = panel.getBoundingClientRect();
+            panel.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+            panel.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+         }, { passive: true });
+      });
+   }
+
+   /* ------------------------------------------------ VIDEO LIFECYCLE
+      Autoplay only while on screen; never autoplay under reduced motion. */
+   document.querySelectorAll('video').forEach((video) => {
+      if (REDUCED) {
+         video.removeAttribute('autoplay');
+         video.pause();
+         video.setAttribute('controls', 'controls');
+         return;
+      }
+      /* autoplay races the observer, so take manual control */
+      video.removeAttribute('autoplay');
+      video.pause();
+      new IntersectionObserver((entries) => {
+         if (entries[entries.length - 1].isIntersecting) video.play().catch(() => {});
+         else video.pause();
+      }, { rootMargin: '80px' }).observe(video);
+   });
 
    /* -------------------------------------------------- EASTER EGG  */
    try {
