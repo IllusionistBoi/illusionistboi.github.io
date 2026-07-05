@@ -188,6 +188,17 @@ drawn as a distributed-trace waterfall.
   manifest CORS-blocked when opening index.html from disk); zero errors over http.
   PUSHED TO PRODUCTION per owner instruction.
 
+- **2026-07-05** v8 (post-launch fixes from owner testing): footer heading was clipping under
+  the nav at max scroll on shorter viewports; the footer now MEASURES itself against
+  (innerHeight - 88) and applies .contact-compact (smaller wordmark/spacing) when needed,
+  re-measuring on window resize, font ready, and load (a ResizeObserver on the footer alone
+  missed window-height changes). Principles scrub end moved from 'top 18%' to 'top 45%' so the
+  last line completes ~900px before max scroll. Intro counter now maps to (total - closer hold):
+  it reads 100 exactly when "Let's get you in." appears (was 64%, felt cut short); middle
+  greeting delays raised to 110ms and drive tick tightened to 30ms so busy load frames cannot
+  skip words. Note for future debugging: the preview panel tab freezes rAF when hidden, which
+  also freezes GSAP scrubs; ScrollTrigger progress values read 0 there regardless of scroll.
+
 ## TODO / ideas
 - [ ] Optional: custom 404.html in the same design language
 - [ ] Optional: light "console easter egg" for engineers who open devtools
