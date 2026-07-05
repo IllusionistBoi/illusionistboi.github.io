@@ -94,7 +94,7 @@
                <span class="statement-part">When something is hard to understand,</span>
                <span class="statement-part statement-hl">I build a version I can watch.</span>
             </p>
-            <p class="statement-after" data-reveal>That is how I learned system design in college, and how I work today: automate the repetitive, visualize the invisible, and own things end to end.</p>
+            <p class="statement-after" data-reveal>That is how I learned system design in college, and how I work today: <span class="hl">automate</span> the repetitive, <span class="hl-green">visualize</span> the invisible, and <span class="hl-violet">own</span> things end to end.</p>
          </div>
       </section>
 
@@ -191,42 +191,44 @@
 
       <!-- Career rendered as a distributed trace: label gutter + shared time axis -->
       <section class="experience shell" id="experience">
-         <div class="section-head" data-reveal>
-            <h2>Experience</h2>
-            <p class="section-lede">Student in 2018, senior advisor by 2025. Read like a trace.</p>
-         </div>
-
-         <!-- the ascent: seven years drawn as one rising line -->
-         <div class="ascent" aria-hidden="true">
-            <svg viewBox="0 0 1200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <defs>
-                  <linearGradient id="asc-grad" x1="0" y1="1" x2="1" y2="0">
-                     <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.25" />
-                     <stop offset="1" stop-color="#ff9142" stop-opacity="0.95" />
-                  </linearGradient>
-               </defs>
-               <path class="ascent-path" d="M 40 214 C 180 206 330 188 450 168 S 560 148 620 138 S 720 116 780 104 S 920 72 1000 58 S 1120 40 1170 34" stroke="url(#asc-grad)" stroke-width="2.5" stroke-linecap="round" />
-               <g class="ascent-mark">
-                  <circle cx="40" cy="214" r="4" />
-                  <text x="40" y="238" text-anchor="start">2018 &#183; student, UCD</text>
-               </g>
-               <g class="ascent-mark">
-                  <circle cx="450" cy="168" r="4" />
-                  <text x="450" y="192" text-anchor="middle">2021 &#183; intern</text>
-               </g>
-               <g class="ascent-mark">
-                  <circle cx="620" cy="138" r="4" />
-                  <text x="620" y="162" text-anchor="middle">2022 &#183; graduate</text>
-               </g>
-               <g class="ascent-mark">
-                  <circle cx="780" cy="104" r="4" />
-                  <text x="780" y="128" text-anchor="middle">2023 &#183; engineer</text>
-               </g>
-               <g class="ascent-mark">
-                  <circle cx="1000" cy="58" r="4" />
-                  <text x="1000" y="82" text-anchor="middle">2025 &#183; senior advisor, Cigna</text>
-               </g>
-            </svg>
+         <!-- heading composed into the graph's empty corner; the line rises past it -->
+         <div class="exp-hero">
+            <div class="section-head" data-reveal>
+               <h2>Experience</h2>
+               <p class="section-lede">Seven years, one direction.</p>
+            </div>
+            <div class="ascent" aria-hidden="true">
+               <svg viewBox="0 0 1200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                     <linearGradient id="asc-grad" gradientUnits="userSpaceOnUse" x1="40" y1="214" x2="1170" y2="34">
+                        <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.3" />
+                        <stop offset="0.55" stop-color="#ff7a1a" stop-opacity="0.8" />
+                        <stop offset="1" stop-color="#ff9142" stop-opacity="1" />
+                     </linearGradient>
+                  </defs>
+                  <path class="ascent-path" d="M 40 214 C 180 206 330 188 450 168 S 560 148 620 138 S 720 116 780 104 S 920 72 1000 58 S 1120 40 1170 34" stroke="url(#asc-grad)" stroke-width="2.5" stroke-linecap="round" />
+                  <g class="ascent-mark">
+                     <circle cx="40" cy="214" r="4" fill="url(#asc-grad)" />
+                     <text x="40" y="238" text-anchor="start">2018 &#183; student, UCD</text>
+                  </g>
+                  <g class="ascent-mark">
+                     <circle cx="450" cy="168" r="4" fill="url(#asc-grad)" />
+                     <text x="450" y="192" text-anchor="middle">2021 &#183; intern</text>
+                  </g>
+                  <g class="ascent-mark">
+                     <circle cx="620" cy="138" r="4" fill="url(#asc-grad)" />
+                     <text x="620" y="162" text-anchor="middle">2022 &#183; graduate</text>
+                  </g>
+                  <g class="ascent-mark">
+                     <circle cx="780" cy="104" r="4" fill="url(#asc-grad)" />
+                     <text x="780" y="128" text-anchor="middle">2023 &#183; engineer</text>
+                  </g>
+                  <g class="ascent-mark">
+                     <circle cx="1000" cy="58" r="4" fill="url(#asc-grad)" />
+                     <text x="1000" y="82" text-anchor="middle">2025 &#183; senior advisor, Cigna</text>
+                  </g>
+               </svg>
+            </div>
          </div>
 
          <div class="trace panel spotlight" data-reveal>
@@ -268,7 +270,7 @@
                      <h3>Infrastructure Engineering Senior Advisor<span class="trace-org">Evernorth (Cigna)</span></h3>
                      <p class="trace-dates">Jul 2025 to present, Galway</p>
                   </div>
-                  <p class="trace-desc">End-to-end ownership on the UnITy AI chatbot for Cigna's private cloud: MCP integrations built on FastMCP, LLM token-cost optimization, SAST/SCA security remediation, and Playwright release automation across UnITy and CloudBolt.</p>
+                  <p class="trace-desc">Own the UnITy AI chatbot for Cigna's private cloud end to end: cut LLM spend by optimizing token usage across summarization, context, and tool calls; shipped MCP integrations on FastMCP; hardened security by leading SAST/SCA remediation; raised release confidence with Playwright automation across UnITy and CloudBolt.</p>
                </li>
                <li class="trace-role" data-trace="1">
                   <div>
@@ -276,7 +278,7 @@
                      <p class="trace-dates">Jul 2023 to Jul 2025, Athlone</p>
                      <p class="award">Key Contributor Award</p>
                   </div>
-                  <p class="trace-desc">Migrated the Software Provisioning Tool from PHP to Django, automated vApp deployments and Jenkins workflows, and drove the VMware licensing reduction that earned a company Key Contributor award.</p>
+                  <p class="trace-desc">Cut deployment time and maintenance cost by migrating the Software Provisioning Tool from PHP to Django; automated vApp deployments and Jenkins workflows; drove the VMware licensing reduction that earned a company Key Contributor award.</p>
                </li>
                <li class="trace-role" data-trace="2">
                   <div>
@@ -290,7 +292,7 @@
                      <h3>Software Engineer Intern<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Mar 2021 to Aug 2021, Athlone</p>
                   </div>
-                  <p class="trace-desc">Built internal engineering tools with the Engineering Tools team, improved tool search to lift usage by 40%, and modernized Java services to Java 11.</p>
+                  <p class="trace-desc">Lifted tool usage 40% by redesigning search across internal engineering tools, raised team productivity ~25% with new tooling and features, and modernized Java services to Java 11.</p>
                </li>
             </ol>
          </div>
@@ -299,13 +301,13 @@
       <section class="education shell" id="education" aria-label="Education">
          <h2 data-reveal>Education</h2>
          <div class="edu-grid">
-            <article class="edu-card panel spotlight" data-reveal>
+            <article class="edu-card panel spotlight tint-bar" data-reveal>
                <h3>BSc (Hons) Computer Science with Data Science</h3>
                <p class="edu-org">University College Dublin</p>
                <p class="trace-dates">2018 to 2022, Dublin</p>
                <p class="trace-desc">Data science and statistics on top of core CS: networks, information security, software engineering, and large-scale data handling in Python, R, Java, and SQL.</p>
             </article>
-            <article class="edu-card panel spotlight" data-reveal>
+            <article class="edu-card panel spotlight tint-bar tint-green" data-reveal>
                <h3>Technology Lead</h3>
                <p class="edu-org">Google Developer Student Clubs, UCD</p>
                <p class="trace-dates">Sep 2021 to May 2022, Dublin</p>
@@ -348,8 +350,8 @@
          <h2 data-reveal>How I work</h2>
          <ul class="principles-list" role="list">
             <li data-reveal><span class="hl">Automate</span> the boring parts.</li>
-            <li data-reveal>If you can't <span class="hl">see</span> it, you can't fix it.</li>
-            <li data-reveal>Own things <span class="hl">end to end</span>.</li>
+            <li data-reveal>If you can't <span class="hl-green">see</span> it, you can't fix it.</li>
+            <li data-reveal>Own things <span class="hl-violet">end to end</span>.</li>
          </ul>
       </section>
 
@@ -364,7 +366,7 @@
             <a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
             <a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">&#8599;</span></a>
          </div>
-         <p class="footer-wordmark" aria-hidden="true">Ronit Dahiya</p>
+         <p class="footer-wordmark" aria-hidden="true">Illusionist Boi</p>
          <div class="footer-meta">
             <p>Occasionally touches grass.</p>
             <p>&copy; 2026 Ronit Dahiya</p>

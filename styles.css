@@ -129,6 +129,8 @@ a {
 }
 
 .hl { color: var(--accent); }
+.hl-green { color: rgb(62, 207, 142); }
+.hl-violet { color: rgb(143, 124, 246); }
 
 /* ------------------------------------------------------------- INTRO */
 
@@ -454,11 +456,12 @@ html.intro-lock { overflow: hidden; }
 }
 
 .hero-name {
-   font-family: var(--display);
-   font-size: clamp(3.8rem, 12vw, 10rem);
+   font-family: 'Big Shoulders Stencil', var(--display);
+   font-size: clamp(4.2rem, 13.5vw, 11.5rem);
    font-weight: 700;
-   letter-spacing: -0.015em;
-   line-height: 0.94;
+   text-transform: uppercase;
+   letter-spacing: 0.015em;
+   line-height: 0.9;
    margin-bottom: 1.6rem;
 }
 
@@ -800,10 +803,22 @@ h2 {
 
 /* ------------------------------------------------------------------ EXPERIENCE / TRACE */
 
-/* the ascent: 2018 student to 2025 senior advisor as one rising line */
-.ascent {
+/* the ascent: 2018 student to 2025 senior advisor as one rising line,
+   with the section heading composed into the graph's empty corner */
+.exp-hero {
+   position: relative;
    margin-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
 }
+
+.exp-hero .section-head {
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 1;
+   margin-bottom: 0;
+}
+
+.exp-hero .section-lede { max-width: 22rem; }
 
 .ascent svg {
    display: block;
@@ -811,8 +826,6 @@ h2 {
    height: auto;
    overflow: visible;
 }
-
-.ascent-mark circle { fill: var(--accent); }
 
 .ascent-mark text {
    font-family: var(--mono);
@@ -970,7 +983,21 @@ h2 {
 }
 
 .edu-card {
+   --tint: 255, 122, 26;
    padding: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.edu-card.tint-green { --tint: 62, 207, 142; }
+
+/* shared tinted top hairline for cards that carry a category color */
+.tint-bar::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 58%;
+   height: 2px;
+   background: linear-gradient(90deg, rgba(var(--tint), 0.8), transparent);
 }
 
 .edu-card h3 {
@@ -1141,7 +1168,7 @@ h2 {
    font-family: 'Big Shoulders Stencil', var(--display);
    font-weight: 700;
    text-transform: uppercase;
-   font-size: clamp(3.2rem, 12vw, 11.5rem);
+   font-size: clamp(2.8rem, 10.5vw, 10rem);
    line-height: 0.92;
    letter-spacing: 0.02em;
    white-space: nowrap;
@@ -1187,6 +1214,11 @@ h2 {
    }
 
    .ascent { display: none; }
+
+   .exp-hero .section-head {
+      position: static;
+      margin-bottom: 2.5rem;
+   }
 
    .project-row { gap: 1.6rem; margin-bottom: 4.5rem; }
 

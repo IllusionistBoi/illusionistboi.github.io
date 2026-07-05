@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="js intro-done">
+<head>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="theme-color" content="#0d0b09" />
+   <meta name="robots" content="noindex" />
+   <title>404 | Ronit Dahiya</title>
+   <link rel="icon" href="./favicon.ico?v=8" sizes="any" />
+   <link rel="stylesheet" href="./styles.css" />
+   <style>
+      .err {
+         min-height: 100dvh;
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+         justify-content: center;
+         max-width: var(--max);
+         margin: 0 auto;
+         padding: 0 var(--gutter);
+      }
+
+      .err-code {
+         font-family: var(--mono);
+         font-size: 0.78rem;
+         letter-spacing: 0.14em;
+         text-transform: uppercase;
+         color: var(--accent);
+         margin-bottom: 1.2rem;
+      }
+
+      .err h1 {
+         font-family: 'Big Shoulders Stencil', var(--display);
+         font-weight: 700;
+         text-transform: uppercase;
+         font-size: clamp(3.5rem, 12vw, 10rem);
+         line-height: 0.92;
+         letter-spacing: 0.015em;
+      }
+
+      .err p {
+         margin-top: 1.6rem;
+         max-width: 34rem;
+         color: var(--muted);
+         font-size: 1.05rem;
+      }
+
+      .err .btn { margin-top: 2.2rem; }
+   </style>
+</head>
+<body>
+   <div class="atmosphere" aria-hidden="true"><i class="ember ember-a"></i><i class="ember ember-b"></i></div>
+   <div class="grain" aria-hidden="true"></div>
+
+   <main class="err">
+      <p class="err-code">http 404 &#183; route not found</p>
+      <h1>This page failed predictably.</h1>
+      <p>Which is the only acceptable way to fail. The route you asked for does not exist; every other part of the system is healthy.</p>
+      <a class="btn btn-primary" href="/">Back to the homepage</a>
+   </main>
+</body>
+</html>

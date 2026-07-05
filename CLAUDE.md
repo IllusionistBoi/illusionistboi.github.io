@@ -136,6 +136,19 @@ drawn as a distributed-trace waterfall.
   og:image); heavy 1.8MB png removed. Atmosphere moved to z-10 (additive glow over the opaque
   curtain). All verified in visible preview at 1440px + curtain/footer/ruler/ascent confirmed.
 
+- **2026-07-05** v4 final polish (owner: "last iteration", applying to Anthropic soon):
+  hero name now Big Shoulders Stencil uppercase (the footer wordmark became "Illusionist Boi",
+  his GitHub handle, so the stencil face repeats but the words do not); preloader expanded to
+  18 greetings with an eased cadence (slow in, fast middle, held final Hello, ~3s once per
+  session); Experience heading composed INTO the ascent graph's empty top-left corner
+  (.exp-hero absolute overlay, verified no collision with milestone labels at 1440);
+  lede rewritten to "Seven years, one direction."; trace/edu bullets rewritten in Google XYZ
+  form using only the owner's real numbers (40% usage, ~25% productivity, 30% membership);
+  category tints spread deliberately (principles highlights orange/green/violet, education
+  cards tint-bars, ascent dots sample the line gradient via userSpaceOnUse); console easter
+  egg now notes MCP servers in production (Anthropic reviewer bait, factual); custom 404.html:
+  "This page failed predictably." in the same design language.
+
 ## TODO / ideas
 
 - [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo (both unreferenced now)

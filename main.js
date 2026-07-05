@@ -31,15 +31,28 @@
       try { sessionStorage.setItem('rd-intro', '1'); } catch (_) { /* ignore */ }
       html.classList.add('intro-lock');
 
-      const words = ['Hello', 'नमस्ते', 'Dia dhuit', 'Bonjour', 'こんにちは', 'Hola', 'Hello'];
+      /* eighteen greetings; the cadence accelerates through the middle
+         and eases out, so the whole sequence gets to play */
+      const words = [
+         'Hello', 'नमस्ते', 'Dia dhuit', 'Bonjour', 'Hola', 'こんにちは',
+         '안녕하세요', '你好', 'Ciao', 'Olá', 'Hallo', 'Привет', 'مرحبا',
+         'Γειά σου', 'Merhaba', 'Xin chào', 'Hej', 'Hello'
+      ];
       const wordEl = document.getElementById('intro-word');
       let i = 0;
+
+      const delayFor = (idx) => {
+         if (idx >= words.length - 1) return 420;            /* hold the last hello */
+         const mid = words.length / 2;
+         const dist = Math.abs(idx - mid) / mid;             /* 0 center, 1 edges */
+         return 90 + dist * dist * 130;                      /* 90ms center, ~220ms edges */
+      };
 
       const step = () => {
          i += 1;
          if (i < words.length) {
             wordEl.textContent = words[i];
-            setTimeout(step, i === words.length - 1 ? 340 : 150);
+            setTimeout(step, delayFor(i));
          } else {
             el.classList.add('done');
             html.classList.add('intro-done');
@@ -48,8 +61,8 @@
             setTimeout(() => el.classList.add('gone'), 1200); /* failsafe */
          }
       };
-      setTimeout(step, 300);
-      setTimeout(finish, 4000); /* absolute failsafe */
+      setTimeout(step, 420);
+      setTimeout(finish, 6000); /* absolute failsafe */
    })();
 
    /* ---------------------------------------------------------- NAV */
@@ -329,9 +342,10 @@
    /* -------------------------------------------------- EASTER EGG  */
    try {
       console.log(
-         '%cHey, fellow engineer. %cThe source is unminified on purpose: read away.\nhttps://github.com/IllusionistBoi/illusionistboi.github.io',
+         '%cHey, fellow engineer. %cThe source is unminified on purpose: read away.\nhttps://github.com/IllusionistBoi/illusionistboi.github.io\n%cmcp_servers_in_production: true',
          'color:#ff7a1a;font-weight:600;font-family:monospace;',
-         'color:#a3a3a8;font-family:monospace;'
+         'color:#a3a3a8;font-family:monospace;',
+         'color:#3ecf8e;font-family:monospace;'
       );
    } catch (_) { /* ignore */ }
 })();
