@@ -30,6 +30,15 @@
 }
 
 @font-face {
+   /* display accent, used only for the footer wordmark */
+   font-family: 'Big Shoulders Stencil';
+   font-style: normal;
+   font-weight: 100 900;
+   font-display: swap;
+   src: url('./fonts/big-shoulders-stencil.woff2') format('woff2-variations');
+}
+
+@font-face {
    font-family: 'Geist';
    font-style: normal;
    font-weight: 100 900;
@@ -84,15 +93,23 @@ html {
 
 body {
    font-family: var(--sans);
-   background:
-      radial-gradient(1200px 800px at 85% -10%, rgba(255, 122, 26, 0.05), transparent 60%),
-      radial-gradient(1000px 700px at -10% 40%, rgba(255, 122, 26, 0.03), transparent 55%),
-      var(--bg);
+   background: var(--bg-deep);
    color: var(--text);
    line-height: 1.6;
    -webkit-font-smoothing: antialiased;
    text-rendering: optimizeLegibility;
    overflow-x: hidden;
+}
+
+/* everything above the footer scrolls as one opaque curtain, so the
+   footer can be revealed beneath it (see .contact) */
+.page-above {
+   position: relative;
+   z-index: 2;
+   background:
+      radial-gradient(1200px 800px at 85% -10%, rgba(255, 122, 26, 0.05), transparent 60%),
+      radial-gradient(1000px 700px at -10% 40%, rgba(255, 122, 26, 0.03), transparent 55%),
+      var(--bg);
 }
 
 ::selection { background: var(--accent-mid); color: #fff; }
@@ -113,12 +130,58 @@ a {
 
 .hl { color: var(--accent); }
 
+/* ------------------------------------------------------------- INTRO */
+
+.intro {
+   position: fixed;
+   inset: 0;
+   z-index: 200;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background: var(--bg-deep);
+   transition: transform 700ms var(--ease-in-out);
+}
+
+.intro.done { transform: translateY(-100%); }
+.intro.gone { display: none; }
+
+.intro-word {
+   font-family: var(--display);
+   font-size: clamp(2.2rem, 6vw, 4.2rem);
+   font-weight: 600;
+   letter-spacing: -0.01em;
+   color: var(--text);
+}
+
+.intro-word::before {
+   content: '';
+   display: inline-block;
+   width: 0.45em;
+   height: 0.45em;
+   margin-right: 0.35em;
+   border-radius: 50%;
+   background: var(--accent);
+   transform: translateY(-0.02em);
+}
+
+html.intro-lock { overflow: hidden; }
+
+/* hero entrance waits for the curtain (JS adds intro-done; no-JS plays normally) */
+.js:not(.intro-done) .hero-word,
+.js:not(.intro-done) .hero-sub,
+.js:not(.intro-done) .hero-cta,
+.js:not(.intro-done) .hero-eyebrow {
+   animation-play-state: paused;
+}
+
 /* ------------------------------------------------------- ATMOSPHERE */
 
 .atmosphere {
+   /* sits over the opaque page curtain as pure additive glow */
    position: fixed;
    inset: 0;
-   z-index: -1;
+   z-index: 10;
    overflow: hidden;
    pointer-events: none;
 }
@@ -182,6 +245,68 @@ a {
    background: linear-gradient(to right, var(--accent), var(--accent-strong));
    transform: scaleX(0);
    transform-origin: left;
+}
+
+/* ------------------------------------------------------------ RULER
+   Desktop scroll position, drawn like a physical gauge. */
+
+.ruler {
+   position: fixed;
+   right: clamp(14px, 2vw, 34px);
+   top: 50%;
+   transform: translateY(-50%);
+   z-index: 55;
+   display: none;
+   pointer-events: none;
+}
+
+@media (min-width: 1100px) {
+   .js .ruler.ready { display: block; }
+   html.ruler-on .scroll-progress { display: none; }
+}
+
+.ruler-ticks {
+   display: flex;
+   flex-direction: column;
+   gap: 7px;
+   align-items: flex-end;
+}
+
+.ruler-ticks i {
+   display: block;
+   width: 15px;
+   height: 1px;
+   background: rgba(245, 241, 233, 0.15);
+}
+
+.ruler-ticks i:nth-child(5n + 1) { width: 24px; }
+
+.ruler-cursor {
+   position: absolute;
+   top: -1px;
+   right: 0;
+   display: flex;
+   flex-direction: row-reverse;
+   align-items: center;
+   gap: 10px;
+   will-change: transform;
+}
+
+.ruler-cursor i {
+   display: block;
+   width: 34px;
+   height: 2px;
+   background: var(--accent);
+   box-shadow: 0 0 12px rgba(255, 122, 26, 0.55);
+}
+
+.ruler-cursor span {
+   font-family: var(--mono);
+   font-weight: 600;
+   font-size: 0.92rem;
+   color: var(--text);
+   min-width: 3ch;
+   text-align: right;
 }
 
 .skip-link {
@@ -416,7 +541,7 @@ main { position: relative; z-index: 2; }
    padding-right: var(--gutter);
 }
 
-.work, .experience, .toolbox, .principles {
+.work, .experience, .education, .toolbox, .principles {
    padding-top: clamp(6rem, 13vh, 10rem);
 }
 
@@ -515,7 +640,7 @@ h2 {
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 122, 26, 0.09), transparent 65%);
+      background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--tint, 255, 122, 26), 0.09), transparent 65%);
       opacity: 0;
       transition: opacity 300ms ease;
    }
@@ -675,6 +800,27 @@ h2 {
 
 /* ------------------------------------------------------------------ EXPERIENCE / TRACE */
 
+/* the ascent: 2018 student to 2025 senior advisor as one rising line */
+.ascent {
+   margin-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.ascent svg {
+   display: block;
+   width: 100%;
+   height: auto;
+   overflow: visible;
+}
+
+.ascent-mark circle { fill: var(--accent); }
+
+.ascent-mark text {
+   font-family: var(--mono);
+   font-size: 11.5px;
+   letter-spacing: 0.02em;
+   fill: var(--subtle);
+}
+
 .trace {
    padding: clamp(1.6rem, 4vw, 3.2rem);
 }
@@ -798,14 +944,50 @@ h2 {
    max-width: 52rem;
 }
 
-.trace-edu {
-   margin-top: 0.5rem;
-   padding-top: 1.5rem;
-   border-top: 1px solid var(--line);
+.award {
+   display: inline-flex;
+   align-items: center;
+   margin-top: 0.7rem;
    font-family: var(--mono);
-   font-size: 0.76rem;
-   color: var(--subtle);
+   font-size: 0.68rem;
+   letter-spacing: 0.09em;
+   text-transform: uppercase;
+   color: var(--accent);
+   padding: 0.34rem 0.8rem;
+   border: 1px solid var(--accent-mid);
+   border-radius: 999px;
+   background: rgba(255, 122, 26, 0.07);
+   box-shadow: 0 0 16px -6px rgba(255, 122, 26, 0.55);
 }
+
+/* ------------------------------------------------------------------ EDUCATION */
+
+.edu-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: clamp(1.2rem, 2.5vw, 2rem);
+   margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.edu-card {
+   padding: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.edu-card h3 {
+   font-family: var(--display);
+   font-size: 1.35rem;
+   font-weight: 600;
+   line-height: 1.25;
+}
+
+.edu-org {
+   margin-top: 0.35rem;
+   color: var(--muted);
+   font-size: 0.95rem;
+}
+
+.edu-card .trace-dates { margin-top: 0.5rem; }
+.edu-card .trace-desc { margin-top: 0.9rem; }
 
 /* ------------------------------------------------------------------ TOOLBOX */
 
@@ -816,8 +998,25 @@ h2 {
    margin-top: clamp(2rem, 4vw, 3rem);
 }
 
+/* each group carries its own tint, echoing how SysSimulator
+   color-codes component categories */
 .tool-group {
+   --tint: 255, 122, 26;
    padding: clamp(1.4rem, 2.5vw, 2rem);
+}
+
+.tool-group.tint-violet { --tint: 143, 124, 246; }
+.tool-group.tint-green { --tint: 62, 207, 142; }
+.tool-group.tint-pink { --tint: 244, 95, 143; }
+
+.tool-group::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 58%;
+   height: 2px;
+   background: linear-gradient(90deg, rgba(var(--tint), 0.8), transparent);
 }
 
 .tool-group h3 {
@@ -825,9 +1024,18 @@ h2 {
    font-size: 1.15rem;
    font-weight: 600;
    margin-bottom: 1.1rem;
+   color: rgb(var(--tint));
 }
 
 .tool-group .chips { margin-top: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+   .tool-group .chips li:hover {
+      color: rgb(var(--tint));
+      border-color: rgba(var(--tint), 0.5);
+      background: rgba(var(--tint), 0.07);
+   }
+}
 
 /* ------------------------------------------------------------------ PRINCIPLES */
 
@@ -859,8 +1067,22 @@ h2 {
    position: relative;
    margin-top: clamp(6rem, 13vh, 10rem);
    border-top: 1px solid var(--line);
-   background: linear-gradient(to bottom, transparent, rgba(255, 122, 26, 0.05));
+   background: linear-gradient(to bottom, rgba(255, 122, 26, 0.02), rgba(255, 122, 26, 0.06)), var(--bg-deep);
    overflow: hidden;
+}
+
+/* curtain reveal: the footer waits under the page and is exposed as
+   .page-above scrolls away (desktop only; short phone viewports would
+   clip a fixed footer) */
+@media (min-width: 861px) {
+   .contact {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      margin-top: 0;
+   }
 }
 
 .contact::before {
@@ -879,7 +1101,7 @@ h2 {
    position: relative;
    max-width: var(--max);
    margin: 0 auto;
-   padding: clamp(5rem, 11vh, 9rem) var(--gutter) 2.5rem;
+   padding: clamp(3.5rem, 7vh, 5.5rem) var(--gutter) 2rem;
 }
 
 .contact h2 { max-width: 14em; }
@@ -915,13 +1137,33 @@ h2 {
 .contact-links a { color: var(--muted); font-weight: 500; }
 .contact-links a:hover { color: var(--accent); }
 
+.footer-wordmark {
+   font-family: 'Big Shoulders Stencil', var(--display);
+   font-weight: 700;
+   text-transform: uppercase;
+   font-size: clamp(3.2rem, 12vw, 11.5rem);
+   line-height: 0.92;
+   letter-spacing: 0.02em;
+   white-space: nowrap;
+   margin-top: clamp(2.2rem, 5vh, 4rem);
+   background: linear-gradient(180deg, rgba(255, 145, 66, 0.92), rgba(255, 122, 26, 0.12));
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 861px) and (max-height: 780px) {
+   .footer-wordmark { font-size: clamp(2.6rem, 8.5vw, 7.5rem); }
+   .contact-inner { padding-top: 2.6rem; }
+}
+
 .footer-meta {
    display: flex;
    justify-content: space-between;
    align-items: baseline;
    flex-wrap: wrap;
    gap: 0.5rem;
-   margin-top: clamp(4rem, 8vh, 6rem);
+   margin-top: clamp(1.4rem, 3vh, 2.2rem);
    padding-top: 1.5rem;
    border-top: 1px solid var(--line);
    font-size: 0.8rem;
@@ -939,9 +1181,12 @@ h2 {
 @media (max-width: 860px) {
    .project-row,
    .project-duo,
-   .toolbox-grid {
+   .toolbox-grid,
+   .edu-grid {
       grid-template-columns: 1fr;
    }
+
+   .ascent { display: none; }
 
    .project-row { gap: 1.6rem; margin-bottom: 4.5rem; }
 
@@ -999,7 +1244,13 @@ h2 {
 
    .tr-bar { transform: none !important; }
 
-   .grain, .atmosphere, .scroll-progress, #system-map { display: none !important; }
+   .ascent-path { stroke-dashoffset: 0 !important; }
+   .ascent-mark { opacity: 1 !important; visibility: visible !important; }
+
+   .grain, .atmosphere, .scroll-progress, #system-map, .intro, .ruler { display: none !important; }
+
+   .contact { position: static !important; }
+   .page-above { margin-bottom: 0 !important; }
 }
 
 /* ------------------------------------------------------------------ REDUCED MOTION */
@@ -1015,6 +1266,9 @@ h2 {
    }
 
    .ember-a, .ember-b { animation: none; }
+
+   .intro { display: none; }
+   html.intro-lock { overflow: auto; }
 
    .statement-text .word { opacity: 1 !important; }
 

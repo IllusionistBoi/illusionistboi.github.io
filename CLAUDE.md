@@ -116,6 +116,26 @@ drawn as a distributed-trace waterfall.
   until triggered; that is expected live behavior but capture tools caught it). Statement resting
   word opacity raised 0.1 to 0.16.
 
+- **2026-07-05** v3 pass from owner feedback: (1) hello-preloader (Apple/skiper8 style, cycling
+  greetings incl. Devanagari + Irish, once per sessionStorage, reduced-motion skip, failsafes);
+  (2) right-edge scroll RULER (41 ticks + moving orange cursor + percent, desktop >=1100px,
+  replaces top hairline there; hairline remains on mobile); (3) ASCENT: scroll-drawn SVG line
+  2018 student -> 2025 senior advisor with milestone dots/labels, in Experience above the trace
+  (hidden <861px); (4) curtain-reveal footer (skiper39 style): .page-above is an opaque z-2
+  curtain, footer position:fixed z-1 beneath, page reserves footer height via JS ResizeObserver;
+  anchor #contact intercepted to scroll to document end (fixed elements have no anchor position);
+  footer excluded from IO scrollspy (fixed = always intersecting), handled via scroll progress
+  instead; (5) giant stencil wordmark "Ronit Dahiya" in footer (Big Shoulders Stencil variable,
+  self-hosted; the Neocultural Couture font the owner liked is commercial, stencil accent is the
+  legal stand-in, swappable if owner licenses the real one); (6) Key Contributor Award surfaced
+  as an orange badge chip in the Ericsson SWE role; (7) Education section: UCD degree + GDSC
+  Technology Lead as separate cards; GDSC removed from the work trace (now 4 employment spans);
+  (8) Toolbox groups color-coded like SysSimulator's component categories (orange/violet/green/
+  pink tints; deliberate owner-requested exception to the one-accent rule); (9) new hi-res
+  SysSimulator capture from owner: assets/syssimulator.webp (40KB page) + .jpg (112KB fallback +
+  og:image); heavy 1.8MB png removed. Atmosphere moved to z-10 (additive glow over the opaque
+  curtain). All verified in visible preview at 1440px + curtain/footer/ruler/ascent confirmed.
+
 ## TODO / ideas
 
 - [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo (both unreferenced now)

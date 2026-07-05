@@ -12,7 +12,7 @@
    <meta property="og:title" content="Ronit Dahiya | Full-Stack Developer &amp; Infrastructure Engineer" />
    <meta property="og:description" content="Building an enterprise AI chatbot with custom MCP tooling and the automation behind Cigna's private cloud. Projects shown with real demos, one running live on the page." />
    <meta property="og:url" content="https://illusionistboi.github.io/" />
-   <meta property="og:image" content="https://illusionistboi.github.io/assets/syssimulator.png" />
+   <meta property="og:image" content="https://illusionistboi.github.io/assets/syssimulator.jpg" />
    <meta name="twitter:card" content="summary_large_image" />
 
    <link rel="icon" href="./favicon.ico?v=8" sizes="any" />
@@ -45,9 +45,15 @@
    </script>
 </head>
 <body>
+   <div class="intro" id="intro" aria-hidden="true"><span class="intro-word" id="intro-word">Hello</span></div>
+
    <div class="atmosphere" aria-hidden="true"><i class="ember ember-a"></i><i class="ember ember-b"></i></div>
    <div class="grain" aria-hidden="true"></div>
    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+   <div class="ruler" id="ruler" aria-hidden="true">
+      <div class="ruler-ticks" id="ruler-ticks"></div>
+      <div class="ruler-cursor" id="ruler-cursor"><i></i><span id="ruler-num">0</span></div>
+   </div>
 
    <a class="skip-link" href="#work">Skip to content</a>
 
@@ -56,9 +62,11 @@
       <div class="nav-links">
          <a href="#work">Work</a>
          <a href="#experience">Experience</a>
-         <a href="#contact">Contact</a>
+         <a href="#contact" id="nav-contact">Contact</a>
       </div>
    </nav>
+
+   <div class="page-above" id="page-above">
 
    <header class="hero" id="top">
       <canvas id="system-map" aria-hidden="true"></canvas>
@@ -102,7 +110,7 @@
                <div class="media-frame">
                   <picture>
                      <source srcset="./assets/syssimulator.webp" type="image/webp" />
-                     <img src="./assets/syssimulator.png" alt="SysSimulator: a multi-agent supervisor architecture running under simulated load, with live RPS, p99 latency, and per-component metrics" width="1894" height="888" loading="lazy" />
+                     <img src="./assets/syssimulator.jpg" alt="SysSimulator: a multi-agent supervisor architecture running under simulated load, with live RPS, p99 latency, and per-component metrics" width="1600" height="918" loading="lazy" />
                   </picture>
                </div>
                <p class="demo-caption">A multi-agent supervisor blueprint under simulated load: live RPS, p99 latency, and tradeoffs per component.</p>
@@ -185,8 +193,42 @@
       <section class="experience shell" id="experience">
          <div class="section-head" data-reveal>
             <h2>Experience</h2>
-            <p class="section-lede">Intern to senior advisor in four years, read like a trace.</p>
+            <p class="section-lede">Student in 2018, senior advisor by 2025. Read like a trace.</p>
          </div>
+
+         <!-- the ascent: seven years drawn as one rising line -->
+         <div class="ascent" aria-hidden="true">
+            <svg viewBox="0 0 1200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <defs>
+                  <linearGradient id="asc-grad" x1="0" y1="1" x2="1" y2="0">
+                     <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.25" />
+                     <stop offset="1" stop-color="#ff9142" stop-opacity="0.95" />
+                  </linearGradient>
+               </defs>
+               <path class="ascent-path" d="M 40 214 C 180 206 330 188 450 168 S 560 148 620 138 S 720 116 780 104 S 920 72 1000 58 S 1120 40 1170 34" stroke="url(#asc-grad)" stroke-width="2.5" stroke-linecap="round" />
+               <g class="ascent-mark">
+                  <circle cx="40" cy="214" r="4" />
+                  <text x="40" y="238" text-anchor="start">2018 &#183; student, UCD</text>
+               </g>
+               <g class="ascent-mark">
+                  <circle cx="450" cy="168" r="4" />
+                  <text x="450" y="192" text-anchor="middle">2021 &#183; intern</text>
+               </g>
+               <g class="ascent-mark">
+                  <circle cx="620" cy="138" r="4" />
+                  <text x="620" y="162" text-anchor="middle">2022 &#183; graduate</text>
+               </g>
+               <g class="ascent-mark">
+                  <circle cx="780" cy="104" r="4" />
+                  <text x="780" y="128" text-anchor="middle">2023 &#183; engineer</text>
+               </g>
+               <g class="ascent-mark">
+                  <circle cx="1000" cy="58" r="4" />
+                  <text x="1000" y="82" text-anchor="middle">2025 &#183; senior advisor, Cigna</text>
+               </g>
+            </svg>
+         </div>
+
          <div class="trace panel spotlight" data-reveal>
             <div class="trace-chart" aria-hidden="true">
                <div class="trace-years">
@@ -214,10 +256,6 @@
                      <div class="tr-track"><div class="tr-bar" style="--from: 26.1%; --to: 43.5%"></div></div>
                   </div>
                   <div class="tr-row" data-trace="3">
-                     <span class="tr-label">gdsc-ucd / technology-lead</span>
-                     <div class="tr-track"><div class="tr-bar" style="--from: 11.6%; --to: 23.2%"></div></div>
-                  </div>
-                  <div class="tr-row" data-trace="4">
                      <span class="tr-label">ericsson / intern</span>
                      <div class="tr-track"><div class="tr-bar" style="--from: 3%; --to: 10.1%"></div></div>
                   </div>
@@ -236,8 +274,9 @@
                   <div>
                      <h3>Software Engineer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2023 to Jul 2025, Athlone</p>
+                     <p class="award">Key Contributor Award</p>
                   </div>
-                  <p class="trace-desc">Migrated the Software Provisioning Tool from PHP to Django, automated vApp deployments and Jenkins workflows, and helped cut VMware licensing costs. Received a Key Contributor award.</p>
+                  <p class="trace-desc">Migrated the Software Provisioning Tool from PHP to Django, automated vApp deployments and Jenkins workflows, and drove the VMware licensing reduction that earned a company Key Contributor award.</p>
                </li>
                <li class="trace-role" data-trace="2">
                   <div>
@@ -248,20 +287,30 @@
                </li>
                <li class="trace-role" data-trace="3">
                   <div>
-                     <h3>Technology Lead<span class="trace-org">Google Developer Student Clubs, UCD</span></h3>
-                     <p class="trace-dates">Sep 2021 to May 2022, Dublin</p>
-                  </div>
-                  <p class="trace-desc">Led UCD's student developer community: taught Android, Google Cloud, and machine learning, and grew active membership by 30% in the club's first year.</p>
-               </li>
-               <li class="trace-role" data-trace="4">
-                  <div>
                      <h3>Software Engineer Intern<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Mar 2021 to Aug 2021, Athlone</p>
                   </div>
                   <p class="trace-desc">Built internal engineering tools with the Engineering Tools team, improved tool search to lift usage by 40%, and modernized Java services to Java 11.</p>
                </li>
             </ol>
-            <p class="trace-edu">BSc (Hons) Computer Science with Data Science, University College Dublin, 2018 to 2022</p>
+         </div>
+      </section>
+
+      <section class="education shell" id="education" aria-label="Education">
+         <h2 data-reveal>Education</h2>
+         <div class="edu-grid">
+            <article class="edu-card panel spotlight" data-reveal>
+               <h3>BSc (Hons) Computer Science with Data Science</h3>
+               <p class="edu-org">University College Dublin</p>
+               <p class="trace-dates">2018 to 2022, Dublin</p>
+               <p class="trace-desc">Data science and statistics on top of core CS: networks, information security, software engineering, and large-scale data handling in Python, R, Java, and SQL.</p>
+            </article>
+            <article class="edu-card panel spotlight" data-reveal>
+               <h3>Technology Lead</h3>
+               <p class="edu-org">Google Developer Student Clubs, UCD</p>
+               <p class="trace-dates">Sep 2021 to May 2022, Dublin</p>
+               <p class="trace-desc">Led UCD's student developer community: taught Android, Google Cloud, and machine learning, and grew active membership by 30% in the club's first year.</p>
+            </article>
          </div>
       </section>
 
@@ -274,19 +323,19 @@
                   <li>Python</li><li>Java</li><li>JavaScript</li><li>Rust</li><li>C++</li><li>SQL</li>
                </ul>
             </div>
-            <div class="tool-group panel spotlight" data-reveal>
+            <div class="tool-group panel spotlight tint-violet" data-reveal>
                <h3>Frameworks</h3>
                <ul class="chips" role="list">
                   <li>Django</li><li>Node.js</li><li>React</li><li>AngularJS</li><li>Flutter</li>
                </ul>
             </div>
-            <div class="tool-group panel spotlight" data-reveal>
+            <div class="tool-group panel spotlight tint-green" data-reveal>
                <h3>Cloud &amp; platform</h3>
                <ul class="chips" role="list">
                   <li>Docker</li><li>Kubernetes</li><li>OpenStack</li><li>VMware</li><li>CloudBolt</li><li>Jenkins</li><li>CI/CD</li>
                </ul>
             </div>
-            <div class="tool-group panel spotlight" data-reveal>
+            <div class="tool-group panel spotlight tint-pink" data-reveal>
                <h3>AI &amp; testing</h3>
                <ul class="chips" role="list">
                   <li>MCP</li><li>FastMCP</li><li>LLM cost optimization</li><li>Playwright</li><li>Selenium</li><li>Locust</li>
@@ -304,22 +353,24 @@
          </ul>
       </section>
 
-      <footer class="contact" id="contact">
-         <div class="contact-inner">
-            <h2 data-reveal>Have something worth building?</h2>
-            <a class="contact-email" href="mailto:ronitdahiya5120@gmail.com" data-reveal>ronitdahiya5120@gmail.com</a>
-            <div class="contact-links" data-reveal>
-               <a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
-               <a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">&#8599;</span></a>
-            </div>
-            <div class="footer-meta">
-               <p>Occasionally touches grass.</p>
-               <p>&copy; 2026 Ronit Dahiya</p>
-            </div>
-         </div>
-      </footer>
-
    </main>
+   </div><!-- /.page-above -->
+
+   <footer class="contact" id="contact">
+      <div class="contact-inner">
+         <h2>Have something worth building?</h2>
+         <a class="contact-email" href="mailto:ronitdahiya5120@gmail.com">ronitdahiya5120@gmail.com</a>
+         <div class="contact-links">
+            <a href="https://github.com/IllusionistBoi" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">&#8599;</span></a>
+            <a href="https://www.linkedin.com/in/ronit-dahiya/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">&#8599;</span></a>
+         </div>
+         <p class="footer-wordmark" aria-hidden="true">Ronit Dahiya</p>
+         <div class="footer-meta">
+            <p>Occasionally touches grass.</p>
+            <p>&copy; 2026 Ronit Dahiya</p>
+         </div>
+      </div>
+   </footer>
 
    <script defer src="./vendor/gsap.min.js"></script>
    <script defer src="./vendor/ScrollTrigger.min.js"></script>

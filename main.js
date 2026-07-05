@@ -4,10 +4,53 @@
 
    document.documentElement.classList.add('js');
 
+   const html = document.documentElement;
    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
    const HAS_GSAP = !!(window.gsap && window.ScrollTrigger);
 
    if (HAS_GSAP) gsap.registerPlugin(ScrollTrigger);
+
+   /* -------------------------------------------------------- INTRO
+      Apple-style hello sequence: once per session, never under
+      reduced motion, always with a failsafe. */
+   (function intro() {
+      const el = document.getElementById('intro');
+      if (!el) return;
+
+      const finish = () => {
+         el.classList.add('gone');
+         html.classList.add('intro-done');
+         html.classList.remove('intro-lock');
+      };
+
+      let seen = false;
+      try { seen = sessionStorage.getItem('rd-intro') === '1'; } catch (_) { /* ignore */ }
+
+      if (REDUCED || seen) { finish(); return; }
+
+      try { sessionStorage.setItem('rd-intro', '1'); } catch (_) { /* ignore */ }
+      html.classList.add('intro-lock');
+
+      const words = ['Hello', 'नमस्ते', 'Dia dhuit', 'Bonjour', 'こんにちは', 'Hola', 'Hello'];
+      const wordEl = document.getElementById('intro-word');
+      let i = 0;
+
+      const step = () => {
+         i += 1;
+         if (i < words.length) {
+            wordEl.textContent = words[i];
+            setTimeout(step, i === words.length - 1 ? 340 : 150);
+         } else {
+            el.classList.add('done');
+            html.classList.add('intro-done');
+            html.classList.remove('intro-lock');
+            el.addEventListener('transitionend', () => el.classList.add('gone'), { once: true });
+            setTimeout(() => el.classList.add('gone'), 1200); /* failsafe */
+         }
+      };
+      setTimeout(step, 300);
+      setTimeout(finish, 4000); /* absolute failsafe */
+   })();
 
    /* ---------------------------------------------------------- NAV */
    const nav = document.getElementById('nav');
@@ -19,10 +62,12 @@
          nav.classList.toggle('is-stuck', !entries[entries.length - 1].isIntersecting);
       }).observe(sentinel);
 
-      /* scrollspy: underline the section currently in view */
+      /* scrollspy for in-flow sections; the fixed footer is handled
+         by scroll progress further down */
       const links = new Map();
       nav.querySelectorAll('.nav-links a[href^="#"]').forEach((a) => {
-         links.set(a.getAttribute('href').slice(1), a);
+         const id = a.getAttribute('href').slice(1);
+         if (id !== 'contact') links.set(id, a);
       });
       const spy = new IntersectionObserver((entries) => {
          entries.forEach((entry) => {
@@ -36,20 +81,69 @@
       });
    }
 
-   /* -------------------------------------------------- SCROLL PROGRESS */
-   const progress = document.querySelector('.scroll-progress i');
-   if (progress && HAS_GSAP && !REDUCED) {
-      gsap.to(progress, {
+   /* the footer is position:fixed on desktop, so anchor-scrolling to it
+      does nothing; scroll to the end of the document instead */
+   document.querySelectorAll('a[href="#contact"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+         e.preventDefault();
+         window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: REDUCED ? 'auto' : 'smooth'
+         });
+      });
+   });
+
+   /* ------------------------------------- SCROLL PROGRESS + RULER */
+   const progressEl = document.querySelector('.scroll-progress i');
+   const navContact = document.getElementById('nav-contact');
+
+   if (HAS_GSAP && !REDUCED && progressEl) {
+      gsap.to(progressEl, {
          scaleX: 1,
          ease: 'none',
          scrollTrigger: { start: 0, end: 'max', scrub: 0.3 }
       });
    }
 
+   (function ruler() {
+      const wrap = document.getElementById('ruler');
+      if (!wrap || !HAS_GSAP) return;
+      if (!window.matchMedia('(min-width: 1100px)').matches) return;
+
+      const ticksBox = document.getElementById('ruler-ticks');
+      for (let i = 0; i < 41; i++) ticksBox.appendChild(document.createElement('i'));
+      wrap.classList.add('ready');
+      html.classList.add('ruler-on');
+
+      const cursor = document.getElementById('ruler-cursor');
+      const num = document.getElementById('ruler-num');
+
+      ScrollTrigger.create({
+         start: 0,
+         end: 'max',
+         onUpdate(self) {
+            const travel = ticksBox.offsetHeight - 1;
+            cursor.style.transform = `translateY(${self.progress * travel}px)`;
+            num.textContent = Math.round(self.progress * 100);
+            if (navContact) navContact.classList.toggle('active', self.progress > 0.96);
+         }
+      });
+   })();
+
+   /* fallback contact spy when the ruler is off (mobile / no ruler) */
+   if (HAS_GSAP && navContact && !html.classList.contains('ruler-on')) {
+      ScrollTrigger.create({
+         start: 0,
+         end: 'max',
+         onUpdate(self) {
+            navContact.classList.toggle('active', self.progress > 0.96);
+         }
+      });
+   }
+
    /* ------------------------------------------------------ REVEALS
-      GSAP-driven and reversible: elements animate in on the way down
-      and back out when you scroll up past them. IO fallback keeps
-      content visible when GSAP is unavailable. */
+      Reversible: in on the way down, back out on the way up. Without
+      GSAP or with reduced motion, content simply stays visible. */
    if (HAS_GSAP && !REDUCED) {
       const groups = new Map();
       gsap.utils.toArray('[data-reveal]').forEach((el) => {
@@ -75,6 +169,38 @@
       });
    }
 
+   /* --------------------------------------------- ASCENT (journey) */
+   (function ascent() {
+      const wrap = document.querySelector('.ascent');
+      if (!wrap || !HAS_GSAP || REDUCED) return;
+      if (!window.matchMedia('(min-width: 861px)').matches) return;
+
+      const path = wrap.querySelector('.ascent-path');
+      const marks = wrap.querySelectorAll('.ascent-mark');
+      const len = path.getTotalLength();
+      if (!len) return;
+
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+
+      const tl = gsap.timeline({
+         scrollTrigger: {
+            trigger: wrap,
+            start: 'top 84%',
+            end: 'bottom 40%',
+            scrub: 0.5
+         }
+      });
+
+      tl.to(path, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0);
+      marks.forEach((m, i) => {
+         tl.fromTo(m,
+            { autoAlpha: 0, y: 8 },
+            { autoAlpha: 1, y: 0, duration: 0.09 },
+            (i / marks.length) * 0.88
+         );
+      });
+   })();
+
    /* --------------------------------------------- TRACE: bars + hover */
    const trace = document.querySelector('.trace');
    if (trace) {
@@ -96,7 +222,6 @@
          );
       }
 
-      /* hovering a role row lights up its span in the chart (and back) */
       const link = (fromSel) => {
          trace.querySelectorAll(fromSel).forEach((el) => {
             const idx = el.dataset.trace;
@@ -151,6 +276,28 @@
       }
    }
 
+   /* ------------------------------------------ FOOTER CURTAIN SIZE
+      The fixed footer needs the page above to reserve its height. */
+   (function footerReveal() {
+      const page = document.getElementById('page-above');
+      const contact = document.getElementById('contact');
+      if (!page || !contact) return;
+
+      const mq = window.matchMedia('(min-width: 861px)');
+      let t = 0;
+      const size = () => {
+         page.style.marginBottom = mq.matches ? contact.offsetHeight + 'px' : '';
+         if (HAS_GSAP) {
+            clearTimeout(t);
+            t = setTimeout(() => ScrollTrigger.refresh(), 150);
+         }
+      };
+
+      new ResizeObserver(size).observe(contact);
+      mq.addEventListener('change', size);
+      size();
+   })();
+
    /* ----------------------------------------------- SPOTLIGHT PANELS */
    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       document.querySelectorAll('.spotlight').forEach((panel) => {
@@ -162,8 +309,7 @@
       });
    }
 
-   /* ------------------------------------------------ VIDEO LIFECYCLE
-      Autoplay only while on screen; never autoplay under reduced motion. */
+   /* ------------------------------------------------ VIDEO LIFECYCLE */
    document.querySelectorAll('video').forEach((video) => {
       if (REDUCED) {
          video.removeAttribute('autoplay');
