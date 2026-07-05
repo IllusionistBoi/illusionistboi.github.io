@@ -42,7 +42,7 @@
       let i = 0;
 
       const delayFor = (idx) => {
-         if (idx >= words.length - 1) return 800;            /* let the closer land */
+         if (idx >= words.length - 1) return 1450;           /* let the closer breathe */
          const mid = words.length / 2;
          const dist = Math.abs(idx - mid) / mid;             /* 0 center, 1 edges */
          return 90 + dist * dist * 130;                      /* 90ms center, ~220ms edges */
@@ -55,9 +55,19 @@
       for (let k = 1; k < words.length; k++) { bounds.push(total); total += delayFor(k); }
       const t0 = performance.now();
 
-      const swap = (text) => {
+      const swap = (text, final) => {
          wordEl.textContent = text;
-         if (wordEl.animate) {
+         if (!wordEl.animate) return;
+         if (final) {
+            /* the closer settles in softly instead of snapping */
+            wordEl.animate(
+               [
+                  { opacity: 0, transform: 'translateY(18px) scale(0.95)', filter: 'blur(8px)' },
+                  { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' }
+               ],
+               { duration: 520, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+            );
+         } else {
             wordEl.animate(
                [
                   { opacity: 0.2, transform: 'translateY(10px)', filter: 'blur(5px)' },
@@ -86,8 +96,9 @@
          for (let k = 0; k < bounds.length; k++) if (t >= bounds[k]) idx = k + 1;
          if (idx !== i) {
             i = idx;
-            swap(words[i]);
-            if (i === words.length - 1) wordEl.classList.add('intro-final');
+            const isFinal = i === words.length - 1;
+            swap(words[i], isFinal);
+            if (isFinal) wordEl.classList.add('intro-final');
          }
 
          if (t >= total) {
@@ -437,9 +448,10 @@
       email.setAttribute('aria-label', address);
 
       const inner = document.querySelector('.contact-inner');
+      const HINT_REST = 'click the address to copy it';
       const hint = document.createElement('p');
       hint.className = 'email-hint';
-      hint.textContent = 'click to copy';
+      hint.textContent = HINT_REST;
       email.insertAdjacentElement('afterend', hint);
 
       const copy = () => navigator.clipboard
@@ -453,7 +465,7 @@
             copy().then(() => {
                hint.textContent = 'copied';
                hint.classList.add('is-copied');
-               setTimeout(() => { hint.textContent = 'click to copy'; hint.classList.remove('is-copied'); }, 1800);
+               setTimeout(() => { hint.textContent = HINT_REST; hint.classList.remove('is-copied'); }, 1800);
             }).catch(() => { window.location.href = email.href; });
          });
          return;
@@ -531,7 +543,46 @@
          })(last);
       }
 
+      /* showcase the interaction: letters ripple on hover, and once
+         when the footer first comes into view */
       let busy = false;
+      const wave = () => {
+         if (busy) return;
+         gsap.to(email.querySelectorAll('.char'), {
+            y: -7,
+            duration: 0.18,
+            stagger: 0.013,
+            ease: 'power2.out',
+            yoyo: true,
+            repeat: 1
+         });
+      };
+
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+         email.addEventListener('pointerenter', () => {
+            if (busy) return;
+            wave();
+            hint.textContent = 'go on, click';
+            hint.classList.add('is-hot');
+         });
+         email.addEventListener('pointerleave', () => {
+            if (busy) return;
+            hint.textContent = HINT_REST;
+            hint.classList.remove('is-hot');
+         });
+      }
+
+      let waved = false;
+      ScrollTrigger.create({
+         start: () => ScrollTrigger.maxScroll(window) - document.getElementById('contact').offsetHeight * 0.6,
+         end: () => ScrollTrigger.maxScroll(window) + 1,
+         onEnter() {
+            if (waved) return;
+            waved = true;
+            setTimeout(wave, 700);
+         }
+      });
+
       email.addEventListener('click', (e) => {
          e.preventDefault();
          if (busy) return;
@@ -561,8 +612,8 @@
                         { opacity: 0, y: 12 },
                         { opacity: 1, y: 0, stagger: 0.014, duration: 0.35, ease: 'power3.out' }
                      );
-                     hint.textContent = 'click to copy';
-                     hint.classList.remove('is-copied');
+                     hint.textContent = HINT_REST;
+                     hint.classList.remove('is-copied', 'is-hot');
                      busy = false;
                   }
                });

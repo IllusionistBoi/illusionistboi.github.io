@@ -178,6 +178,16 @@ drawn as a distributed-trace waterfall.
   mid-page in owner's full-page captures is a capture-stitching artifact of fixed elements,
   not a bug.
 
+- **2026-07-05** v7 (pre-launch): intro closer softened (1.45s hold + 520ms blur-settle swap,
+  owner: too abrupt). Flagship now uses owner's product VIDEO: assets/syssimulator.mp4
+  (23.7MB source compressed to 764KB, 1600w/24fps; source gitignored root-only so the assets
+  copy still commits), webp poster, jpg remains og:image. Poker Planning gained a live-app link
+  (my-app-tau-seven-25.vercel.app). Email interaction made discoverable: hint reads "click the
+  address to copy it", letters ripple on hover with "go on, click", and a one-time ripple plays
+  when the footer first reveals. Owner's console errors were file:// protocol artifacts (fonts/
+  manifest CORS-blocked when opening index.html from disk); zero errors over http.
+  PUSHED TO PRODUCTION per owner instruction.
+
 ## TODO / ideas
 - [ ] Optional: custom 404.html in the same design language
 - [ ] Optional: light "console easter egg" for engineers who open devtools

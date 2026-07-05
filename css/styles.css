@@ -700,7 +700,8 @@ h2 {
    position: relative;
 }
 
-.feature-media img {
+.feature-media img,
+.feature-media video {
    display: block;
    width: 100%;
    height: auto;
@@ -713,7 +714,8 @@ h2 {
    background: linear-gradient(180deg, rgba(255, 122, 26, 0.05), transparent 55%);
 }
 
-.feature-media:hover img { transform: scale(1.012); }
+.feature-media:hover img,
+.feature-media:hover video { transform: scale(1.012); }
 
 .demo-caption {
    font-family: var(--mono);
@@ -1229,7 +1231,8 @@ h2 {
    transition: color var(--t-fast);
 }
 
-.email-hint.is-copied { color: var(--accent); }
+.email-hint.is-copied,
+.email-hint.is-hot { color: var(--accent); }
 
 .email-burst {
    position: absolute;

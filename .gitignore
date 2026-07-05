@@ -3,3 +3,6 @@ node_modules/
 # source gifs; the site ships the mp4 conversions in assets/
 luggageBot.gif
 pokerPlanning.gif
+
+# raw source video (root only); the site ships the compressed copy in assets/
+/syssimulator.mp4
