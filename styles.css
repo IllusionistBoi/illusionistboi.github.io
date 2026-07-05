@@ -547,20 +547,6 @@ h2 {
 
 .feature-media:hover img { transform: scale(1.012); }
 
-.media-missing-note { display: none; }
-
-.media-missing .media-missing-note {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   min-height: 320px;
-   font-family: var(--mono);
-   font-size: 0.8rem;
-   color: var(--subtle);
-}
-
-.media-missing img { display: none; }
-
 .demo-caption {
    font-family: var(--mono);
    font-size: 0.73rem;
@@ -667,24 +653,21 @@ h2 {
 .project-row-flip .project-media { order: 2; }
 .project-row-flip .project-body { order: 1; }
 
+/* one frame for every project asset: uniform 16:10, cover-cropped */
 .project-media video,
 .project-media canvas {
    display: block;
    width: 100%;
+   height: auto;
+   aspect-ratio: 16 / 10;
+   object-fit: cover;
 }
-
-.project-media video { height: auto; }
-
-.project-media canvas { height: 360px; }
 
 .project-duo {
    display: grid;
    grid-template-columns: 1fr 1fr;
    gap: clamp(1.5rem, 3.5vw, 3rem);
 }
-
-.project-duo .project-media video { max-height: 420px; object-fit: cover; }
-.project-duo .project-media canvas { height: 300px; }
 
 .project-duo .project-body { padding-top: 1.7rem; }
 
@@ -965,7 +948,6 @@ h2 {
    .project-row-flip .project-media { order: 0; }
    .project-row-flip .project-body { order: 0; }
 
-   .project-media canvas { height: 280px; }
 
    /* trace chart hides, editorial list carries the story */
    .trace-chart { display: none; }
@@ -1000,6 +982,24 @@ h2 {
    .hero { padding-top: 4.5rem; }
    .contact-email { font-size: 1.05rem; }
    .toolbox-grid { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------------ PRINT */
+
+@media print {
+   [data-reveal],
+   .hero-word, .hero-sub, .hero-cta, .hero-eyebrow,
+   .statement-text .word, .statement-after {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      filter: none !important;
+      animation: none !important;
+   }
+
+   .tr-bar { transform: none !important; }
+
+   .grain, .atmosphere, .scroll-progress, #system-map { display: none !important; }
 }
 
 /* ------------------------------------------------------------------ REDUCED MOTION */

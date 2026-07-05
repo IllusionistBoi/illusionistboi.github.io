@@ -108,9 +108,16 @@ drawn as a distributed-trace waterfall.
   NOTE: the preview panel tab reports visibility:hidden when occluded; rAF/IO/screenshots all
   freeze then. Verify with the panel actually visible, or via owner-provided screenshots.
 
+- **2026-07-05** Media consistency pass: owner provided the SysSimulator screenshot (copied from
+  Pictures/Screenshots into assets/syssimulator.png, 300KB, + 52KB webp for the page via
+  <picture>). og:image now points at it. ALL project media locked to a uniform 16:10 frame with
+  object-fit cover (owner: mismatched asset sizes looked unstructured). Print-safety CSS added so
+  full-page captures/printing never show blank sections (scroll reveals hide below-fold content
+  until triggered; that is expected live behavior but capture tools caught it). Statement resting
+  word opacity raised 0.1 to 0.16.
+
 ## TODO / ideas
 
-- [ ] Branded OG image (1200x630) instead of legacy hero.jpg
-- [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo
+- [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo (both unreferenced now)
 - [ ] Optional: custom 404.html in the same design language
 - [ ] Optional: light "console easter egg" for engineers who open devtools

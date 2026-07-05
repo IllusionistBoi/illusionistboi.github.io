@@ -138,7 +138,7 @@
       });
 
       tl.fromTo(words,
-         { opacity: 0.1 },
+         { opacity: 0.16 },
          { opacity: 1, stagger: 0.6, duration: 2, ease: 'none' }
       );
 
