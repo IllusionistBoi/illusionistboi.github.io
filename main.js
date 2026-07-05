@@ -11,8 +11,9 @@
    if (HAS_GSAP) gsap.registerPlugin(ScrollTrigger);
 
    /* -------------------------------------------------------- INTRO
-      Apple-style hello sequence: once per session, never under
-      reduced motion, always with a failsafe. */
+      Greeting sequence with a live counter; the panels split apart to
+      reveal the page. Plays on every load, never under reduced motion,
+      always with failsafes. */
    (function intro() {
       const el = document.getElementById('intro');
       if (!el) return;
@@ -23,50 +24,82 @@
          html.classList.remove('intro-lock');
       };
 
-      /* if a page is restored from the back/forward cache, scripts do not
-         re-run; force the overlay away */
+      /* pages restored from the back/forward cache do not re-run scripts */
       window.addEventListener('pageshow', (e) => { if (e.persisted) finish(); });
 
-      let seen = html.classList.contains('intro-skip');
-      try { seen = seen || sessionStorage.getItem('rd-intro') === '1'; } catch (_) { /* ignore */ }
+      if (REDUCED) { finish(); return; }
 
-      if (REDUCED || seen) { finish(); return; }
-
-      try { sessionStorage.setItem('rd-intro', '1'); } catch (_) { /* ignore */ }
       html.classList.add('intro-lock');
 
-      /* eighteen greetings, then the door opens */
+      /* eighteen greetings, then the doors open */
       const words = [
          'Hello', 'नमस्ते', 'Dia dhuit', 'Bonjour', 'Hola', 'こんにちは',
          '안녕하세요', '你好', 'Ciao', 'Olá', 'Hallo', 'Привет', 'مرحبا',
          'Γειά σου', 'Merhaba', 'Xin chào', 'Hej', "Let's get you in."
       ];
       const wordEl = document.getElementById('intro-word');
+      const countEl = document.getElementById('intro-count');
       let i = 0;
 
       const delayFor = (idx) => {
-         if (idx >= words.length - 1) return 750;            /* let the closer land */
+         if (idx >= words.length - 1) return 800;            /* let the closer land */
          const mid = words.length / 2;
          const dist = Math.abs(idx - mid) / mid;             /* 0 center, 1 edges */
          return 90 + dist * dist * 130;                      /* 90ms center, ~220ms edges */
       };
 
-      const step = () => {
-         i += 1;
-         if (i < words.length) {
-            wordEl.textContent = words[i];
-            if (i === words.length - 1) wordEl.classList.add('intro-final');
-            setTimeout(step, delayFor(i));
-         } else {
-            el.classList.add('done');
-            html.classList.add('intro-done');
-            html.classList.remove('intro-lock');
-            el.addEventListener('transitionend', () => el.classList.add('gone'), { once: true });
-            setTimeout(() => el.classList.add('gone'), 1200); /* failsafe */
+      /* timestamp-driven: background-tab timer throttling cannot strand
+         the sequence; on wake it snaps to the correct position */
+      const bounds = [];
+      let total = 460;
+      for (let k = 1; k < words.length; k++) { bounds.push(total); total += delayFor(k); }
+      const t0 = performance.now();
+
+      const swap = (text) => {
+         wordEl.textContent = text;
+         if (wordEl.animate) {
+            wordEl.animate(
+               [
+                  { opacity: 0.2, transform: 'translateY(10px)', filter: 'blur(5px)' },
+                  { opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' }
+               ],
+               { duration: 120, easing: 'ease-out' }
+            );
          }
       };
-      setTimeout(step, 420);
-      setTimeout(finish, 6000); /* absolute failsafe */
+
+      const openDoors = () => {
+         el.classList.add('done');
+         html.classList.add('intro-done');
+         html.classList.remove('intro-lock');
+         el.querySelector('.ip-top').addEventListener('transitionend', () => el.classList.add('gone'), { once: true });
+         setTimeout(() => el.classList.add('gone'), 1500); /* failsafe */
+      };
+
+      let timer = 0;
+      const drive = () => {
+         clearTimeout(timer);
+         const t = performance.now() - t0;
+         if (countEl) countEl.textContent = String(Math.min(100, Math.round(t / total * 100))).padStart(2, '0');
+
+         let idx = 0;
+         for (let k = 0; k < bounds.length; k++) if (t >= bounds[k]) idx = k + 1;
+         if (idx !== i) {
+            i = idx;
+            swap(words[i]);
+            if (i === words.length - 1) wordEl.classList.add('intro-final');
+         }
+
+         if (t >= total) {
+            document.removeEventListener('visibilitychange', drive);
+            openDoors();
+         } else {
+            timer = setTimeout(drive, 50);
+         }
+      };
+      drive();
+      document.addEventListener('visibilitychange', drive);
+      setTimeout(finish, 9000); /* absolute failsafe */
    })();
 
    /* ---------------------------------------------------------- NAV */
@@ -392,42 +425,149 @@
       }
    })();
 
-   /* ------------------------------------------- EMAIL TYPEWRITER
-      The address types itself, holds, vanishes tail-first, and loops
-      while the footer is on screen. The link stays clickable and keeps
-      an accessible name throughout. */
-   (function emailType() {
+   /* ------------------------------------------- EMAIL COPY-BURST
+      Click copies the address; the letters shatter into particles and
+      the line reassembles as a confirmation, then restores itself.
+      If the clipboard is unavailable, the mailto link works as normal. */
+   (function emailMagic() {
       const email = document.querySelector('.contact-email');
-      if (!email || !HAS_GSAP || REDUCED) return;
+      if (!email) return;
 
       const address = email.textContent.trim();
       email.setAttribute('aria-label', address);
-      email.textContent = '';
 
-      const chars = address.split('').map((ch) => {
-         const s = document.createElement('span');
-         s.className = 'char';
-         s.textContent = ch;
-         s.setAttribute('aria-hidden', 'true');
-         email.appendChild(s);
-         return s;
-      });
-      const caret = document.createElement('span');
-      caret.className = 'caret';
-      caret.setAttribute('aria-hidden', 'true');
-      email.appendChild(caret);
+      const inner = document.querySelector('.contact-inner');
+      const hint = document.createElement('p');
+      hint.className = 'email-hint';
+      hint.textContent = 'click to copy';
+      email.insertAdjacentElement('afterend', hint);
 
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
-      tl.fromTo(chars, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.05 });
-      tl.to({}, { duration: 3.2 });                                   /* hold, readable + clickable */
-      tl.to(chars, { opacity: 0, y: -9, duration: 0.25, stagger: { each: 0.016, from: 'end' } });
-      tl.set(chars, { y: 0 });
+      const copy = () => navigator.clipboard
+         ? navigator.clipboard.writeText(address)
+         : Promise.reject(new Error('no clipboard'));
 
-      const contact = document.getElementById('contact');
-      ScrollTrigger.create({
-         start: () => ScrollTrigger.maxScroll(window) - (contact ? contact.offsetHeight : 600),
-         end: () => ScrollTrigger.maxScroll(window) + 1,
-         onToggle(self) { tl[self.isActive ? 'play' : 'pause'](); }
+      /* minimal path: copy still works, no theatrics */
+      if (!HAS_GSAP || REDUCED) {
+         email.addEventListener('click', (e) => {
+            e.preventDefault();
+            copy().then(() => {
+               hint.textContent = 'copied';
+               hint.classList.add('is-copied');
+               setTimeout(() => { hint.textContent = 'click to copy'; hint.classList.remove('is-copied'); }, 1800);
+            }).catch(() => { window.location.href = email.href; });
+         });
+         return;
+      }
+
+      const setChars = (text) => {
+         email.textContent = '';
+         return text.split('').map((ch) => {
+            const s = document.createElement('span');
+            s.className = 'char';
+            s.textContent = ch;
+            s.setAttribute('aria-hidden', 'true');
+            email.appendChild(s);
+            return s;
+         });
+      };
+      let chars = setChars(address);
+
+      /* particle overlay lives on the footer, above everything in it */
+      const cv = document.createElement('canvas');
+      cv.className = 'email-burst';
+      inner.appendChild(cv);
+      const ctx = cv.getContext('2d');
+      let particles = [], burstRaf = 0;
+
+      function burstFrom(spans) {
+         const box = inner.getBoundingClientRect();
+         cv.width = Math.round(box.width * 2);
+         cv.height = Math.round(box.height * 2);
+         cv.style.width = box.width + 'px';
+         cv.style.height = box.height + 'px';
+         ctx.setTransform(2, 0, 0, 2, 0, 0);
+
+         particles = [];
+         spans.forEach((s) => {
+            const r = s.getBoundingClientRect();
+            const cx = r.left - box.left + r.width / 2;
+            const cy = r.top - box.top + r.height / 2;
+            for (let p = 0; p < 5; p++) {
+               particles.push({
+                  x: cx + (Math.random() - 0.5) * r.width,
+                  y: cy + (Math.random() - 0.5) * r.height,
+                  vx: (Math.random() - 0.5) * 190,
+                  vy: -40 - Math.random() * 150,
+                  size: 1 + Math.random() * 2.2,
+                  life: 0.9 + Math.random() * 0.5,
+                  warm: Math.random() < 0.75
+               });
+            }
+         });
+
+         let last = performance.now();
+         cancelAnimationFrame(burstRaf);
+         (function frame(now) {
+            const dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+            ctx.clearRect(0, 0, cv.width, cv.height);
+            let alive = false;
+            particles.forEach((pt) => {
+               if (pt.life <= 0) return;
+               alive = true;
+               pt.life -= dt * 1.1;
+               pt.vy += 260 * dt;                             /* gravity */
+               pt.x += pt.vx * dt;
+               pt.y += pt.vy * dt;
+               ctx.globalAlpha = Math.max(0, pt.life);
+               ctx.fillStyle = pt.warm ? '#ff7a1a' : '#f5f1e9';
+               ctx.beginPath();
+               ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+               ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+            if (alive) burstRaf = requestAnimationFrame(frame);
+            else ctx.clearRect(0, 0, cv.width, cv.height);
+         })(last);
+      }
+
+      let busy = false;
+      email.addEventListener('click', (e) => {
+         e.preventDefault();
+         if (busy) return;
+
+         copy().then(() => {
+            busy = true;
+            hint.textContent = 'in your clipboard';
+            hint.classList.add('is-copied');
+
+            burstFrom(chars);
+            gsap.set(chars, { opacity: 0 });
+
+            setTimeout(() => {
+               chars = setChars('Copied.');
+               gsap.fromTo(chars,
+                  { opacity: 0, y: 14, rotateX: -60 },
+                  { opacity: 1, y: 0, rotateX: 0, stagger: 0.045, duration: 0.4, ease: 'back.out(1.8)' }
+               );
+            }, 260);
+
+            setTimeout(() => {
+               gsap.to(email.querySelectorAll('.char'), {
+                  opacity: 0, y: -10, duration: 0.2, stagger: 0.02,
+                  onComplete() {
+                     chars = setChars(address);
+                     gsap.fromTo(chars,
+                        { opacity: 0, y: 12 },
+                        { opacity: 1, y: 0, stagger: 0.014, duration: 0.35, ease: 'power3.out' }
+                     );
+                     hint.textContent = 'click to copy';
+                     hint.classList.remove('is-copied');
+                     busy = false;
+                  }
+               });
+            }, 2100);
+         }).catch(() => { window.location.href = email.href; });
       });
    })();
 

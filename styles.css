@@ -132,7 +132,8 @@ a {
 .hl-green { color: rgb(62, 207, 142); }
 .hl-violet { color: rgb(143, 124, 246); }
 
-/* ------------------------------------------------------------- INTRO */
+/* ------------------------------------------------------------- INTRO
+   Plays on every load. Two panels split apart to reveal the page. */
 
 .intro {
    position: fixed;
@@ -141,30 +142,61 @@ a {
    display: flex;
    align-items: center;
    justify-content: center;
-   background: var(--bg-deep);
-   transition: transform 700ms var(--ease-in-out);
 }
 
-.intro.done { transform: translateY(-100%); }
 .intro.gone { display: none; }
+.intro.done { pointer-events: none; }
 
-/* decided pre-paint by the inline head script: refresh never re-shows it */
-.intro-skip .intro { display: none !important; }
+.intro-panel {
+   position: absolute;
+   left: 0;
+   right: 0;
+   background: var(--bg-deep);
+   transition: transform 900ms var(--ease-in-out);
+}
+
+.ip-top { top: 0; height: 50.5%; }
+.ip-bottom { bottom: 0; height: 50%; }
+
+.intro.done .ip-top { transform: translateY(-101%); }
+.intro.done .ip-bottom { transform: translateY(101%); }
 
 .intro-word {
+   position: relative;
+   z-index: 2;
    font-family: var(--display);
    font-size: clamp(2.2rem, 6vw, 4.2rem);
    font-weight: 600;
    letter-spacing: -0.01em;
    color: var(--text);
-   transition: transform 500ms var(--ease-out), letter-spacing 500ms var(--ease-out);
+   transition: transform 450ms var(--ease-out), opacity 350ms ease, letter-spacing 450ms var(--ease-out);
 }
 
-/* the closing phrase leans in before the curtain lifts */
+/* the closing phrase leans in before the panels split */
 .intro-word.intro-final {
    transform: scale(1.05);
    letter-spacing: 0;
 }
+
+.intro.done .intro-word {
+   opacity: 0;
+   transform: scale(0.96) translateY(-12px);
+}
+
+.intro-count {
+   position: absolute;
+   z-index: 2;
+   left: var(--gutter);
+   bottom: 2rem;
+   font-family: var(--mono);
+   font-size: 0.85rem;
+   font-weight: 600;
+   letter-spacing: 0.08em;
+   color: var(--accent);
+   transition: opacity 300ms ease;
+}
+
+.intro.done .intro-count { opacity: 0; }
 
 .intro-word::before {
    content: '';
@@ -359,18 +391,16 @@ html.intro-lock { overflow: hidden; }
 }
 
 .nav-brand {
-   font-family: var(--mono);
-   font-weight: 600;
-   font-size: 0.95rem;
-   letter-spacing: 0.04em;
+   font-family: 'Big Shoulders Stencil', var(--display);
+   font-weight: 700;
+   font-size: 1.4rem;
+   letter-spacing: 0.06em;
+   line-height: 1;
    color: var(--text);
-   padding: 0.35rem 0.55rem;
-   border: 1px solid var(--line);
-   border-radius: 8px;
-   transition: border-color var(--t-fast), color var(--t-fast);
+   transition: color var(--t-fast);
 }
 
-.nav-brand:hover { border-color: var(--accent-mid); color: var(--accent); }
+.nav-brand:hover { color: var(--accent); }
 
 .nav-links {
    display: flex;
@@ -987,17 +1017,17 @@ h2 {
 .award {
    display: inline-flex;
    align-items: center;
-   margin-top: 0.7rem;
+   margin-top: 0.8rem;
    font-family: var(--mono);
-   font-size: 0.68rem;
+   font-size: 0.7rem;
+   font-weight: 700;
    letter-spacing: 0.09em;
    text-transform: uppercase;
-   color: var(--accent);
-   padding: 0.34rem 0.8rem;
-   border: 1px solid var(--accent-mid);
+   color: #1c0e00;
+   padding: 0.42rem 0.9rem;
    border-radius: 999px;
-   background: rgba(255, 122, 26, 0.07);
-   box-shadow: 0 0 16px -6px rgba(255, 122, 26, 0.55);
+   background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+   box-shadow: 0 6px 22px -6px rgba(255, 122, 26, 0.65);
 }
 
 /* ------------------------------------------------------------------ EDUCATION */
@@ -1182,25 +1212,30 @@ h2 {
    background-size: 100% 2px;
 }
 
-/* auto-typing email: char spans + blinking caret (built in main.js) */
+/* copy-burst email: click copies the address, the letters shatter into
+   particles on an overlay canvas, and "Copied" types itself in (main.js) */
 .contact-email .char {
    display: inline-block;
+   min-width: 0.2ch;
    will-change: opacity, transform;
 }
 
-.contact-email .caret {
-   display: inline-block;
-   width: 0.5ch;
-   height: 0.95em;
-   margin-left: 0.12ch;
-   vertical-align: -0.12em;
-   background: var(--accent);
-   animation: caret-blink 1.05s steps(1) infinite;
+.email-hint {
+   margin-top: 0.7rem;
+   font-family: var(--mono);
+   font-size: 0.72rem;
+   letter-spacing: 0.06em;
+   color: var(--subtle);
+   transition: color var(--t-fast);
 }
 
-@keyframes caret-blink {
-   0%, 55% { opacity: 1; }
-   56%, 100% { opacity: 0; }
+.email-hint.is-copied { color: var(--accent); }
+
+.email-burst {
+   position: absolute;
+   inset: 0;
+   pointer-events: none;
+   z-index: 3;
 }
 
 .contact-links {
@@ -1350,8 +1385,8 @@ h2 {
    .intro { display: none; }
    html.intro-lock { overflow: auto; }
 
-   .contact-email .caret { animation: none; opacity: 1; }
    .flash { animation: none; }
+   .intro-panel, .intro-word, .intro-count { transition: none; }
 
    .statement-text .word { opacity: 1 !important; }
 

@@ -20,10 +20,6 @@
    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png?v=8" />
    <link rel="manifest" href="./favicon/site.webmanifest?v=8" />
 
-   <!-- pre-paint: if the intro already played this session, never show it.
-        Runs before first paint so a refresh can never strand the overlay. -->
-   <script>try{if(sessionStorage.getItem('rd-intro')==='1'){document.documentElement.classList.add('intro-skip','intro-done')}}catch(e){}</script>
-
    <link rel="preload" href="./fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
@@ -49,7 +45,12 @@
    </script>
 </head>
 <body>
-   <div class="intro" id="intro" aria-hidden="true"><span class="intro-word" id="intro-word">Hello</span></div>
+   <div class="intro" id="intro" aria-hidden="true">
+      <i class="intro-panel ip-top"></i>
+      <i class="intro-panel ip-bottom"></i>
+      <span class="intro-word" id="intro-word">Hello</span>
+      <span class="intro-count" id="intro-count">00</span>
+   </div>
 
    <div class="atmosphere" aria-hidden="true"><i class="ember ember-a"></i><i class="ember ember-b"></i></div>
    <div class="grain" aria-hidden="true"></div>
@@ -263,7 +264,7 @@
                   </div>
                   <div class="tr-row" data-trace="3">
                      <span class="tr-label">ericsson / intern</span>
-                     <div class="tr-track"><div class="tr-bar" style="--from: 3%; --to: 10.1%"></div></div>
+                     <div class="tr-track"><div class="tr-bar" style="--from: 3%; --to: 26.1%"></div></div>
                   </div>
                </div>
             </div>
@@ -280,7 +281,7 @@
                   <div>
                      <h3>Software Engineer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2023 to Jul 2025, Athlone</p>
-                     <p class="award">Key Contributor Award</p>
+                     <p class="award" title="Ericsson company award for driving VMware licensing cost reductions">Ericsson Key Contributor Award</p>
                   </div>
                   <p class="trace-desc">Cut deployment time and maintenance cost by migrating the Software Provisioning Tool from PHP to Django; automated vApp deployments and Jenkins workflows; drove the VMware licensing reduction that earned a company Key Contributor award.</p>
                </li>
@@ -294,7 +295,7 @@
                <li class="trace-role" data-trace="3" id="role-ericsson-intern">
                   <div>
                      <h3>Software Engineer Intern<span class="trace-org">Ericsson</span></h3>
-                     <p class="trace-dates">Mar 2021 to Aug 2021, Athlone</p>
+                     <p class="trace-dates">Mar 2021 to Jul 2022, Athlone</p>
                   </div>
                   <p class="trace-desc">Lifted tool usage 40% by redesigning search across internal engineering tools, raised team productivity ~25% with new tooling and features, and modernized Java services to Java 11.</p>
                </li>
