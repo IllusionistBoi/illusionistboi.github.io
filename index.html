@@ -20,6 +20,10 @@
    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png?v=8" />
    <link rel="manifest" href="./favicon/site.webmanifest?v=8" />
 
+   <!-- pre-paint: if the intro already played this session, never show it.
+        Runs before first paint so a refresh can never strand the overlay. -->
+   <script>try{if(sessionStorage.getItem('rd-intro')==='1'){document.documentElement.classList.add('intro-skip','intro-done')}}catch(e){}</script>
+
    <link rel="preload" href="./fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin />
    <link rel="preload" href="./fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
@@ -198,7 +202,7 @@
                <p class="section-lede">Seven years, one direction.</p>
             </div>
             <div class="ascent" aria-hidden="true">
-               <svg viewBox="0 0 1200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <svg viewBox="0 0 1200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                      <linearGradient id="asc-grad" gradientUnits="userSpaceOnUse" x1="40" y1="214" x2="1170" y2="34">
                         <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.3" />
@@ -207,25 +211,25 @@
                      </linearGradient>
                   </defs>
                   <path class="ascent-path" d="M 40 214 C 180 206 330 188 450 168 S 560 148 620 138 S 720 116 780 104 S 920 72 1000 58 S 1120 40 1170 34" stroke="url(#asc-grad)" stroke-width="2.5" stroke-linecap="round" />
-                  <g class="ascent-mark">
-                     <circle cx="40" cy="214" r="4" fill="url(#asc-grad)" />
-                     <text x="40" y="238" text-anchor="start">2018 &#183; student, UCD</text>
+                  <g class="ascent-mark" data-goto="#education">
+                     <circle cx="40" cy="214" r="4.5" fill="url(#asc-grad)" />
+                     <text x="40" y="248" text-anchor="start">2018 &#183; Student, UCD</text>
                   </g>
-                  <g class="ascent-mark">
-                     <circle cx="450" cy="168" r="4" fill="url(#asc-grad)" />
-                     <text x="450" y="192" text-anchor="middle">2021 &#183; intern</text>
+                  <g class="ascent-mark" data-goto="#role-ericsson-intern">
+                     <circle cx="450" cy="168" r="4.5" fill="url(#asc-grad)" />
+                     <text x="450" y="202" text-anchor="middle">2021 &#183; Intern</text>
                   </g>
-                  <g class="ascent-mark">
-                     <circle cx="620" cy="138" r="4" fill="url(#asc-grad)" />
-                     <text x="620" y="162" text-anchor="middle">2022 &#183; graduate</text>
+                  <g class="ascent-mark" data-goto="#role-ericsson-grad">
+                     <circle cx="620" cy="138" r="4.5" fill="url(#asc-grad)" />
+                     <text x="620" y="172" text-anchor="middle">2022 &#183; Graduate</text>
                   </g>
-                  <g class="ascent-mark">
-                     <circle cx="780" cy="104" r="4" fill="url(#asc-grad)" />
-                     <text x="780" y="128" text-anchor="middle">2023 &#183; engineer</text>
+                  <g class="ascent-mark" data-goto="#role-ericsson-swe">
+                     <circle cx="780" cy="104" r="4.5" fill="url(#asc-grad)" />
+                     <text x="780" y="138" text-anchor="middle">2023 &#183; Engineer</text>
                   </g>
-                  <g class="ascent-mark">
-                     <circle cx="1000" cy="58" r="4" fill="url(#asc-grad)" />
-                     <text x="1000" y="82" text-anchor="middle">2025 &#183; senior advisor, Cigna</text>
+                  <g class="ascent-mark" data-goto="#role-evernorth">
+                     <circle cx="1000" cy="58" r="4.5" fill="url(#asc-grad)" />
+                     <text x="1010" y="108" text-anchor="middle">2025 &#183; Senior Advisor, Evernorth</text>
                   </g>
                </svg>
             </div>
@@ -265,14 +269,14 @@
             </div>
 
             <ol class="trace-roles" role="list">
-               <li class="trace-role" data-trace="0">
+               <li class="trace-role" data-trace="0" id="role-evernorth">
                   <div>
                      <h3>Infrastructure Engineering Senior Advisor<span class="trace-org">Evernorth (Cigna)</span></h3>
                      <p class="trace-dates">Jul 2025 to present, Galway</p>
                   </div>
                   <p class="trace-desc">Own the UnITy AI chatbot for Cigna's private cloud end to end: cut LLM spend by optimizing token usage across summarization, context, and tool calls; shipped MCP integrations on FastMCP; hardened security by leading SAST/SCA remediation; raised release confidence with Playwright automation across UnITy and CloudBolt.</p>
                </li>
-               <li class="trace-role" data-trace="1">
+               <li class="trace-role" data-trace="1" id="role-ericsson-swe">
                   <div>
                      <h3>Software Engineer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2023 to Jul 2025, Athlone</p>
@@ -280,14 +284,14 @@
                   </div>
                   <p class="trace-desc">Cut deployment time and maintenance cost by migrating the Software Provisioning Tool from PHP to Django; automated vApp deployments and Jenkins workflows; drove the VMware licensing reduction that earned a company Key Contributor award.</p>
                </li>
-               <li class="trace-role" data-trace="2">
+               <li class="trace-role" data-trace="2" id="role-ericsson-grad">
                   <div>
                      <h3>Graduate Software Developer<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Jul 2022 to Jul 2023, Athlone</p>
                   </div>
                   <p class="trace-desc">Backend development and CI tooling in Python, Java, Docker, and Kubernetes. Led tool transfers between teams and built internal tools on Node, AngularJS, and MongoDB.</p>
                </li>
-               <li class="trace-role" data-trace="3">
+               <li class="trace-role" data-trace="3" id="role-ericsson-intern">
                   <div>
                      <h3>Software Engineer Intern<span class="trace-org">Ericsson</span></h3>
                      <p class="trace-dates">Mar 2021 to Aug 2021, Athlone</p>
@@ -305,6 +309,7 @@
                <h3>BSc (Hons) Computer Science with Data Science</h3>
                <p class="edu-org">University College Dublin</p>
                <p class="trace-dates">2018 to 2022, Dublin</p>
+               <p class="award">First Class Honours</p>
                <p class="trace-desc">Data science and statistics on top of core CS: networks, information security, software engineering, and large-scale data handling in Python, R, Java, and SQL.</p>
             </article>
             <article class="edu-card panel spotlight tint-bar tint-green" data-reveal>
@@ -349,9 +354,9 @@
       <section class="principles shell" id="principles" aria-label="How I work">
          <h2 data-reveal>How I work</h2>
          <ul class="principles-list" role="list">
-            <li data-reveal><span class="hl">Automate</span> the boring parts.</li>
-            <li data-reveal>If you can't <span class="hl-green">see</span> it, you can't fix it.</li>
-            <li data-reveal>Own things <span class="hl-violet">end to end</span>.</li>
+            <li><span class="hl">Automate</span> the boring parts.</li>
+            <li>If you can't <span class="hl-green">see</span> it, you can't fix it.</li>
+            <li>Own things <span class="hl-violet">end to end</span>.</li>
          </ul>
       </section>
 

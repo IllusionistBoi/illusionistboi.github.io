@@ -148,12 +148,22 @@ a {
 .intro.done { transform: translateY(-100%); }
 .intro.gone { display: none; }
 
+/* decided pre-paint by the inline head script: refresh never re-shows it */
+.intro-skip .intro { display: none !important; }
+
 .intro-word {
    font-family: var(--display);
    font-size: clamp(2.2rem, 6vw, 4.2rem);
    font-weight: 600;
    letter-spacing: -0.01em;
    color: var(--text);
+   transition: transform 500ms var(--ease-out), letter-spacing 500ms var(--ease-out);
+}
+
+/* the closing phrase leans in before the curtain lifts */
+.intro-word.intro-final {
+   transform: scale(1.05);
+   letter-spacing: 0;
 }
 
 .intro-word::before {
@@ -827,12 +837,19 @@ h2 {
    overflow: visible;
 }
 
+.ascent-mark {
+   cursor: pointer;
+}
+
 .ascent-mark text {
    font-family: var(--mono);
-   font-size: 11.5px;
+   font-size: 12.5px;
    letter-spacing: 0.02em;
    fill: var(--subtle);
+   transition: fill var(--t-fast);
 }
+
+.ascent-mark:hover text { fill: var(--accent); }
 
 .trace {
    padding: clamp(1.6rem, 4vw, 3.2rem);
@@ -880,6 +897,7 @@ h2 {
    grid-template-columns: var(--trace-gutter, 240px) 1fr;
    align-items: center;
    height: 44px;
+   cursor: pointer;
 }
 
 .tr-label {
@@ -926,6 +944,15 @@ h2 {
    padding: 1.5rem 0;
    border-top: 1px solid var(--line);
    transition: background-color var(--t-fast);
+   scroll-margin-top: 7rem;
+}
+
+/* brief glow after navigating here from the chart */
+.flash { animation: role-flash 1.6s var(--ease-out); }
+
+@keyframes role-flash {
+   0% { background-color: rgba(255, 122, 26, 0.12); }
+   100% { background-color: transparent; }
 }
 
 .trace-role h3 {
@@ -1155,6 +1182,27 @@ h2 {
    background-size: 100% 2px;
 }
 
+/* auto-typing email: char spans + blinking caret (built in main.js) */
+.contact-email .char {
+   display: inline-block;
+   will-change: opacity, transform;
+}
+
+.contact-email .caret {
+   display: inline-block;
+   width: 0.5ch;
+   height: 0.95em;
+   margin-left: 0.12ch;
+   vertical-align: -0.12em;
+   background: var(--accent);
+   animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+   0%, 55% { opacity: 1; }
+   56%, 100% { opacity: 0; }
+}
+
 .contact-links {
    display: flex;
    gap: 1.8rem;
@@ -1301,6 +1349,9 @@ h2 {
 
    .intro { display: none; }
    html.intro-lock { overflow: auto; }
+
+   .contact-email .caret { animation: none; opacity: 1; }
+   .flash { animation: none; }
 
    .statement-text .word { opacity: 1 !important; }
 

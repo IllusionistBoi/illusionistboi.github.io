@@ -23,26 +23,29 @@
          html.classList.remove('intro-lock');
       };
 
-      let seen = false;
-      try { seen = sessionStorage.getItem('rd-intro') === '1'; } catch (_) { /* ignore */ }
+      /* if a page is restored from the back/forward cache, scripts do not
+         re-run; force the overlay away */
+      window.addEventListener('pageshow', (e) => { if (e.persisted) finish(); });
+
+      let seen = html.classList.contains('intro-skip');
+      try { seen = seen || sessionStorage.getItem('rd-intro') === '1'; } catch (_) { /* ignore */ }
 
       if (REDUCED || seen) { finish(); return; }
 
       try { sessionStorage.setItem('rd-intro', '1'); } catch (_) { /* ignore */ }
       html.classList.add('intro-lock');
 
-      /* eighteen greetings; the cadence accelerates through the middle
-         and eases out, so the whole sequence gets to play */
+      /* eighteen greetings, then the door opens */
       const words = [
          'Hello', 'नमस्ते', 'Dia dhuit', 'Bonjour', 'Hola', 'こんにちは',
          '안녕하세요', '你好', 'Ciao', 'Olá', 'Hallo', 'Привет', 'مرحبا',
-         'Γειά σου', 'Merhaba', 'Xin chào', 'Hej', 'Hello'
+         'Γειά σου', 'Merhaba', 'Xin chào', 'Hej', "Let's get you in."
       ];
       const wordEl = document.getElementById('intro-word');
       let i = 0;
 
       const delayFor = (idx) => {
-         if (idx >= words.length - 1) return 420;            /* hold the last hello */
+         if (idx >= words.length - 1) return 750;            /* let the closer land */
          const mid = words.length / 2;
          const dist = Math.abs(idx - mid) / mid;             /* 0 center, 1 edges */
          return 90 + dist * dist * 130;                      /* 90ms center, ~220ms edges */
@@ -52,6 +55,7 @@
          i += 1;
          if (i < words.length) {
             wordEl.textContent = words[i];
+            if (i === words.length - 1) wordEl.classList.add('intro-final');
             setTimeout(step, delayFor(i));
          } else {
             el.classList.add('done');
@@ -247,6 +251,39 @@
       link('.tr-row');
    }
 
+   /* ------------------------------------- CHART CLICK NAVIGATION
+      Bars and ascent milestones jump to the matching role or section. */
+   const goTo = (target) => {
+      if (!target) return;
+      target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+      target.classList.remove('flash');
+      void target.offsetWidth;
+      target.classList.add('flash');
+   };
+
+   document.querySelectorAll('.tr-row').forEach((row) => {
+      row.addEventListener('click', () => {
+         goTo(document.querySelector(`.trace-role[data-trace="${row.dataset.trace}"]`));
+      });
+   });
+
+   document.querySelectorAll('.ascent-mark[data-goto]').forEach((mark) => {
+      mark.addEventListener('click', () => {
+         const target = document.querySelector(mark.dataset.goto);
+         if (!target) return;
+         if (mark.dataset.goto === '#education') {
+            target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+            target.querySelectorAll('.edu-card').forEach((c) => {
+               c.classList.remove('flash');
+               void c.offsetWidth;
+               c.classList.add('flash');
+            });
+         } else {
+            goTo(target);
+         }
+      });
+   });
+
    /* ------------------------------------- STATEMENT (pinned scrub) */
    const statement = document.querySelector('.statement');
    if (statement && HAS_GSAP && !REDUCED) {
@@ -289,6 +326,30 @@
       }
    }
 
+   /* --------------------------------------- PRINCIPLES (scrubbed)
+      The three lines brighten and settle with the scroll itself, so
+      the section never pops; reversing is free. */
+   if (HAS_GSAP && !REDUCED) {
+      const lines = gsap.utils.toArray('.principles-list li');
+      if (lines.length) {
+         gsap.fromTo(lines,
+            { autoAlpha: 0.12, x: -30 },
+            {
+               autoAlpha: 1,
+               x: 0,
+               stagger: 0.4,
+               ease: 'none',
+               scrollTrigger: {
+                  trigger: '.principles',
+                  start: 'top 78%',
+                  end: 'top 18%',
+                  scrub: 0.5
+               }
+            }
+         );
+      }
+   }
+
    /* ------------------------------------------ FOOTER CURTAIN SIZE
       The fixed footer needs the page above to reserve its height. */
    (function footerReveal() {
@@ -309,6 +370,65 @@
       new ResizeObserver(size).observe(contact);
       mq.addEventListener('change', size);
       size();
+
+      /* the revealed footer rises with the curtain instead of sitting
+         statically underneath it */
+      if (HAS_GSAP && !REDUCED && mq.matches) {
+         const items = contact.querySelectorAll('.contact-inner > *');
+         gsap.fromTo(items,
+            { y: 48, autoAlpha: 0 },
+            {
+               y: 0,
+               autoAlpha: 1,
+               stagger: 0.08,
+               ease: 'none',
+               scrollTrigger: {
+                  start: () => ScrollTrigger.maxScroll(window) - contact.offsetHeight,
+                  end: () => ScrollTrigger.maxScroll(window),
+                  scrub: 0.4
+               }
+            }
+         );
+      }
+   })();
+
+   /* ------------------------------------------- EMAIL TYPEWRITER
+      The address types itself, holds, vanishes tail-first, and loops
+      while the footer is on screen. The link stays clickable and keeps
+      an accessible name throughout. */
+   (function emailType() {
+      const email = document.querySelector('.contact-email');
+      if (!email || !HAS_GSAP || REDUCED) return;
+
+      const address = email.textContent.trim();
+      email.setAttribute('aria-label', address);
+      email.textContent = '';
+
+      const chars = address.split('').map((ch) => {
+         const s = document.createElement('span');
+         s.className = 'char';
+         s.textContent = ch;
+         s.setAttribute('aria-hidden', 'true');
+         email.appendChild(s);
+         return s;
+      });
+      const caret = document.createElement('span');
+      caret.className = 'caret';
+      caret.setAttribute('aria-hidden', 'true');
+      email.appendChild(caret);
+
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.7, paused: true });
+      tl.fromTo(chars, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.05 });
+      tl.to({}, { duration: 3.2 });                                   /* hold, readable + clickable */
+      tl.to(chars, { opacity: 0, y: -9, duration: 0.25, stagger: { each: 0.016, from: 'end' } });
+      tl.set(chars, { y: 0 });
+
+      const contact = document.getElementById('contact');
+      ScrollTrigger.create({
+         start: () => ScrollTrigger.maxScroll(window) - (contact ? contact.offsetHeight : 600),
+         end: () => ScrollTrigger.maxScroll(window) + 1,
+         onToggle(self) { tl[self.isActive ? 'play' : 'pause'](); }
+      });
    })();
 
    /* ----------------------------------------------- SPOTLIGHT PANELS */
@@ -338,6 +458,11 @@
          else video.pause();
       }, { rootMargin: '80px' }).observe(video);
    });
+
+   /* positions shift as fonts/media settle; re-measure once loaded */
+   if (HAS_GSAP) {
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+   }
 
    /* -------------------------------------------------- EASTER EGG  */
    try {

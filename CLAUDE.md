@@ -149,6 +149,21 @@ drawn as a distributed-trace waterfall.
   egg now notes MCP servers in production (Anthropic reviewer bait, factual); custom 404.html:
   "This page failed predictably." in the same design language.
 
+- **2026-07-05** v5 fixes from owner testing: (1) REFRESH BUG: returning visitors saw a stranded
+  "Hello" overlay; fixed with a pre-paint inline head script that adds .intro-skip/.intro-done
+  synchronously from sessionStorage (overlay can never strand again; also pageshow/bfcache
+  handler + ScrollTrigger.refresh on load). (2) Intro now ends on "Let's get you in." with a
+  scale-in hold, then the curtain lifts into the hero. (3) Ascent labels capitalized
+  (Student/Intern/Graduate/Engineer/Senior Advisor), 2025 label reads "Senior Advisor,
+  Evernorth" and sits 25px clear of the line (was 9px, read as overlap). (4) Chart click-through:
+  trace bars and ascent milestones scroll to the matching role/education card with a flash
+  highlight (ids: role-evernorth, role-ericsson-swe/-grad/-intern). (5) "First Class Honours"
+  badge on the UCD card. (6) Principles now scrub with the scroll (brighten + slide, reversible)
+  instead of popping; footer content rises with the curtain via a maxScroll-anchored scrub.
+  (7) Email is an auto-looping typewriter (types, holds 3.2s, vanishes tail-first) that only
+  runs while the footer is on screen; link keeps aria-label and stays clickable; reduced-motion
+  gets static text.
+
 ## TODO / ideas
 
 - [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo (both unreferenced now)
