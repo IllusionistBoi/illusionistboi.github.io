@@ -7,18 +7,20 @@ Live at https://illusionistboi.github.io and the syssimulator.com link points ou
 
 Zero-build static site. Push to `main` = deploy. Keep it that way unless there is a strong reason not to.
 
-| File | Purpose |
+| Path | Purpose |
 |---|---|
-| `index.html` | Single page. Semantic sections: hero, statement, work, experience, principles, contact |
-| `styles.css` | All styling. Design tokens at the top in `:root` |
-| `main.js` | Nav, scroll choreography (GSAP ScrollTrigger), reveal logic, reduced-motion handling |
-| `demos.js` | All canvas animations: hero system map + 4 per-project live demos |
+| `index.html` | Single page: intro, hero, statement, work, experience (+ascent), education, toolbox, principles, contact |
+| `404.html` | Custom GitHub Pages error page, same design language |
+| `css/styles.css` | All styling. Design tokens at the top in `:root`. Font urls are `../fonts/` relative |
+| `js/main.js` | Intro sequence, nav, scroll choreography (GSAP ScrollTrigger), ruler, ascent, copy-burst email |
+| `js/demos.js` | Canvas sims: hero system map + BFS chase (offscreen-paused, reduced-motion static) |
+| `assets/` | syssimulator.webp/.jpg (jpg doubles as og:image), luggagebot.mp4, pokerplanning.mp4 |
 | `vendor/` | gsap.min.js + ScrollTrigger.min.js (vendored, no CDN dependency) |
-| `fonts/` | Geist + Geist Mono variable woff2 (self-hosted) |
+| `fonts/` | Clash Display 500/600/700, Big Shoulders Stencil (variable), Geist + Geist Mono (variable) |
 | `favicon/`, `favicon.ico` | Unchanged from previous site |
-| `hero.jpg`, `backgroundHero.mp4` | **Legacy assets from the old site, no longer referenced.** Kept until owner decides to delete. The mp4 is 14MB; removing it slims the repo |
 
-`node_modules/` is untracked leftovers from an old experiment (three.js etc.) and is not used by the site.
+`node_modules/` and the source gifs are untracked/gitignored and not used by the site.
+Legacy `hero.jpg`/`backgroundHero.mp4` were deleted from the repo on 2026-07-05.
 
 ## Design system (2026-07 redesign)
 
@@ -164,8 +166,18 @@ drawn as a distributed-trace waterfall.
   runs while the footer is on screen; link keeps aria-label and stays clickable; reduced-motion
   gets static text.
 
-## TODO / ideas
+- **2026-07-05** v6 + restructure: intro plays on EVERY load (owner request), timestamp-driven so
+  background-tab timer throttling cannot strand it, live percent counter, split-panel "doors"
+  reveal, closer "Let's get you in.". Email typewriter replaced with click-to-copy magic:
+  particles burst from the letters (canvas overlay), "Copied." reassembles, then the address
+  restores; clipboard failure falls back to mailto; reduced-motion gets plain copy. Awards are
+  solid-orange bold badges, "Ericsson Key Contributor Award" is self-explanatory + title attr.
+  Intern span corrected: Mar 2021 to Jul 2022 (owner: internship ran until the graduate role).
+  Nav mark set in stencil (boxed chip looked bad). Repo restructured: css/ and js/ folders,
+  legacy hero.jpg + backgroundHero.mp4 (14MB) deleted. The "Skip to content" pill visible
+  mid-page in owner's full-page captures is a capture-stitching artifact of fixed elements,
+  not a bug.
 
-- [ ] Decide whether to delete backgroundHero.mp4 + hero.jpg from the repo (both unreferenced now)
+## TODO / ideas
 - [ ] Optional: custom 404.html in the same design language
 - [ ] Optional: light "console easter egg" for engineers who open devtools
