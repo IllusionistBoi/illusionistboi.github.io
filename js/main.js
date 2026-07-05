@@ -41,11 +41,12 @@
       const countEl = document.getElementById('intro-count');
       let i = 0;
 
+      const CLOSER_HOLD = 1450;
       const delayFor = (idx) => {
-         if (idx >= words.length - 1) return 1450;           /* let the closer breathe */
+         if (idx >= words.length - 1) return CLOSER_HOLD;    /* let the closer breathe */
          const mid = words.length / 2;
          const dist = Math.abs(idx - mid) / mid;             /* 0 center, 1 edges */
-         return 90 + dist * dist * 130;                      /* 90ms center, ~220ms edges */
+         return 110 + dist * dist * 120;                     /* 110ms center, ~230ms edges */
       };
 
       /* timestamp-driven: background-tab timer throttling cannot strand
@@ -53,6 +54,8 @@
       const bounds = [];
       let total = 460;
       for (let k = 1; k < words.length; k++) { bounds.push(total); total += delayFor(k); }
+      /* the counter hits 100 the moment the closer lands, not after it */
+      const countSpan = total - CLOSER_HOLD;
       const t0 = performance.now();
 
       const swap = (text, final) => {
@@ -90,7 +93,7 @@
       const drive = () => {
          clearTimeout(timer);
          const t = performance.now() - t0;
-         if (countEl) countEl.textContent = String(Math.min(100, Math.round(t / total * 100))).padStart(2, '0');
+         if (countEl) countEl.textContent = String(Math.min(100, Math.round(t / countSpan * 100))).padStart(2, '0');
 
          let idx = 0;
          for (let k = 0; k < bounds.length; k++) if (t >= bounds[k]) idx = k + 1;
@@ -105,7 +108,7 @@
             document.removeEventListener('visibilitychange', drive);
             openDoors();
          } else {
-            timer = setTimeout(drive, 50);
+            timer = setTimeout(drive, 30);
          }
       };
       drive();
@@ -385,8 +388,8 @@
                ease: 'none',
                scrollTrigger: {
                   trigger: '.principles',
-                  start: 'top 78%',
-                  end: 'top 18%',
+                  start: 'top 82%',
+                  end: 'top 45%',
                   scrub: 0.5
                }
             }
@@ -404,6 +407,20 @@
       const mq = window.matchMedia('(min-width: 861px)');
       let t = 0;
       const size = () => {
+         /* the footer must fit under the nav at max scroll, or its
+            heading gets clipped; compact it when it would not */
+         if (mq.matches) {
+            const cap = window.innerHeight - 88;
+            if (contact.offsetHeight > cap) {
+               contact.classList.add('contact-compact');
+            } else if (contact.classList.contains('contact-compact') && cap - contact.offsetHeight > 300) {
+               contact.classList.remove('contact-compact');
+               if (contact.offsetHeight > cap) contact.classList.add('contact-compact');
+            }
+         } else {
+            contact.classList.remove('contact-compact');
+         }
+
          page.style.marginBottom = mq.matches ? contact.offsetHeight + 'px' : '';
          if (HAS_GSAP) {
             clearTimeout(t);
@@ -413,6 +430,9 @@
 
       new ResizeObserver(size).observe(contact);
       mq.addEventListener('change', size);
+      window.addEventListener('resize', size);
+      window.addEventListener('load', size);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
       size();
 
       /* the revealed footer rises with the curtain instead of sitting

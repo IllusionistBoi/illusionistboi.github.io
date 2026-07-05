@@ -1265,10 +1265,17 @@ h2 {
    -webkit-text-fill-color: transparent;
 }
 
-@media (min-width: 861px) and (max-height: 780px) {
-   .footer-wordmark { font-size: clamp(2.6rem, 8.5vw, 7.5rem); }
-   .contact-inner { padding-top: 2.6rem; }
+/* applied from main.js whenever the footer would not fit under the nav
+   at max scroll (measured, not breakpoint-guessed) */
+.contact-compact .contact-inner { padding-top: 2.4rem; padding-bottom: 1.6rem; }
+.contact-compact h2 { font-size: clamp(2.1rem, 4vw, 3.4rem); }
+.contact-compact .contact-email { margin-top: 1.6rem; }
+.contact-compact .contact-links { margin-top: 1.4rem; }
+.contact-compact .footer-wordmark {
+   font-size: clamp(2.4rem, 7.5vw, 7rem);
+   margin-top: 1.6rem;
 }
+.contact-compact .footer-meta { margin-top: 1rem; padding-top: 1rem; }
 
 .footer-meta {
    display: flex;
