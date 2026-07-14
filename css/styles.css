@@ -824,6 +824,7 @@ h2 {
 .project-row-flip .project-body { order: 1; }
 
 /* one frame for every project asset: uniform 16:10, cover-cropped */
+.project-media img,
 .project-media video,
 .project-media canvas {
    display: block;
